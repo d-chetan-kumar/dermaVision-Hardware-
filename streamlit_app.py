@@ -193,7 +193,7 @@ def generate_pdf_report(disease_name, confidence, metadata, quality, predictions
     pdf.set_font("Helvetica", "B", 10)
     pdf.cell(0, 6, "Engine Configuration", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("Helvetica", "", 9)
-    pdf.cell(0, 5, f"Backbone model: MobileNetV2 Fine-Tuned (Accuracy: {"90.96%"} | Latency: {quality['latency']:.1f} ms)", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 5, f"Backbone model: MobileNetV2 Fine-Tuned (Accuracy: 90.96% | Latency: {quality['latency']:.1f} ms)", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(4)
     
     # Medical Disclaimer Block
