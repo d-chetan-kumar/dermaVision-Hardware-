@@ -4,7 +4,8 @@ dermavision-isic-2019/
 *.csv
 
 # Model Weights (Use GitHub Releases or LFS for these)
-models/*.keras
+# Uncomment these if weights exceed 100MB. Currently ~31MB, so safe to push.
+# models/*.keras
 models/*.h5
 *.pb
 
