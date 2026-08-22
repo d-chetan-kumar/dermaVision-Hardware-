@@ -1,9 +1,11 @@
 # DermaVision: ISIC 2019 ML Pipeline & Dashboard
 
-![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+<div align="left">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow" />
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
+  <img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="scikit-learn" />
+</div>
 
 DermaVision is an intelligent skin image classification system. This repository contains the complete machine learning pipeline and a premium Streamlit-based web application designed to predict skin lesions using a **MobileNetV2** model fine-tuned on the **ISIC 2019** dataset.
 
