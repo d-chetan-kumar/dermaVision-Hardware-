@@ -1,0 +1,39 @@
+# Large Datasets
+ISIC_2019_Training_Input/
+dermavision-isic-2019/
+*.csv
+
+# Model Weights (Use GitHub Releases or LFS for these)
+models/*.keras
+models/*.h5
+*.pb
+
+# Python caches and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Streamlit config (secrets, etc)
+.streamlit/secrets.toml
+.streamlit/credentials.toml
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Output logs and temporary files
+*.log
+scratch/
