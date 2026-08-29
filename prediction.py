@@ -1,12 +1,15 @@
 import os
 import numpy as np
 
-# Use tflite-runtime on ARM (Raspberry Pi) or fall back to tensorflow.lite on desktop
+# Use ai-edge-litert (Google's replacement for tflite-runtime) or fall back to tensorflow.lite
 try:
-    from tflite_runtime.interpreter import Interpreter
+    from ai_edge_litert.interpreter import Interpreter
 except ImportError:
-    import tensorflow as tf
-    Interpreter = tf.lite.Interpreter
+    try:
+        from tflite_runtime.interpreter import Interpreter
+    except ImportError:
+        import tensorflow as tf
+        Interpreter = tf.lite.Interpreter
 
 from preprocessing import preprocess_image
 from validator import is_valid_dermatology_image
