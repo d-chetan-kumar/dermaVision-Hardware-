@@ -1,205 +1,3 @@
-# import os
-# import json
-# import pandas as pd
-# import numpy as np
-# import tensorflow as tf
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-# from sklearn.model_selection import train_test_split
-# from sklearn.metrics import (
-#     accuracy_score, precision_score, recall_score, f1_score, 
-#     confusion_matrix, classification_report, roc_curve, auc, roc_auc_score
-# )
-# from sklearn.preprocessing import label_binarize
-# from prediction import load_prediction_model, predict_image
-# from utils import load_class_mapping
-
-# def prepare_validation_dataset(ground_truth_csv, image_directory):
-#     """
-#     Recreates the exact validation split used in original Kaggle training.
-#     """
-#     from pathlib import Path
-#     import pandas as pd
-    
-#     ground_truth_csv = str(ground_truth_csv).strip().strip('"').strip("'")
-#     image_directory = str(image_directory).strip().strip('"').strip("'")
-    
-#     csv_path = Path(ground_truth_csv).expanduser()
-#     img_dir = Path(image_directory).expanduser()
-    
-#     df = pd.read_csv(str(csv_path))
-    
-#     mel_df = df[df["MEL"] == 1.0].copy()
-#     nv_df = df[df["NV"] == 1.0].head(4600).copy()
-#     bcc_df = df[df["BCC"] == 1.0].copy()
-
-#     mel_df["class"] = "Melanoma"
-#     nv_df["class"] = "Nevus"
-#     bcc_df["class"] = "BCC"
-
-#     selected_df = pd.concat([mel_df, nv_df, bcc_df], ignore_index=True)
-#     data = selected_df[["image", "class"]].copy()
-
-#     class_to_idx = {"BCC": 0, "Melanoma": 1, "Nevus": 2}
-#     data["label"] = data["class"].map(class_to_idx)
-    
-#     import os
-#     data["image_path"] = data["image"].apply(lambda x: str(img_dir / f"{x}.jpg"))
-
-#     _, val_df = train_test_split(
-#         data,
-#         test_size=0.20,
-#         stratify=data["label"],
-#         random_state=42
-#     )
-    
-#     return val_df
-
-# def evaluate_model(model=None, ground_truth_csv=None, image_directory=None, output_dir="metrics"):
-#     """
-#     Evaluates the model and generates all metrics and artifacts.
-#     """
-#     from pathlib import Path
-    
-#     if not ground_truth_csv or not image_directory:
-#         raise ValueError("Ground truth CSV and image directory must be provided.")
-        
-#     ground_truth_csv = ground_truth_csv.strip().strip('"').strip("'")
-#     image_directory = image_directory.strip().strip('"').strip("'")
-    
-#     csv_path = Path(ground_truth_csv).expanduser()
-#     img_dir = Path(image_directory).expanduser()
-    
-#     if not csv_path.exists() or not csv_path.is_file():
-#         raise FileNotFoundError(f"Ground truth CSV not found: {csv_path}")
-#     if not img_dir.exists() or not img_dir.is_dir():
-#         raise FileNotFoundError(f"Image directory not found: {img_dir}")
-        
-#     os.makedirs(output_dir, exist_ok=True)
-    
-#     if model is None:
-#         model = load_prediction_model()
-        
-#     classes = load_class_mapping()
-#     val_df = prepare_validation_dataset(ground_truth_csv, image_directory)
-    
-#     true_labels = []
-#     predicted_labels = []
-#     probabilities = []
-    
-#     print(f"Starting evaluation on {len(val_df)} validation images...")
-    
-#     for idx, row in val_df.iterrows():
-#         img_path = row["image_path"]
-#         true_label = row["class"]
-        
-#         if os.path.exists(img_path):
-#             try:
-#                 res = predict_image(img_path, model=model, classes=classes)
-#                 pred_class = res["predicted_class"]
-                
-#                 probs_dict = res["probabilities"]
-#                 probs_arr = [probs_dict.get(c, 0.0) / 100.0 for c in classes]
-                
-#                 true_labels.append(true_label)
-#                 predicted_labels.append(pred_class)
-#                 probabilities.append(probs_arr)
-#             except Exception as e:
-#                 print(f"Error evaluating {img_path}: {e}")
-#         else:
-#             print(f"Image not found: {img_path}")
-            
-#     if not true_labels:
-#         raise ValueError("No valid predictions were made. Check image paths.")
-        
-#     # Sklearn metrics
-#     accuracy = float(accuracy_score(true_labels, predicted_labels))
-#     macro_precision = float(precision_score(true_labels, predicted_labels, average='macro', labels=classes))
-#     macro_recall = float(recall_score(true_labels, predicted_labels, average='macro', labels=classes))
-#     macro_f1 = float(f1_score(true_labels, predicted_labels, average='macro', labels=classes))
-    
-#     weighted_precision = float(precision_score(true_labels, predicted_labels, average='weighted', labels=classes))
-#     weighted_recall = float(recall_score(true_labels, predicted_labels, average='weighted', labels=classes))
-#     weighted_f1 = float(f1_score(true_labels, predicted_labels, average='weighted', labels=classes))
-    
-#     conf_matrix = confusion_matrix(true_labels, predicted_labels, labels=classes)
-#     report_dict = classification_report(true_labels, predicted_labels, labels=classes, output_dict=True)
-#     report_df = pd.DataFrame(report_dict).transpose()
-#     report_df.to_csv(os.path.join(output_dir, "classification_report.csv"))
-    
-#     # Probabilities for AUC
-#     y_true_bin = label_binarize(true_labels, classes=classes)
-#     probabilities = np.array(probabilities)
-    
-#     macro_auc = float(roc_auc_score(y_true_bin, probabilities, average='macro', multi_class='ovr'))
-#     weighted_auc = float(roc_auc_score(y_true_bin, probabilities, average='weighted', multi_class='ovr'))
-    
-#     per_class_auc = {}
-#     for i, cls in enumerate(classes):
-#         per_class_auc[cls] = float(roc_auc_score(y_true_bin[:, i], probabilities[:, i]))
-        
-#     # Plot Confusion Matrix
-#     plt.figure(figsize=(8, 6))
-#     sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=classes, yticklabels=classes)
-#     plt.title('Confusion Matrix')
-#     plt.ylabel('True Label')
-#     plt.xlabel('Predicted Label')
-#     plt.tight_layout()
-#     plt.savefig(os.path.join(output_dir, "confusion_matrix.png"))
-#     plt.close()
-    
-#     # Plot ROC curves
-#     plt.figure(figsize=(10, 8))
-#     for i, cls in enumerate(classes):
-#         fpr, tpr, _ = roc_curve(y_true_bin[:, i], probabilities[:, i])
-#         roc_auc_val = auc(fpr, tpr)
-#         plt.plot(fpr, tpr, lw=2, label=f'ROC curve of {cls} (area = {roc_auc_val:0.4f})')
-        
-#     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-#     plt.xlim([0.0, 1.0])
-#     plt.ylim([0.0, 1.05])
-#     plt.xlabel('False Positive Rate')
-#     plt.ylabel('True Positive Rate')
-#     plt.title('Receiver Operating Characteristic (One-vs-Rest)')
-#     plt.legend(loc="lower right")
-#     plt.tight_layout()
-#     plt.savefig(os.path.join(output_dir, "roc_auc_curve.png"))
-#     plt.close()
-    
-#     metrics = {
-#         "accuracy": accuracy,
-#         "macro_precision": macro_precision,
-#         "macro_recall": macro_recall,
-#         "macro_f1": macro_f1,
-#         "weighted_precision": weighted_precision,
-#         "weighted_recall": weighted_recall,
-#         "weighted_f1": weighted_f1,
-#         "macro_auc": macro_auc,
-#         "weighted_auc": weighted_auc,
-#         "per_class_auc": per_class_auc,
-#         "confusion_matrix": conf_matrix.tolist()
-#     }
-    
-#     with open(os.path.join(output_dir, "metrics.json"), "w", encoding="utf-8") as f:
-#         json.dump(metrics, f, indent=4)
-        
-#     return metrics
-
-# if __name__ == "__main__":
-#     import argparse
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("--csv", type=str, help="Path to ground truth CSV")
-#     parser.add_argument("--img_dir", type=str, help="Path to image directory")
-#     args = parser.parse_args()
-    
-#     if args.csv and args.img_dir:
-#         res = evaluate_model(ground_truth_csv=args.csv, image_directory=args.img_dir)
-#         print("Evaluation complete.")
-#         print(f"Accuracy: {res['accuracy']:.4f}")
-#         print(f"Macro F1: {res['macro_f1']:.4f}")
-#         print(f"Macro AUC: {res['macro_auc']:.4f}")
-#     else:
-#         print("Please provide --csv and --img_dir to run evaluation.")
 import os
 import json
 from pathlib import Path
@@ -209,6 +7,12 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+import torch
+import torch.nn as nn
+from torchvision import transforms
+from PIL import Image
+from tqdm import tqdm
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
@@ -227,7 +31,6 @@ from sklearn.preprocessing import label_binarize
 from prediction import load_prediction_model
 from utils import load_class_mapping
 
-
 # ============================================================
 # CONFIGURATION
 # ============================================================
@@ -235,1304 +38,496 @@ from utils import load_class_mapping
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 64
 
-CLASS_NAMES = [
-    "BCC",
-    "Melanoma",
-    "Nevus"
-]
-
-CLASS_TO_IDX = {
-    "BCC": 0,
-    "Melanoma": 1,
-    "Nevus": 2
-}
-
-IDX_TO_CLASS = {
-    0: "BCC",
-    1: "Melanoma",
-    2: "Nevus"
-}
-
+CLASS_NAMES = ["BCC", "Melanoma", "Nevus"]
+CLASS_TO_IDX = {"BCC": 0, "Melanoma": 1, "Nevus": 2}
+IDX_TO_CLASS = {0: "BCC", 1: "Melanoma", 2: "Nevus"}
 
 # ============================================================
-# PATH CLEANING
+# DATASET UTILS
 # ============================================================
 
 def clean_path(path):
-    """
-    Clean Windows paths entered through Streamlit.
-    Removes surrounding quotes and whitespace.
-    """
-    if path is None:
-        return None
-
+    if path is None: return None
     return str(path).strip().strip('"').strip("'")
 
-
-# ============================================================
-# IMAGE PATH RESOLUTION
-# ============================================================
-
 def build_image_path(image_id, image_directory):
-    """
-    Resolve the actual JPG path.
-
-    Supports:
-        image_directory/ISIC_xxxxxxx.jpg
-
-    and nested dataset structures:
-        image_directory/ISIC_2019_Training_Input/ISIC_xxxxxxx.jpg
-
-    Returns:
-        Path object or None
-    """
-
     image_directory = Path(image_directory)
     image_id = str(image_id)
-
-    # Remove extension if CSV already contains it
-    if image_id.lower().endswith(".jpg"):
-        filename = image_id
-    elif image_id.lower().endswith(".jpeg"):
-        filename = image_id
-    else:
-        filename = image_id + ".jpg"
-
-    # --------------------------------------------------------
-    # Direct path
-    # --------------------------------------------------------
+    if image_id.lower().endswith(".jpg"): filename = image_id
+    elif image_id.lower().endswith(".jpeg"): filename = image_id
+    else: filename = image_id + ".jpg"
 
     direct_path = image_directory / filename
-
-    if direct_path.exists():
-        return direct_path
-
-    # --------------------------------------------------------
-    # Recursive search
-    # --------------------------------------------------------
+    if direct_path.exists(): return direct_path
 
     matches = list(image_directory.rglob(filename))
-
-    if len(matches) > 0:
-        return matches[0]
-
+    if len(matches) > 0: return matches[0]
     return None
 
-
-# ============================================================
-# RECREATE EXACT VALIDATION DATASET
-# ============================================================
-
-def prepare_validation_dataset(
-    ground_truth_csv,
-    image_directory
-):
-    """
-    Recreates the exact validation split used during
-    the verified ISIC 2019 evaluation.
-
-    Selection:
-        Melanoma = all MEL images
-        Nevus    = first 4600 NV images
-        BCC      = all BCC images
-
-    Split:
-        80% training
-        20% validation
-
-    Stratification:
-        label
-
-    Random state:
-        42
-    """
-
+def prepare_validation_dataset(ground_truth_csv, image_directory):
     ground_truth_csv = clean_path(ground_truth_csv)
     image_directory = clean_path(image_directory)
-
     csv_path = Path(ground_truth_csv).expanduser()
     img_dir = Path(image_directory).expanduser()
 
-    # --------------------------------------------------------
-    # Validate paths
-    # --------------------------------------------------------
-
-    if not csv_path.exists():
-        raise FileNotFoundError(
-            f"Ground truth CSV not found:\n{csv_path}"
-        )
-
-    if not csv_path.is_file():
-        raise ValueError(
-            f"Ground truth path is not a file:\n{csv_path}"
-        )
-
-    if not img_dir.exists():
-        raise FileNotFoundError(
-            f"Image directory not found:\n{img_dir}"
-        )
-
-    if not img_dir.is_dir():
-        raise ValueError(
-            f"Image directory is not a directory:\n{img_dir}"
-        )
-
-    # --------------------------------------------------------
-    # Load CSV
-    # --------------------------------------------------------
-
-    print()
-    print("=" * 70)
-    print("LOADING ISIC 2019 DATASET")
-    print("=" * 70)
-
-    print(f"Ground Truth CSV:")
-    print(csv_path)
-
-    print()
-    print("Image Directory:")
-    print(img_dir)
+    if not csv_path.exists(): raise FileNotFoundError(f"CSV not found: {csv_path}")
+    if not img_dir.exists(): raise FileNotFoundError(f"Image dir not found: {img_dir}")
 
     df = pd.read_csv(csv_path)
 
-    print()
-    print(f"Original dataset shape: {df.shape}")
-
-    required_columns = [
-        "image",
-        "MEL",
-        "NV",
-        "BCC"
-    ]
-
-    missing_columns = [
-        col for col in required_columns
-        if col not in df.columns
-    ]
-
-    if missing_columns:
-        raise ValueError(
-            f"Missing required columns: {missing_columns}"
-        )
-
-    # --------------------------------------------------------
-    # Select the exact three classes
-    # --------------------------------------------------------
-
     mel_df = df[df["MEL"] == 1.0].copy()
-
-    # IMPORTANT:
-    # This matches the previously verified pipeline.
     nv_df = df[df["NV"] == 1.0].head(4600).copy()
-
     bcc_df = df[df["BCC"] == 1.0].copy()
 
     mel_df["class"] = "Melanoma"
     nv_df["class"] = "Nevus"
     bcc_df["class"] = "BCC"
 
-    selected_df = pd.concat(
-        [
-            mel_df,
-            nv_df,
-            bcc_df
-        ],
-        ignore_index=True
-    )
-
-    print()
-    print("Selected dataset:")
-    print(f"Total selected images: {len(selected_df)}")
-
-    print()
-    print("Class distribution:")
-    print(
-        selected_df["class"].value_counts()
-        .reindex(CLASS_NAMES)
-    )
-
-    # --------------------------------------------------------
-    # Convert classes to labels
-    # --------------------------------------------------------
-
-    data = selected_df[
-        ["image", "class"]
-    ].copy()
-
+    selected_df = pd.concat([mel_df, nv_df, bcc_df], ignore_index=True)
+    data = selected_df[["image", "class"]].copy()
     data["label"] = data["class"].map(CLASS_TO_IDX)
 
-    # --------------------------------------------------------
-    # Exact 80/20 stratified split
-    # --------------------------------------------------------
-
     train_df, val_df = train_test_split(
-        data,
-        test_size=0.20,
-        stratify=data["label"],
-        random_state=42
+        data, test_size=0.20, stratify=data["label"], random_state=42
     )
-
-    # Reset index
     train_df = train_df.reset_index(drop=True)
     val_df = val_df.reset_index(drop=True)
 
-    print()
-    print("=" * 70)
-    print("VALIDATION SPLIT")
-    print("=" * 70)
-
-    print()
-    print(f"Training images:   {len(train_df)}")
-    print(f"Validation images: {len(val_df)}")
-
-    print()
-    print("Training distribution:")
-    print(
-        train_df["class"]
-        .value_counts()
-        .reindex(CLASS_NAMES)
-    )
-
-    print()
-    print("Validation distribution:")
-    print(
-        val_df["class"]
-        .value_counts()
-        .reindex(CLASS_NAMES)
-    )
-
-    # --------------------------------------------------------
-    # Resolve actual image paths
-    # --------------------------------------------------------
-
-    print()
-    print("Resolving validation image paths...")
-
-    val_df["image_path"] = val_df["image"].apply(
-        lambda x: build_image_path(
-            x,
-            img_dir
-        )
-    )
-
+    val_df["image_path"] = val_df["image"].apply(lambda x: build_image_path(x, img_dir))
     missing_mask = val_df["image_path"].isna()
-
-    missing_count = int(missing_mask.sum())
-
-    print()
-    print(f"Validation images: {len(val_df)}")
-    print(f"Images found:      {len(val_df) - missing_count}")
-    print(f"Images missing:    {missing_count}")
-
-    if missing_count > 0:
-
-        print()
-        print("First missing images:")
-
-        print(
-            val_df.loc[
-                missing_mask,
-                "image"
-            ].head(20).tolist()
-        )
-
-        raise FileNotFoundError(
-            f"{missing_count} validation images could not be found. "
-            "Evaluation stopped to prevent incorrect metrics."
-        )
-
-    # Convert Path objects to strings
-    val_df["image_path"] = val_df[
-        "image_path"
-    ].apply(str)
-
-    print()
-    print("All validation images successfully resolved.")
+    if missing_mask.sum() > 0:
+        raise FileNotFoundError(f"{missing_mask.sum()} validation images missing.")
+    val_df["image_path"] = val_df["image_path"].apply(str)
 
     return train_df, val_df
 
 
 # ============================================================
-# IMAGE LOADING / PREPROCESSING
+# MOBILENETV2 (TF) PIPELINE
 # ============================================================
 
-def load_and_preprocess_image(
-    image_path,
-    label
-):
-    """
-    Loads one image and applies the EXACT preprocessing
-    used by the verified MobileNetV2 pipeline.
-
-    IMPORTANT:
-        resize -> float32 -> /255.0
-    """
-
+def load_and_preprocess_image(image_path, label):
     image = tf.io.read_file(image_path)
-
-    image = tf.image.decode_jpeg(
-        image,
-        channels=3
-    )
-
-    image = tf.image.resize(
-        image,
-        IMG_SIZE
-    )
-
-    # EXACT normalization used in the verified evaluation
-    image = tf.cast(
-        image,
-        tf.float32
-    ) / 255.0
-
+    image = tf.image.decode_jpeg(image, channels=3)
+    image = tf.image.resize(image, IMG_SIZE)
+    image = tf.cast(image, tf.float32) / 255.0
     return image, label
 
-
-# ============================================================
-# CREATE VALIDATION DATASET
-# ============================================================
-
 def create_validation_tf_dataset(val_df):
-    """
-    Creates an optimized TensorFlow validation dataset.
-
-    Uses:
-        parallel image loading
-        batching
-        prefetching
-    """
-
-    image_paths = val_df[
-        "image_path"
-    ].values
-
-    labels = val_df[
-        "label"
-    ].values.astype(np.int32)
-
-    dataset = tf.data.Dataset.from_tensor_slices(
-        (
-            image_paths,
-            labels
-        )
-    )
-
-    dataset = dataset.map(
-        load_and_preprocess_image,
-        num_parallel_calls=tf.data.AUTOTUNE
-    )
-
-    dataset = dataset.batch(
-        BATCH_SIZE
-    )
-
-    dataset = dataset.prefetch(
-        tf.data.AUTOTUNE
-    )
-
+    image_paths = val_df["image_path"].values
+    labels = val_df["label"].values.astype(np.int32)
+    dataset = tf.data.Dataset.from_tensor_slices((image_paths, labels))
+    dataset = dataset.map(load_and_preprocess_image, num_parallel_calls=tf.data.AUTOTUNE)
+    dataset = dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     return dataset
 
-
-# ============================================================
-# RUN BATCHED INFERENCE
-# ============================================================
-
-def generate_predictions(
-    model,
-    val_df
-):
-    """
-    Runs model inference on the complete validation set
-    using batched TensorFlow inference.
-
-    Returns:
-        y_true
-        y_prob
-        y_pred
-    """
-
-    print()
-    print("=" * 70)
-    print("STARTING BATCHED VALIDATION INFERENCE")
-    print("=" * 70)
-
-    print()
-    print(f"Total validation images: {len(val_df)}")
-    print(f"Batch size:              {BATCH_SIZE}")
-
-    validation_dataset = create_validation_tf_dataset(
-        val_df
-    )
-
-    print()
-    print("Running model.predict()...")
-
-    # --------------------------------------------------------
-    # IMPORTANT:
-    # This returns the raw probability outputs.
-    # These probabilities are used for ROC/AUC.
-    # --------------------------------------------------------
-
-    y_prob = model.predict(
-        validation_dataset,
-        verbose=1
-    )
-
-    y_prob = np.asarray(
-        y_prob,
-        dtype=np.float32
-    )
-
-    # --------------------------------------------------------
-    # True labels
-    # --------------------------------------------------------
-
-    y_true = val_df[
-        "label"
-    ].to_numpy(
-        dtype=np.int32
-    )
-
-    # --------------------------------------------------------
-    # Predicted class
-    #
-    # Argmax is ONLY used for class prediction.
-    # It is NOT used for ROC/AUC.
-    # --------------------------------------------------------
-
-    y_pred = np.argmax(
-        y_prob,
-        axis=1
-    ).astype(np.int32)
-
-    # --------------------------------------------------------
-    # Sanity checks
-    # --------------------------------------------------------
-
-    print()
-    print("Inference complete.")
-
-    print()
-    print("Prediction shapes:")
-    print(f"y_true: {y_true.shape}")
-    print(f"y_prob: {y_prob.shape}")
-    print(f"y_pred: {y_pred.shape}")
-
-    if len(y_true) != len(val_df):
-        raise ValueError(
-            "y_true length does not match validation dataset."
-        )
-
-    if y_prob.shape[0] != len(val_df):
-        raise ValueError(
-            "Number of probability predictions does not "
-            "match validation dataset."
-        )
-
-    if y_prob.shape[1] != 3:
-        raise ValueError(
-            f"Expected 3 model outputs, got {y_prob.shape[1]}"
-        )
-
-    # Probability sanity check
-    probability_sums = np.sum(
-        y_prob,
-        axis=1
-    )
-
-    print()
-    print("Probability sanity check:")
-    print(
-        "Minimum probability sum:",
-        float(np.min(probability_sums))
-    )
-
-    print(
-        "Maximum probability sum:",
-        float(np.max(probability_sums))
-    )
-
-    return (
-        y_true,
-        y_prob,
-        y_pred
-    )
+def generate_mobilenet_predictions(model, val_df):
+    dataset = create_validation_tf_dataset(val_df)
+    y_prob = model.predict(dataset, verbose=1)
+    y_prob = np.asarray(y_prob, dtype=np.float32)
+    y_true = val_df["label"].to_numpy(dtype=np.int32)
+    y_pred = np.argmax(y_prob, axis=1).astype(np.int32)
+    return y_true, y_prob, y_pred
 
 
 # ============================================================
-# CALCULATE METRICS
+# DINOV2 (PYTORCH) PIPELINE
 # ============================================================
 
-def calculate_metrics(
-    y_true,
-    y_prob,
-    y_pred
-):
-    """
-    Calculates all required performance metrics.
-    """
+class DINOv2Dataset(torch.utils.data.Dataset):
+    def __init__(self, val_df):
+        self.val_df = val_df
+        self.transform = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
+        
+    def __len__(self):
+        return len(self.val_df)
+        
+    def __getitem__(self, idx):
+        row = self.val_df.iloc[idx]
+        img_path = row['image_path']
+        label = row['label']
+        image = Image.open(img_path).convert('RGB')
+        tensor = self.transform(image)
+        return tensor, label
 
-    print()
-    print("=" * 70)
-    print("CALCULATING PERFORMANCE METRICS")
-    print("=" * 70)
+class DINOv2LinearClassifier(nn.Module):
+    def __init__(self, feature_dim=768, num_classes=3):
+        super().__init__()
+        self.classifier = nn.Linear(feature_dim, num_classes)
+        
+    def forward(self, x):
+        return self.classifier(x)
 
-    # --------------------------------------------------------
-    # Classification metrics
-    # --------------------------------------------------------
-
-    accuracy = accuracy_score(
-        y_true,
-        y_pred
+def load_dinov2_model():
+    print('Loading DINOv2 backbone...')
+    backbone = torch.hub.load('facebookresearch/dinov2', 'dinov2_vitb14', trust_repo=True)
+    backbone.eval()
+    
+    print('Loading DINOv2 classifier...')
+    ckpt = torch.load('models/dinov2_100_epoch_best.pth', map_location='cpu')
+    
+    classifier = DINOv2LinearClassifier(
+        feature_dim=ckpt.get("feature_dim", 768),
+        num_classes=ckpt.get("num_classes", 3)
     )
+    
+    if "model_state_dict" in ckpt:
+        classifier.load_state_dict(ckpt["model_state_dict"])
+    else:
+        classifier.load_state_dict(ckpt)
+        
+    classifier.eval()
+    
+    print("DINOv2 classifier loaded successfully")
+    print(f"DINOv2 feature dimension: {ckpt.get('feature_dim', 768)}")
+    print(f"DINOv2 classes: {ckpt.get('num_classes', 3)}")
+    if "best_val_accuracy" in ckpt:
+        print(f"DINOv2 checkpoint accuracy: {ckpt['best_val_accuracy']:.4f}")
+    if "best_epoch" in ckpt:
+        print(f"DINOv2 checkpoint epoch: {ckpt['best_epoch']}")
+    
+    return backbone, classifier
 
-    macro_precision = precision_score(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        average="macro",
-        zero_division=0
-    )
+def generate_dinov2_predictions(backbone, classifier, val_df):
+    dataset = DINOv2Dataset(val_df)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0)
+    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    backbone = backbone.to(device)
+    classifier = classifier.to(device)
+    
+    y_prob_list = []
+    y_true_list = []
+    
+    print('Running DINOv2 inference...')
+    with torch.no_grad():
+        for images, labels in tqdm(loader, desc="DINOv2 Batch Progress"):
+            images = images.to(device)
+            features = backbone(images)
+            logits = classifier(features)
+            probs = torch.softmax(logits, dim=1).cpu().numpy()
+            y_prob_list.append(probs)
+            y_true_list.append(labels.numpy())
+            
+    y_prob = np.concatenate(y_prob_list, axis=0)
+    y_true = np.concatenate(y_true_list, axis=0)
+    y_pred = np.argmax(y_prob, axis=1).astype(np.int32)
+    return y_true, y_prob, y_pred
 
-    macro_recall = recall_score(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        average="macro",
-        zero_division=0
-    )
 
-    macro_f1 = f1_score(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        average="macro",
-        zero_division=0
-    )
+# ============================================================
+# METRICS CALCULATION
+# ============================================================
 
-    weighted_precision = precision_score(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        average="weighted",
-        zero_division=0
-    )
-
-    weighted_recall = recall_score(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        average="weighted",
-        zero_division=0
-    )
-
-    weighted_f1 = f1_score(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        average="weighted",
-        zero_division=0
-    )
-
-    # --------------------------------------------------------
-    # Confusion matrix
-    # --------------------------------------------------------
-
-    cm = confusion_matrix(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2]
-    )
-
-    # --------------------------------------------------------
-    # Classification report
-    # --------------------------------------------------------
-
-    report_dict = classification_report(
-        y_true,
-        y_pred,
-        labels=[0, 1, 2],
-        target_names=CLASS_NAMES,
-        output_dict=True,
-        zero_division=0
-    )
-
-    # --------------------------------------------------------
-    # ROC / AUC
-    # --------------------------------------------------------
-
-    y_true_bin = label_binarize(
-        y_true,
-        classes=[0, 1, 2]
-    )
-
-    # Per-class AUC
+def calculate_base_metrics(y_true, y_prob, y_pred):
+    accuracy = accuracy_score(y_true, y_pred)
+    macro_precision = precision_score(y_true, y_pred, labels=[0, 1, 2], average='macro', zero_division=0)
+    macro_recall = recall_score(y_true, y_pred, labels=[0, 1, 2], average='macro', zero_division=0)
+    macro_f1 = f1_score(y_true, y_pred, labels=[0, 1, 2], average='macro', zero_division=0)
+    
+    weighted_precision = precision_score(y_true, y_pred, labels=[0, 1, 2], average='weighted', zero_division=0)
+    weighted_recall = recall_score(y_true, y_pred, labels=[0, 1, 2], average='weighted', zero_division=0)
+    weighted_f1 = f1_score(y_true, y_pred, labels=[0, 1, 2], average='weighted', zero_division=0)
+    
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1, 2])
+    report_dict = classification_report(y_true, y_pred, labels=[0, 1, 2], target_names=CLASS_NAMES, output_dict=True, zero_division=0)
+    
+    y_true_bin = label_binarize(y_true, classes=[0, 1, 2])
+    
     auc_values = {}
-
     fpr_values = {}
     tpr_values = {}
-
+    
     for i, class_name in enumerate(CLASS_NAMES):
-
-        fpr, tpr, _ = roc_curve(
-            y_true_bin[:, i],
-            y_prob[:, i]
-        )
-
-        class_auc = auc(
-            fpr,
-            tpr
-        )
-
+        fpr, tpr, _ = roc_curve(y_true_bin[:, i], y_prob[:, i])
+        auc_values[class_name] = float(auc(fpr, tpr))
         fpr_values[class_name] = fpr
         tpr_values[class_name] = tpr
-
-        auc_values[class_name] = float(
-            class_auc
-        )
-
-    # Macro AUC
-    macro_auc = roc_auc_score(
-        y_true_bin,
-        y_prob,
-        average="macro",
-        multi_class="ovr"
-    )
-
-    # Weighted AUC
-    weighted_auc = roc_auc_score(
-        y_true_bin,
-        y_prob,
-        average="weighted",
-        multi_class="ovr"
-    )
-
+        
+    macro_auc = roc_auc_score(y_true_bin, y_prob, average='macro', multi_class='ovr')
+    weighted_auc = roc_auc_score(y_true_bin, y_prob, average='weighted', multi_class='ovr')
+    
     return {
-        "accuracy": float(accuracy),
-
-        "macro_precision": float(
-            macro_precision
-        ),
-
-        "macro_recall": float(
-            macro_recall
-        ),
-
-        "macro_f1": float(
-            macro_f1
-        ),
-
-        "weighted_precision": float(
-            weighted_precision
-        ),
-
-        "weighted_recall": float(
-            weighted_recall
-        ),
-
-        "weighted_f1": float(
-            weighted_f1
-        ),
-
-        "auc_bcc": auc_values["BCC"],
-        "auc_melanoma": auc_values["Melanoma"],
-        "auc_nevus": auc_values["Nevus"],
-
-        "macro_auc": float(
-            macro_auc
-        ),
-
-        "weighted_auc": float(
-            weighted_auc
-        ),
-
-        "confusion_matrix": cm.tolist(),
-
-        "classification_report": report_dict,
-
-        "roc": {
-            "fpr": fpr_values,
-            "tpr": tpr_values
-        }
+        'accuracy': float(accuracy),
+        'macro_precision': float(macro_precision),
+        'macro_recall': float(macro_recall),
+        'macro_f1': float(macro_f1),
+        'weighted_precision': float(weighted_precision),
+        'weighted_recall': float(weighted_recall),
+        'weighted_f1': float(weighted_f1),
+        'auc_bcc': auc_values['BCC'],
+        'auc_melanoma': auc_values['Melanoma'],
+        'auc_nevus': auc_values['Nevus'],
+        'macro_auc': float(macro_auc),
+        'weighted_auc': float(weighted_auc),
+        'confusion_matrix': cm.tolist(),
+        'classification_report': report_dict,
+        'roc': {'fpr': fpr_values, 'tpr': tpr_values}
     }
 
 
 # ============================================================
-# SAVE CLASSIFICATION REPORT
+# ARTIFACT GENERATION
 # ============================================================
 
-def save_classification_report(
-    metrics,
-    output_dir
-):
-
-    report_df = pd.DataFrame(
-        metrics["classification_report"]
-    ).transpose()
-
-    report_path = (
-        Path(output_dir)
-        / "classification_report.csv"
-    )
-
-    report_df.to_csv(
-        report_path
-    )
-
-    print()
-    print(
-        f"Classification report saved: {report_path}"
-    )
-
-
-# ============================================================
-# SAVE CONFUSION MATRIX
-# ============================================================
-
-def save_confusion_matrix(
-    metrics,
-    output_dir
-):
-
-    cm = np.array(
-        metrics["confusion_matrix"]
-    )
-
-    plt.figure(
-        figsize=(8, 6)
-    )
-
-    sns.heatmap(
-        cm,
-        annot=True,
-        fmt="d",
-        cmap="Blues",
-        xticklabels=CLASS_NAMES,
-        yticklabels=CLASS_NAMES
-    )
-
-    plt.title(
-        "Confusion Matrix — ISIC 2019 MobileNetV2"
-    )
-
-    plt.ylabel(
-        "Actual"
-    )
-
-    plt.xlabel(
-        "Predicted"
-    )
-
+def save_artifacts(metrics, prefix, output_dir):
+    out = Path(output_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    
+    report_df = pd.DataFrame(metrics['classification_report']).transpose()
+    report_df.to_csv(out / f'{prefix}_classification_report.csv')
+    
+    cm = np.array(metrics['confusion_matrix'])
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=CLASS_NAMES, yticklabels=CLASS_NAMES)
+    plt.title(f'Confusion Matrix — {prefix}')
+    plt.ylabel('Actual')
+    plt.xlabel('Predicted')
     plt.tight_layout()
-
-    output_path = (
-        Path(output_dir)
-        / "confusion_matrix.png"
-    )
-
-    plt.savefig(
-        output_path,
-        dpi=200,
-        bbox_inches="tight"
-    )
-
+    plt.savefig(out / f'{prefix}_confusion_matrix.png', dpi=200, bbox_inches='tight')
     plt.close()
-
-    print(
-        f"Confusion matrix saved: {output_path}"
-    )
-
-
-# ============================================================
-# SAVE ROC CURVE
-# ============================================================
-
-def save_roc_curve(
-    metrics,
-    output_dir
-):
-
-    plt.figure(
-        figsize=(9, 7)
-    )
-
+    
+    plt.figure(figsize=(9, 7))
     for class_name in CLASS_NAMES:
-
-        fpr = np.array(
-            metrics["roc"]["fpr"][class_name]
-        )
-
-        tpr = np.array(
-            metrics["roc"]["tpr"][class_name]
-        )
-
-        auc_value = metrics[
-            f"auc_{class_name.lower()}"
-        ]
-
-        plt.plot(
-            fpr,
-            tpr,
-            linewidth=2,
-            label=(
-                f"{class_name} "
-                f"(AUC = {auc_value:.4f})"
-            )
-        )
-
-    # Random classifier
-    plt.plot(
-        [0, 1],
-        [0, 1],
-        linestyle="--",
-        linewidth=2,
-        label="Random Classifier"
-    )
-
-    plt.xlim(
-        [0.0, 1.0]
-    )
-
-    plt.ylim(
-        [0.0, 1.05]
-    )
-
-    plt.xlabel(
-        "False Positive Rate"
-    )
-
-    plt.ylabel(
-        "True Positive Rate"
-    )
-
-    plt.title(
-        "ROC Curves — ISIC 2019 MobileNetV2"
-    )
-
-    plt.legend(
-        loc="lower right"
-    )
-
-    plt.grid(
-        alpha=0.25
-    )
-
+        fpr = np.array(metrics['roc']['fpr'][class_name])
+        tpr = np.array(metrics['roc']['tpr'][class_name])
+        auc_value = metrics[f'auc_{class_name.lower()}']
+        plt.plot(fpr, tpr, linewidth=2, label=f'{class_name} (AUC = {auc_value:.4f})')
+    plt.plot([0, 1], [0, 1], linestyle='--', linewidth=2, label='Random')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title(f'ROC Curves — {prefix}')
+    plt.legend(loc='lower right')
+    plt.grid(alpha=0.25)
     plt.tight_layout()
-
-    output_path = (
-        Path(output_dir)
-        / "roc_auc_curve.png"
-    )
-
-    plt.savefig(
-        output_path,
-        dpi=200,
-        bbox_inches="tight"
-    )
-
+    plt.savefig(out / f'{prefix}_roc_auc.png', dpi=200, bbox_inches='tight')
+    plt.close()
+    
+    classes = CLASS_NAMES
+    precisions = [metrics['classification_report'][c]['precision'] for c in classes]
+    recalls = [metrics['classification_report'][c]['recall'] for c in classes]
+    f1s = [metrics['classification_report'][c]['f1-score'] for c in classes]
+    
+    x = np.arange(len(classes))
+    width = 0.25
+    
+    plt.figure(figsize=(10, 6))
+    plt.bar(x - width, precisions, width, label='Precision')
+    plt.bar(x, recalls, width, label='Recall')
+    plt.bar(x + width, f1s, width, label='F1-score')
+    
+    plt.xlabel('Class')
+    plt.ylabel('Score')
+    plt.title(f'Per-Class Performance — {prefix}')
+    plt.xticks(x, classes)
+    plt.ylim([0.0, 1.05])
+    plt.legend()
+    plt.grid(axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(out / f'{prefix}_per_class_performance.png', dpi=200, bbox_inches='tight')
     plt.close()
 
-    print(
-        f"ROC/AUC curve saved: {output_path}"
-    )
-
-
-# ============================================================
-# SAVE METRICS JSON
-# ============================================================
-
-def save_metrics_json(
-    metrics,
-    output_dir
-):
-
-    json_metrics = {
-        "accuracy": metrics["accuracy"],
-
-        "macro_precision":
-            metrics["macro_precision"],
-
-        "macro_recall":
-            metrics["macro_recall"],
-
-        "macro_f1":
-            metrics["macro_f1"],
-
-        "weighted_precision":
-            metrics["weighted_precision"],
-
-        "weighted_recall":
-            metrics["weighted_recall"],
-
-        "weighted_f1":
-            metrics["weighted_f1"],
-
-        "auc_bcc":
-            metrics["auc_bcc"],
-
-        "auc_melanoma":
-            metrics["auc_melanoma"],
-
-        "auc_nevus":
-            metrics["auc_nevus"],
-
-        "macro_auc":
-            metrics["macro_auc"],
-
-        "weighted_auc":
-            metrics["weighted_auc"],
-
-        "confusion_matrix":
-            metrics["confusion_matrix"]
-    }
-
-    output_path = (
-        Path(output_dir)
-        / "metrics.json"
-    )
-
-    with open(
-        output_path,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        json.dump(
-            json_metrics,
-            f,
-            indent=4
-        )
-
-    print(
-        f"Metrics JSON saved: {output_path}"
-    )
-
-
-# ============================================================
-# PRINT FINAL RESULTS
-# ============================================================
-
-def print_final_results(
-    metrics
-):
-
-    print()
-    print()
-    print("=" * 70)
-    print("       ISIC 2019 — MobileNetV2 PERFORMANCE")
-    print("=" * 70)
-
-    print()
-
-    print(
-        f"Accuracy:              "
-        f"{metrics['accuracy'] * 100:.2f}%"
-    )
-
-    print()
-
-    print("--- Macro Metrics ---")
-
-    print(
-        f"Precision:             "
-        f"{metrics['macro_precision'] * 100:.2f}%"
-    )
-
-    print(
-        f"Recall:                "
-        f"{metrics['macro_recall'] * 100:.2f}%"
-    )
-
-    print(
-        f"F1 Score:              "
-        f"{metrics['macro_f1'] * 100:.2f}%"
-    )
-
-    print()
-
-    print("--- Weighted Metrics ---")
-
-    print(
-        f"Precision:             "
-        f"{metrics['weighted_precision'] * 100:.2f}%"
-    )
-
-    print(
-        f"Recall:                "
-        f"{metrics['weighted_recall'] * 100:.2f}%"
-    )
-
-    print(
-        f"F1 Score:              "
-        f"{metrics['weighted_f1'] * 100:.2f}%"
-    )
-
-    print()
-
-    print("--- ROC / AUC ---")
-
-    print(
-        f"BCC          AUC: "
-        f"{metrics['auc_bcc']:.4f}"
-    )
-
-    print(
-        f"Melanoma     AUC: "
-        f"{metrics['auc_melanoma']:.4f}"
-    )
-
-    print(
-        f"Nevus        AUC: "
-        f"{metrics['auc_nevus']:.4f}"
-    )
-
-    print(
-        f"Macro AUC:           "
-        f"{metrics['macro_auc']:.4f}"
-    )
-
-    print(
-        f"Weighted AUC:        "
-        f"{metrics['weighted_auc']:.4f}"
-    )
-
-    print()
-    print("=" * 70)
-    print("CLASSIFICATION REPORT")
-    print("=" * 70)
-
-    report_df = pd.DataFrame(
-        metrics["classification_report"]
-    ).transpose()
-
-    print(
-        report_df.to_string()
-    )
-
-    print()
-    print("=" * 70)
-    print("CONFUSION MATRIX")
-    print("=" * 70)
-
-    print(
-        np.array(
-            metrics["confusion_matrix"]
-        )
-    )
-
-    print("=" * 70)
+def save_model_comparison(metrics_dict, output_dir):
+    out = Path(output_dir)
+    models = list(metrics_dict.keys())
+    
+    accs = [metrics_dict[m]['accuracy'] for m in models]
+    precs = [metrics_dict[m]['macro_precision'] for m in models]
+    recs = [metrics_dict[m]['macro_recall'] for m in models]
+    f1s = [metrics_dict[m]['macro_f1'] for m in models]
+    
+    x = np.arange(len(models))
+    width = 0.2
+    
+    plt.figure(figsize=(12, 6))
+    plt.bar(x - 1.5*width, accs, width, label='Accuracy')
+    plt.bar(x - 0.5*width, precs, width, label='Macro Precision')
+    plt.bar(x + 0.5*width, recs, width, label='Macro Recall')
+    plt.bar(x + 1.5*width, f1s, width, label='Macro F1')
+    
+    plt.xlabel('Model')
+    plt.ylabel('Score')
+    plt.title('Model Comparison')
+    plt.xticks(x, models)
+    plt.ylim([0.0, 1.05])
+    plt.legend(loc='lower right')
+    plt.grid(axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(out / 'model_comparison.png', dpi=200, bbox_inches='tight')
+    plt.close()
+    
+def try_save_history(output_dir):
+    history_file = Path('metrics/dinov2_training_history.json')
+    if not history_file.exists():
+        print('\nWARNING: DINOv2 training history file not found.')
+        return
+        
+    with open(history_file, 'r') as f:
+        history = json.load(f)
+        
+    out = Path(output_dir)
+    epochs = range(1, len(history['train_accuracy']) + 1)
+    
+    plt.figure(figsize=(8, 6))
+    plt.plot(epochs, history['train_accuracy'], label='Train Accuracy')
+    plt.plot(epochs, history['val_accuracy'], label='Validation Accuracy')
+    plt.title('DINOv2 Training and Validation Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(out / 'dinov2_training_validation_accuracy.png')
+    plt.close()
+    
+    plt.figure(figsize=(8, 6))
+    plt.plot(epochs, history['train_loss'], label='Train Loss')
+    plt.plot(epochs, history['val_loss'], label='Validation Loss')
+    plt.title('DINOv2 Training and Validation Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(out / 'dinov2_training_validation_loss.png')
+    plt.close()
 
 
 # ============================================================
 # COMPLETE EVALUATION
 # ============================================================
 
-def evaluate_model(
-    model=None,
-    ground_truth_csv=None,
-    image_directory=None,
-    output_dir="metrics"
-):
-    """
-    Complete batched performance evaluation.
-
-    IMPORTANT:
-    - Does NOT retrain the model.
-    - Does NOT modify the model.
-    - Uses the complete 2,489-image validation set.
-    - Uses real model probability outputs.
-    """
-
-    if not ground_truth_csv:
-        raise ValueError(
-            "Ground truth CSV must be provided."
-        )
-
-    if not image_directory:
-        raise ValueError(
-            "Image directory must be provided."
-        )
-
-    output_dir = Path(
-        output_dir
-    )
-
-    output_dir.mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
-    # --------------------------------------------------------
-    # Load model
-    # --------------------------------------------------------
-
-    if model is None:
-
-        print()
-        print("Loading saved model...")
-
-        model = load_prediction_model()
-
-    print()
-    print("Model loaded successfully.")
-
-    print(
-        f"Input shape:  {model.input_shape}"
-    )
-
-    print(
-        f"Output shape: {model.output_shape}"
-    )
-
-    # --------------------------------------------------------
-    # Prepare exact validation dataset
-    # --------------------------------------------------------
-
-    train_df, val_df = prepare_validation_dataset(
-        ground_truth_csv,
-        image_directory
-    )
-
-    # --------------------------------------------------------
-    # Generate batched predictions
-    # --------------------------------------------------------
-
-    y_true, y_prob, y_pred = generate_predictions(
-        model,
-        val_df
-    )
-
-    # --------------------------------------------------------
-    # Calculate metrics
-    # --------------------------------------------------------
-
-    metrics = calculate_metrics(
-        y_true,
-        y_prob,
-        y_pred
-    )
-
-    # --------------------------------------------------------
-    # Save artifacts
-    # --------------------------------------------------------
-
-    save_classification_report(
-        metrics,
-        output_dir
-    )
-
-    save_confusion_matrix(
-        metrics,
-        output_dir
-    )
-
-    save_roc_curve(
-        metrics,
-        output_dir
-    )
-
-    save_metrics_json(
-        metrics,
-        output_dir
-    )
-
-    # --------------------------------------------------------
-    # Print results
-    # --------------------------------------------------------
-
-    print_final_results(
-        metrics
-    )
-
-    print()
-    print("=" * 70)
-    print("EVALUATION COMPLETE")
-    print("=" * 70)
-
-    print()
-    print(f"Output directory: {output_dir}")
-
-    print()
-    print("Generated files:")
-
-    print(
-        f"* {output_dir / 'metrics.json'}"
-    )
-
-    print(
-        f"* {output_dir / 'classification_report.csv'}"
-    )
-
-    print(
-        f"* {output_dir / 'confusion_matrix.png'}"
-    )
-
-    print(
-        f"* {output_dir / 'roc_auc_curve.png'}"
-    )
-
-    return metrics
-
-
-# ============================================================
-# COMMAND LINE EXECUTION
-# ============================================================
-
-if __name__ == "__main__":
-
+def evaluate_model(model=None, ground_truth_csv=None, image_directory=None, output_dir='metrics'):
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    _, val_df = prepare_validation_dataset(ground_truth_csv, image_directory)
+    
+    assert len(val_df) == 2489, f"CRITICAL ERROR: Expected exactly 2489 validation images, got {len(val_df)}! Halting evaluation."
+    
+    # 1. MobileNetV2
+    print(f"\nEvaluating MobileNetV2: {len(val_df)} validation images")
+    mb_model = model if model is not None else load_prediction_model()
+    mb_y_true, mb_y_prob, mb_y_pred = generate_mobilenet_predictions(mb_model, val_df)
+    mb_metrics = calculate_base_metrics(mb_y_true, mb_y_prob, mb_y_pred)
+    
+    # 2. DINOv2
+    print(f"\nEvaluating DINOv2: {len(val_df)} validation images")
+    dino_bb, dino_clf = load_dinov2_model()
+    dino_y_true, dino_y_prob, dino_y_pred = generate_dinov2_predictions(dino_bb, dino_clf, val_df)
+    dino_metrics = calculate_base_metrics(dino_y_true, dino_y_prob, dino_y_pred)
+    
+    # Validation Checks
+    if len(mb_y_true) != 2489 or len(mb_y_prob) != 2489 or len(dino_y_prob) != 2489:
+        raise ValueError("Validation length check failed!")
+    if mb_y_prob.shape != (2489, 3) or dino_y_prob.shape != (2489, 3):
+        raise ValueError("Probability shape check failed!")
+    if not np.array_equal(mb_y_true, dino_y_true):
+        raise ValueError("True labels mismatch between MobileNetV2 and DINOv2!")
+    if not np.allclose(np.sum(mb_y_prob, axis=1), 1.0, atol=1e-4):
+        raise ValueError("MobileNet probabilities do not sum to 1!")
+    if not np.allclose(np.sum(dino_y_prob, axis=1), 1.0, atol=1e-4):
+        raise ValueError("DINOv2 probabilities do not sum to 1!")
+    
+    # 3. Ensemble
+    print("\nCalculating ensemble metrics...")
+    ens_y_prob = 0.5 * mb_y_prob + 0.5 * dino_y_prob
+    ens_y_pred = np.argmax(ens_y_prob, axis=1).astype(np.int32)
+    ens_metrics = calculate_base_metrics(mb_y_true, ens_y_prob, ens_y_pred)
+    
+    # Save Artifacts
+    print("Generating evaluation graphs...")
+    save_artifacts(dino_metrics, 'dinov2', output_dir)
+    save_artifacts(ens_metrics, 'ensemble', output_dir)
+    save_model_comparison({'MobileNetV2': mb_metrics, 'DINOv2': dino_metrics, 'Ensemble': ens_metrics}, output_dir)
+    try_save_history(output_dir)
+    
+    final_json = {
+        'MobileNetV2': {
+            'accuracy': mb_metrics['accuracy'],
+            'macro_precision': mb_metrics['macro_precision'],
+            'macro_recall': mb_metrics['macro_recall'],
+            'macro_f1': mb_metrics['macro_f1'],
+            'macro_auc': mb_metrics['macro_auc'],
+            'weighted_auc': mb_metrics['weighted_auc'],
+            'per_class_auc': {
+                'BCC': mb_metrics['auc_bcc'],
+                'Melanoma': mb_metrics['auc_melanoma'],
+                'Nevus': mb_metrics['auc_nevus']
+            }
+        },
+        'DINOv2': {
+            'accuracy': dino_metrics['accuracy'],
+            'macro_precision': dino_metrics['macro_precision'],
+            'macro_recall': dino_metrics['macro_recall'],
+            'macro_f1': dino_metrics['macro_f1'],
+            'macro_auc': dino_metrics['macro_auc'],
+            'weighted_auc': dino_metrics['weighted_auc'],
+            'per_class_auc': {
+                'BCC': dino_metrics['auc_bcc'],
+                'Melanoma': dino_metrics['auc_melanoma'],
+                'Nevus': dino_metrics['auc_nevus']
+            }
+        },
+        'Ensemble': {
+            'mobilenet_weight': 0.5,
+            'dinov2_weight': 0.5,
+            'accuracy': ens_metrics['accuracy'],
+            'macro_precision': ens_metrics['macro_precision'],
+            'macro_recall': ens_metrics['macro_recall'],
+            'macro_f1': ens_metrics['macro_f1'],
+            'macro_auc': ens_metrics['macro_auc'],
+            'weighted_auc': ens_metrics['weighted_auc'],
+            'per_class_auc': {
+                'BCC': ens_metrics['auc_bcc'],
+                'Melanoma': ens_metrics['auc_melanoma'],
+                'Nevus': ens_metrics['auc_nevus']
+            }
+        }
+    }
+    with open(output_dir / 'final_metrics.json', 'w') as f:
+        json.dump(final_json, f, indent=4)
+        
+    print("\n======================================================================")
+    print("FINAL MODEL EVALUATION")
+    print("======================================================================")
+    print(f"\nMobileNetV2")
+    print(f"Accuracy: {mb_metrics['accuracy']:.4f}")
+    print(f"Macro Precision: {mb_metrics['macro_precision']:.4f}")
+    print(f"Macro Recall: {mb_metrics['macro_recall']:.4f}")
+    print(f"Macro F1: {mb_metrics['macro_f1']:.4f}")
+    print(f"Macro ROC-AUC: {mb_metrics['macro_auc']:.4f}")
+    
+    print(f"\nDINOv2")
+    print(f"Accuracy: {dino_metrics['accuracy']:.4f}")
+    print(f"Macro Precision: {dino_metrics['macro_precision']:.4f}")
+    print(f"Macro Recall: {dino_metrics['macro_recall']:.4f}")
+    print(f"Macro F1: {dino_metrics['macro_f1']:.4f}")
+    print(f"Macro ROC-AUC: {dino_metrics['macro_auc']:.4f}")
+    
+    print(f"\nEnsemble")
+    print(f"MobileNetV2 weight: 0.5")
+    print(f"DINOv2 weight: 0.5")
+    print(f"Accuracy: {ens_metrics['accuracy']:.4f}")
+    print(f"Macro Precision: {ens_metrics['macro_precision']:.4f}")
+    print(f"Macro Recall: {ens_metrics['macro_recall']:.4f}")
+    print(f"Macro F1: {ens_metrics['macro_f1']:.4f}")
+    print(f"Macro ROC-AUC: {ens_metrics['macro_auc']:.4f}")
+    
+    print("\nGenerated files in metrics/:")
+    for file in output_dir.iterdir():
+        if file.is_file():
+            print(f"- {file.name}")
+            
+if __name__ == '__main__':
     import argparse
-
-    parser = argparse.ArgumentParser(
-        description=(
-            "ISIC 2019 MobileNetV2 "
-            "Performance Evaluation"
-        )
-    )
-
-    parser.add_argument(
-        "--csv",
-        type=str,
-        required=True,
-        help="Path to ISIC 2019 ground truth CSV"
-    )
-
-    parser.add_argument(
-        "--img_dir",
-        type=str,
-        required=True,
-        help="Path to ISIC 2019 image directory"
-    )
-
-    parser.add_argument(
-        "--output_dir",
-        type=str,
-        default="metrics",
-        help="Directory for evaluation artifacts"
-    )
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--csv", type=str, required=True, help="Path to ground truth CSV")
+    parser.add_argument("--img_dir", type=str, required=True, help="Path to image directory")
+    parser.add_argument("--output_dir", type=str, default="metrics", help="Output metrics directory")
     args = parser.parse_args()
-
-    results = evaluate_model(
-        ground_truth_csv=args.csv,
-        image_directory=args.img_dir,
-        output_dir=args.output_dir
-    )
-
-    print()
-    print("Final Accuracy:")
-    print(
-        f"{results['accuracy'] * 100:.2f}%"
-    )
-
-    print()
-    print("Final Macro F1:")
-    print(
-        f"{results['macro_f1'] * 100:.2f}%"
-    )
-
-    print()
-    print("Final Macro AUC:")
-    print(
-        f"{results['macro_auc']:.4f}"
-    )
+    evaluate_model(model=None, ground_truth_csv=args.csv, image_directory=args.img_dir, output_dir=args.output_dir)

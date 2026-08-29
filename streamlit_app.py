@@ -1181,10 +1181,11 @@ Upload a clinical skin lesion image and receive an AI-assisted disease classific
         
         import json
         sidebar_metrics = None
-        if os.path.exists("metrics/metrics.json"):
+        if os.path.exists("metrics/final_metrics.json"):
             try:
-                with open("metrics/metrics.json", "r") as f:
-                    sidebar_metrics = json.load(f)
+                with open("metrics/final_metrics.json", "r") as f:
+                    _tmp = json.load(f)
+                    sidebar_metrics = _tmp.get("Ensemble", None)
                 
                 # Ensure all required keys exist to prevent KeyErrors
                 req_keys = ["accuracy", "macro_f1", "macro_auc"]
@@ -1694,12 +1695,12 @@ Please upload or drag and drop a clinical skin image file on the upload area abo
                 import json
                 verified_metrics = None
                 display_acc = "Requires Evaluation"
-                if os.path.exists("metrics/metrics.json"):
+                if os.path.exists("metrics/final_metrics.json"):
                     try:
-                        with open("metrics/metrics.json", "r") as f:
+                        with open("metrics/final_metrics.json", "r") as f:
                             verified_metrics = json.load(f)
-                        if "accuracy" in verified_metrics:
-                            display_acc = f"{verified_metrics['accuracy']*100:.2f}%"
+                        if "Ensemble" in verified_metrics and "accuracy" in verified_metrics["Ensemble"]:
+                            display_acc = f"{verified_metrics['Ensemble']['accuracy']*100:.2f}%"
                     except:
                         pass
                         
@@ -1833,43 +1834,134 @@ Please upload or drag and drop a clinical skin image file on the upload area abo
             st.error(f"Error processing image: {e}")
             uploaded_file = None
             
+    # ------------------------------------------------------------
+    # TRAINING PERFORMANCE SECTION
+    # ------------------------------------------------------------
+    st.markdown("<div class='eval-container'>", unsafe_allow_html=True)
+    st.markdown("<div class='eval-title' style='text-align:center; font-size: 28px; margin-bottom: 24px;'>TRAINING PERFORMANCE</div>", unsafe_allow_html=True)
+    
+    from pathlib import Path
+    base_dir = Path(__file__).resolve().parent
+    
+    # --- MobileNetV2 ---
+    st.markdown("<div class='eval-subtitle' style='color:#38BDF8;'>MobileNetV2 Training Performance</div>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>Final Validation Accuracy: <b>90.12%</b> | Training Epochs: <b>50</b></p>", unsafe_allow_html=True)
+    
+    c1, c2 = st.columns(2)
+    mb_acc_path = base_dir / "graphs" / "mobilenetv2_accuracy.png"
+    mb_loss_path = base_dir / "graphs" / "mobilenetv2_loss.png"
+    
+    with c1:
+        if mb_acc_path.exists():
+            st.image(str(mb_acc_path), use_container_width=True, caption="Training and Validation Accuracy")
+        else:
+            st.warning(f"Graph file not found: {mb_acc_path}")
+            
+    with c2:
+        if mb_loss_path.exists():
+            st.image(str(mb_loss_path), use_container_width=True, caption="Training and Validation Loss")
+        else:
+            st.warning(f"Graph file not found: {mb_loss_path}")
+            
+    st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
+    
+    # --- DINOv2 ---
+    st.markdown("<div class='eval-subtitle' style='color:#38BDF8;'>DINOv2 Training Performance</div>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>Best Validation Accuracy: <b>86.82%</b> | Best Epoch: <b>35</b> | Training Epochs: <b>50</b></p>", unsafe_allow_html=True)
+    
+    c3, c4 = st.columns(2)
+    dino_acc_path = base_dir / "graphs" / "dinov2_accuracy.png"
+    dino_loss_path = base_dir / "graphs" / "dinov2_loss.png"
+    
+    with c3:
+        if dino_acc_path.exists():
+            st.image(str(dino_acc_path), use_container_width=True, caption="Training and Validation Accuracy")
+        else:
+            st.warning(f"Graph file not found: {dino_acc_path}")
+            
+    with c4:
+        if dino_loss_path.exists():
+            st.image(str(dino_loss_path), use_container_width=True, caption="Training and Validation Loss")
+        else:
+            st.warning(f"Graph file not found: {dino_loss_path}")
+            
+    st.markdown("</div>", unsafe_allow_html=True)
+            
     # Global Model Performance Section
     st.markdown("<div class='eval-container'>", unsafe_allow_html=True)
-    st.markdown("<div class='eval-title'>MODEL PERFORMANCE</div>", unsafe_allow_html=True)
+    st.markdown("<div class='eval-title' style='text-align:center; font-size: 28px; margin-bottom: 24px;'>FINAL MODEL EVALUATION</div>", unsafe_allow_html=True)
     
     import json
-    verified_metrics = None
-    if os.path.exists("metrics/metrics.json"):
+    import pandas as pd
+    from PIL import Image
+    
+    final_metrics = None
+    if os.path.exists("metrics/final_metrics.json"):
         try:
-            with open("metrics/metrics.json", "r") as f:
-                verified_metrics = json.load(f)
-        except:
-            pass
+            with open("metrics/final_metrics.json", "r") as f:
+                final_metrics = json.load(f)
+        except Exception as e:
+            st.error(f"Error loading final_metrics.json: {e}")
             
-    if verified_metrics:
-        
-        metrics_html = f"""<div class="eval-metrics-grid">
-<div class="eval-metric-card"><div class="eval-metric-lbl">Accuracy</div><div class="eval-metric-val">{verified_metrics['accuracy']*100:.2f}%</div></div>
-<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Precision</div><div class="eval-metric-val">{verified_metrics['macro_precision']*100:.2f}%</div></div>
-<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Recall</div><div class="eval-metric-val">{verified_metrics['macro_recall']*100:.2f}%</div></div>
-<div class="eval-metric-card"><div class="eval-metric-lbl">Macro F1</div><div class="eval-metric-val">{verified_metrics['macro_f1']*100:.2f}%</div></div>
-<div class="eval-metric-card"><div class="eval-metric-lbl">Weighted F1</div><div class="eval-metric-val">{verified_metrics['weighted_f1']*100:.2f}%</div></div>
-<div class="eval-metric-card"><div class="eval-metric-lbl">Macro AUC</div><div class="eval-metric-val">{verified_metrics['macro_auc']:.4f}</div></div>
+    if final_metrics:
+        # ------------------------------------------------------------
+        # MobileNetV2
+        # ------------------------------------------------------------
+        st.markdown("<div class='eval-subtitle' style='color:#38BDF8;'>MobileNetV2</div>", unsafe_allow_html=True)
+        mb = final_metrics.get("MobileNetV2", {})
+        if mb:
+            metrics_html = f"""<div class="eval-metrics-grid" style="margin-bottom: 30px;">
+<div class="eval-metric-card"><div class="eval-metric-lbl">Accuracy</div><div class="eval-metric-val">{mb.get('accuracy', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Precision</div><div class="eval-metric-val">{mb.get('macro_precision', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Recall</div><div class="eval-metric-val">{mb.get('macro_recall', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro F1</div><div class="eval-metric-val">{mb.get('macro_f1', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro ROC-AUC</div><div class="eval-metric-val">{mb.get('macro_auc', 0):.4f}</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Weighted ROC-AUC</div><div class="eval-metric-val">{mb.get('weighted_auc', 0):.4f}</div></div>
 </div>"""
-        st.markdown(metrics_html, unsafe_allow_html=True)
-        
-        st.markdown("<div class='eval-subtitle'>PER-CLASS PERFORMANCE</div>", unsafe_allow_html=True)
-        import pandas as pd
-        if os.path.exists("metrics/classification_report.csv"):
-            class_report = pd.read_csv("metrics/classification_report.csv", index_col=0)
+            st.markdown(metrics_html, unsafe_allow_html=True)
+            
+        # MobileNetV2 compatibility paths for existing UI code (if needed)
+        c1, c2 = st.columns([1,1])
+        if os.path.exists("metrics/confusion_matrix.png"):
+            with c1:
+                st.markdown("<div class='eval-subtitle' style='text-align: center; font-size: 14px;'>MobileNetV2 Confusion Matrix</div>", unsafe_allow_html=True)
+                st.image(Image.open("metrics/confusion_matrix.png"), use_container_width=True)
+        if os.path.exists("metrics/roc_auc_curve.png"):
+            with c2:
+                st.markdown("<div class='eval-subtitle' style='text-align: center; font-size: 14px;'>MobileNetV2 ROC/AUC</div>", unsafe_allow_html=True)
+                st.image(Image.open("metrics/roc_auc_curve.png"), use_container_width=True)
+
+        st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
+
+        # ------------------------------------------------------------
+        # DINOV2 PERFORMANCE
+        # ------------------------------------------------------------
+        st.markdown("<div class='eval-title' style='color:#38BDF8;'>DINOV2 PERFORMANCE</div>", unsafe_allow_html=True)
+        dino = final_metrics.get("DINOv2", {})
+        if dino:
+            dino_html = f"""<div class="eval-metrics-grid" style="margin-bottom: 30px;">
+<div class="eval-metric-card"><div class="eval-metric-lbl">Accuracy</div><div class="eval-metric-val">{dino.get('accuracy', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Precision</div><div class="eval-metric-val">{dino.get('macro_precision', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Recall</div><div class="eval-metric-val">{dino.get('macro_recall', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro F1</div><div class="eval-metric-val">{dino.get('macro_f1', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro ROC-AUC</div><div class="eval-metric-val">{dino.get('macro_auc', 0):.4f}</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Weighted ROC-AUC</div><div class="eval-metric-val">{dino.get('weighted_auc', 0):.4f}</div></div>
+</div>"""
+            st.markdown(dino_html, unsafe_allow_html=True)
+            
+        st.markdown("<div class='eval-subtitle'>DINOv2 Per-Class Performance</div>", unsafe_allow_html=True)
+        if os.path.exists("metrics/dinov2_classification_report.csv"):
+            dino_report = pd.read_csv("metrics/dinov2_classification_report.csv", index_col=0)
             classes_list = ["BCC", "Melanoma", "Nevus"]
-            classes_html = '<div class="eval-classes-grid">'
+            classes_html = '<div class="eval-classes-grid" style="margin-bottom: 30px;">'
             for cls in classes_list:
-                if cls in class_report.index:
-                    prec = f"{class_report.loc[cls, 'precision']*100:.2f}%"
-                    rec = f"{class_report.loc[cls, 'recall']*100:.2f}%"
-                    f1 = f"{class_report.loc[cls, 'f1-score']*100:.2f}%"
-                    sup = int(class_report.loc[cls, 'support'])
+                if cls in dino_report.index:
+                    prec = f"{dino_report.loc[cls, 'precision']*100:.2f}%"
+                    rec = f"{dino_report.loc[cls, 'recall']*100:.2f}%"
+                    f1 = f"{dino_report.loc[cls, 'f1-score']*100:.2f}%"
+                    # AUC from JSON
+                    auc_val = dino.get('per_class_auc', {}).get(cls, 0.0)
+                    auc_str = f"{auc_val:.4f}"
                     
                     classes_html += f"""
 <div class="eval-class-row">
@@ -1878,29 +1970,137 @@ Please upload or drag and drop a clinical skin image file on the upload area abo
         <div class="eval-class-stat"><div class="eval-class-stat-lbl">Precision</div><div class="eval-class-stat-val">{prec}</div></div>
         <div class="eval-class-stat"><div class="eval-class-stat-lbl">Recall</div><div class="eval-class-stat-val">{rec}</div></div>
         <div class="eval-class-stat"><div class="eval-class-stat-lbl">F1 Score</div><div class="eval-class-stat-val">{f1}</div></div>
-        <div class="eval-class-stat"><div class="eval-class-stat-lbl">Support</div><div class="eval-class-stat-val">{sup}</div></div>
+        <div class="eval-class-stat"><div class="eval-class-stat-lbl">AUC</div><div class="eval-class-stat-val">{auc_str}</div></div>
     </div>
 </div>"""
             classes_html += "</div>"
             st.markdown(classes_html, unsafe_allow_html=True)
+        else:
+            st.info("DINOv2 classification report CSV not found.")
+
+        # DINOv2 Visualizations
+        if os.path.exists("metrics/dinov2_per_class_performance.png"):
+            st.image(Image.open("metrics/dinov2_per_class_performance.png"), use_container_width=True)
+        else:
+            st.info("DINOv2 per-class performance graph not found.")
             
-        st.markdown("<div class='eval-subtitle' style='text-align: center;'>CONFUSION MATRIX</div>", unsafe_allow_html=True)
-        if os.path.exists("metrics/confusion_matrix.png"):
-            c1, c2, c3 = st.columns([1, 3, 1])
-            with c2:
-                st.image("metrics/confusion_matrix.png", use_container_width=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            if os.path.exists("metrics/dinov2_confusion_matrix.png"):
+                st.image(Image.open("metrics/dinov2_confusion_matrix.png"), use_container_width=True)
+            else:
+                st.info("DINOv2 confusion matrix not found.")
+        with col2:
+            if os.path.exists("metrics/dinov2_roc_auc.png"):
+                st.image(Image.open("metrics/dinov2_roc_auc.png"), use_container_width=True)
+            else:
+                st.info("DINOv2 ROC AUC not found.")
+
+        st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
+
+        # ------------------------------------------------------------
+        # ENSEMBLE PERFORMANCE
+        # ------------------------------------------------------------
+        st.markdown("<div class='eval-title' style='color:#38BDF8;'>ENSEMBLE PERFORMANCE</div>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#94A3B8; text-align:center;'>MobileNetV2 Weight: <b>0.5</b> &nbsp;&nbsp;|&nbsp;&nbsp; DINOv2 Weight: <b>0.5</b></p>", unsafe_allow_html=True)
+        
+        ens = final_metrics.get("Ensemble", {})
+        if ens:
+            ens_html = f"""<div class="eval-metrics-grid" style="margin-bottom: 30px;">
+<div class="eval-metric-card"><div class="eval-metric-lbl">Accuracy</div><div class="eval-metric-val">{ens.get('accuracy', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Precision</div><div class="eval-metric-val">{ens.get('macro_precision', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro Recall</div><div class="eval-metric-val">{ens.get('macro_recall', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro F1</div><div class="eval-metric-val">{ens.get('macro_f1', 0)*100:.2f}%</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Macro ROC-AUC</div><div class="eval-metric-val">{ens.get('macro_auc', 0):.4f}</div></div>
+<div class="eval-metric-card"><div class="eval-metric-lbl">Weighted ROC-AUC</div><div class="eval-metric-val">{ens.get('weighted_auc', 0):.4f}</div></div>
+</div>"""
+            st.markdown(ens_html, unsafe_allow_html=True)
             
-        st.markdown("<div class='eval-subtitle' style='text-align: center;'>ROC / AUC CURVES</div>", unsafe_allow_html=True)
-        if os.path.exists("metrics/roc_auc_curve.png"):
-            c1, c2, c3 = st.columns([1, 4, 1])
-            with c2:
-                st.image("metrics/roc_auc_curve.png", use_container_width=True)
+        st.markdown("<div class='eval-subtitle'>Ensemble Per-Class Performance</div>", unsafe_allow_html=True)
+        if os.path.exists("metrics/ensemble_classification_report.csv"):
+            ens_report = pd.read_csv("metrics/ensemble_classification_report.csv", index_col=0)
+            classes_list = ["BCC", "Melanoma", "Nevus"]
+            classes_html = '<div class="eval-classes-grid" style="margin-bottom: 30px;">'
+            for cls in classes_list:
+                if cls in ens_report.index:
+                    prec = f"{ens_report.loc[cls, 'precision']*100:.2f}%"
+                    rec = f"{ens_report.loc[cls, 'recall']*100:.2f}%"
+                    f1 = f"{ens_report.loc[cls, 'f1-score']*100:.2f}%"
+                    # AUC from JSON
+                    auc_val = ens.get('per_class_auc', {}).get(cls, 0.0)
+                    auc_str = f"{auc_val:.4f}"
+                    
+                    classes_html += f"""
+<div class="eval-class-row">
+    <div class="eval-class-name">{cls}</div>
+    <div class="eval-class-stats">
+        <div class="eval-class-stat"><div class="eval-class-stat-lbl">Precision</div><div class="eval-class-stat-val">{prec}</div></div>
+        <div class="eval-class-stat"><div class="eval-class-stat-lbl">Recall</div><div class="eval-class-stat-val">{rec}</div></div>
+        <div class="eval-class-stat"><div class="eval-class-stat-lbl">F1 Score</div><div class="eval-class-stat-val">{f1}</div></div>
+        <div class="eval-class-stat"><div class="eval-class-stat-lbl">AUC</div><div class="eval-class-stat-val">{auc_str}</div></div>
+    </div>
+</div>"""
+            classes_html += "</div>"
+            st.markdown(classes_html, unsafe_allow_html=True)
+        else:
+            st.info("Ensemble classification report CSV not found.")
+
+        # Ensemble Visualizations
+        if os.path.exists("metrics/ensemble_per_class_performance.png"):
+            st.image(Image.open("metrics/ensemble_per_class_performance.png"), use_container_width=True)
+        else:
+            st.info("Ensemble per-class performance graph not found.")
+            
+        col1, col2 = st.columns(2)
+        with col1:
+            if os.path.exists("metrics/ensemble_confusion_matrix.png"):
+                st.image(Image.open("metrics/ensemble_confusion_matrix.png"), use_container_width=True)
+            else:
+                st.info("Ensemble confusion matrix not found.")
+        with col2:
+            if os.path.exists("metrics/ensemble_roc_auc.png"):
+                st.image(Image.open("metrics/ensemble_roc_auc.png"), use_container_width=True)
+            else:
+                st.info("Ensemble ROC AUC not found.")
+
+        st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
+
+        # ------------------------------------------------------------
+        # MODEL COMPARISON
+        # ------------------------------------------------------------
+        st.markdown("<div class='eval-title' style='color:#38BDF8;'>MODEL COMPARISON</div>", unsafe_allow_html=True)
+        if os.path.exists("metrics/model_comparison.png"):
+            st.image(Image.open("metrics/model_comparison.png"), use_container_width=True)
+        else:
+            st.info("Model comparison chart not found.")
+
+        st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
+
+        # ------------------------------------------------------------
+        # DINOV2 TRAINING HISTORY
+        # ------------------------------------------------------------
+        st.markdown("<div class='eval-title' style='color:#38BDF8;'>DINOV2 TRAINING HISTORY</div>", unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
+        
+        has_acc = os.path.exists("metrics/dinov2_training_validation_accuracy.png")
+        has_loss = os.path.exists("metrics/dinov2_training_validation_loss.png")
+        
+        if not has_acc and not has_loss:
+            st.info("DINOv2 training history graphs are not available.")
+        else:
+            with col1:
+                if has_acc:
+                    st.image(Image.open("metrics/dinov2_training_validation_accuracy.png"), caption="Training vs Validation Accuracy", use_container_width=True)
+            with col2:
+                if has_loss:
+                    st.image(Image.open("metrics/dinov2_training_validation_loss.png"), caption="Training vs Validation Loss", use_container_width=True)
+                    
     else:
-        st.info("Model performance evaluation has not been run yet.")
-        st.markdown("Configure the ISIC 2019 validation dataset and click **Evaluate Model** in the sidebar.")
+        st.info("Final model evaluation has not been generated yet.")
+        st.markdown("Run the evaluation script to generate `metrics/final_metrics.json`.")
         
     st.markdown("</div>", unsafe_allow_html=True)
-        
+    
     # Medical Disclaimer Card
     disclaimer_html = """<div class="warning-card">
 <div class="warning-icon">
