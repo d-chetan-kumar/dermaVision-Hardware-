@@ -9,11 +9,7 @@ It uses a 2-column layout matching the original structure, styled as a premium S
 import os
 import time
 import datetime
-import os
-import time
-import datetime
 import numpy as np
-import tensorflow as tf
 from PIL import Image, UnidentifiedImageError
 import streamlit as st
 from fpdf import FPDF
@@ -81,16 +77,17 @@ st.set_page_config(
 # 2. Load the trained model only once using @st.cache_resource
 def get_model_size_mb():
     """
-    Calculates the file size of the keras model on disk dynamically.
+    Calculates the file size of the TFLite model on disk dynamically.
     """
-    path = "models/best_mobilenetv2.keras"
-    if os.path.exists(path):
-        try:
-            size_bytes = os.path.getsize(path)
-            return f"{size_bytes / (1024 * 1024):.1f} MB"
-        except:
-            pass
-    return "9.7 MB"
+    # Prefer .tflite (deployed), fall back to .keras (development)
+    for path in ["models/best_mobilenetv2.tflite", "models/best_mobilenetv2.keras"]:
+        if os.path.exists(path):
+            try:
+                size_bytes = os.path.getsize(path)
+                return f"{size_bytes / (1024 * 1024):.1f} MB"
+            except:
+                pass
+    return "~8 MB"
 
 
 def generate_pdf_report(disease_name, confidence, metadata, quality, predictions, disease_info, temp_img_path):

@@ -3,9 +3,10 @@ ISIC_2019_Training_Input/
 dermavision-isic-2019/
 *.csv
 
-# Model Weights (Use GitHub Releases or LFS for these)
-# Uncomment these if weights exceed 100MB. Currently ~31MB, so safe to push.
-# models/*.keras
+# Model Weights
+# .tflite models are small (~8MB) — committed for direct Raspberry Pi deployment
+# .keras models are large (~30MB+) — excluded; regenerate via convert_to_tflite.py
+models/*.keras
 models/*.h5
 *.pb
 
