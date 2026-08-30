@@ -11,11 +11,11 @@ DermaVision is an intelligent skin image classification system. This repository 
 
 ---
 
-## 📖 Project Overview
+## Project Overview
 
 DermaVision aims to provide a fast, secure, and visually stunning screening tool for skin lesions. The model categorizes dermatoscopic images into one of three critical classes, leveraging a modular and strictly decoupled Python pipeline for preprocessing, validation, prediction, and evaluation.
 
-## 📊 Dataset & Classes
+## Dataset & Classes
 
 The model is trained on a curated subset of the **ISIC 2019 dataset**.
 
@@ -31,7 +31,7 @@ The model is trained on a curated subset of the **ISIC 2019 dataset**.
 
 > **Note on Large Files**: The ISIC datasets (`*.csv`, image folders) and model weights (`*.keras`) are excluded from this repository via `.gitignore` to keep the repo lightweight.
 
-## 🧠 Model Architecture & Results
+## Model Architecture & Results
 
 - **Architecture**: MobileNetV2 (pretrained on ImageNet) with custom top classification layers.
 - **Official Validation Accuracy**: `90.96%`
@@ -39,7 +39,7 @@ The model is trained on a curated subset of the **ISIC 2019 dataset**.
 
 *(Evaluated on the official Kaggle validation split of 2,489 images).*
 
-## ⚙️ ML Pipeline Architecture
+## ML Pipeline Architecture
 
 The system is highly modularized for robust production deployment:
 
@@ -49,7 +49,7 @@ The system is highly modularized for robust production deployment:
 - `evaluation.py`: Independent script to calculate batched metrics on labeled datasets (Precision, Recall, F1, AUC, Confusion Matrix).
 - `utils.py`: Shared utilities for mapping JSON classes and handling dynamic UI rendering.
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 DermaVision/
@@ -67,7 +67,7 @@ DermaVision/
 └── README.md
 ```
 
-## 🚀 Installation & Usage
+## Installation & Usage
 
 1. **Clone the repository**
    ```bash
@@ -94,6 +94,6 @@ DermaVision/
    streamlit run streamlit_app.py
    ```
 
-## ⚕️ Medical Disclaimer
+## Medical Disclaimer
 
 > **DISCLAIMER**: This diagnostic screening report is compiled by an artificial intelligence model for research and educational purposes only. DermaVision is **NOT** clinically validated for medical use and does not replace a clinical examination or biopsy by a certified dermatologist. Any suspected lesion must be evaluated by a healthcare professional immediately.
