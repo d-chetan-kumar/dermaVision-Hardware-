@@ -1,0 +1,14 @@
+{
+  "model": "fp32",
+  "seconds": 300,
+  "threads": 4,
+  "inferences": 494,
+  "start_temp_c": 53.5,
+  "max_temp_c": 55.0,
+  "end_temp_c": 52.5,
+  "min_arm_mhz": 1100.249984,
+  "any_throttle_flag": false,
+  "first10pct_mean_ms": 605.5811949795869,
+  "last10pct_mean_ms": 605.1698977346637,
+  "overall_mean_ms": 606.3942727591046
+}
