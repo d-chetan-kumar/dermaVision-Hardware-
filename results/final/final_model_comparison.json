@@ -1,0 +1,1069 @@
+{
+  "metadata": {
+    "generated_at": "2026-11-10T12:29:55",
+    "title": "DermaVision \u2014 Final Consolidated Model Comparison",
+    "workspace": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)",
+    "mode": "Evidence-Only Consolidation (Zero Retraining, Zero Checkpoint Modification, Zero Additional Experiments)",
+    "evaluation_partition": {
+      "dataset": "ISIC 2019 Curated 3-Class Subset (12,445 images: 9,956 train / 2,489 val)",
+      "class_mapping": {
+        "0": "BCC",
+        "1": "Melanoma",
+        "2": "Nevus"
+      },
+      "validation_class_counts": {
+        "BCC": 665,
+        "Melanoma": 904,
+        "Nevus": 920,
+        "Total": 2489
+      },
+      "is_independent_test_set": false,
+      "lesion_id_leakage_warning": {
+        "overlapping_unique_lesions": 964,
+        "overlapping_val_lesions_pct": 57.28,
+        "contaminated_val_images": 1345,
+        "contaminated_val_images_pct": 54.04,
+        "class_contamination_pct": {
+          "BCC": 85.11,
+          "Melanoma": 79.31,
+          "Nevus": 6.74
+        },
+        "missing_lesion_id_total": 1886,
+        "mobilenetv2_overlap_vs_clean_acc": {
+          "full_2489": 90.96,
+          "overlap_1345": 94.5,
+          "clean_1144": 86.8,
+          "inflation_pp": 7.7
+        },
+        "dinov2_overlap_vs_clean_acc": {
+          "full_2489": 86.66,
+          "overlap_1345": 88.92,
+          "clean_1144": 84.0,
+          "inflation_pp": 4.92
+        }
+      }
+    },
+    "hardware_host": {
+      "os": "Windows 11 (10.0.26300-SP0, AMD64)",
+      "cpu": "12th Gen Intel(R) Core(TM) i5-1235U (10 physical / 12 logical cores)",
+      "ram_total_gb": 15.65,
+      "accelerators": "CPU-only (no GPU)",
+      "frameworks": {
+        "tensorflow": "2.21.0",
+        "keras": "3.15.0 (runtime)",
+        "tfmot": "0.8.1",
+        "pytorch": "2.10.0+cpu",
+        "python": "3.13.5"
+      }
+    }
+  },
+  "benchmark_regimes": {
+    "mobilenetv2_int8_report_0818": {
+      "timestamp": "2026-11-10T08:18:17",
+      "env": {
+        "TF_ENABLE_ONEDNN_OPTS": "0",
+        "cpu_load": "unlogged"
+      },
+      "protocol": "batch=1, 50 warmup + 200 timed on preloaded FP32 tensors; load & decode/resize/div255 excluded; Full INT8 loop includes numpy int8 input quant & output dequant",
+      "covers": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite"
+      ]
+    },
+    "mobilenetv2_pruning_report_0929": {
+      "timestamp": "2026-11-10T09:29:42",
+      "env": {
+        "TF_ENABLE_ONEDNN_OPTS": "1",
+        "cpu_load": "unlogged (transient spike during pruned loop)"
+      },
+      "protocol": "Same as 08:18; added Pruned Keras and gzip-9 file compression",
+      "covers": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned"
+      ]
+    },
+    "mobilenetv2_audit_run_a_0955": {
+      "timestamp": "2026-11-10T09:55:31",
+      "env": {
+        "TF_ENABLE_ONEDNN_OPTS": "0",
+        "cpu_load_pct": 37.8,
+        "cpu_freq_mhz": 1300.0
+      },
+      "protocol": "Controlled back-to-back audit across all 4 MobileNetV2 variants",
+      "covers": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned"
+      ]
+    },
+    "mobilenetv2_audit_run_b_0957": {
+      "timestamp": "2026-11-10T09:57:05",
+      "env": {
+        "TF_ENABLE_ONEDNN_OPTS": "1",
+        "cpu_load_pct": 11.6,
+        "cpu_freq_mhz": 1300.0
+      },
+      "protocol": "Controlled low-load back-to-back audit across all 4 MobileNetV2 variants (paired canonical MobileNetV2 CPU comparison)",
+      "covers": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned"
+      ]
+    },
+    "dinov2_phase1_baseline_1051": {
+      "timestamp": "2026-11-10T10:51:02",
+      "env": {
+        "torch": "2.10.0+cpu",
+        "engine": "MKL/MKL-DNN/onednn",
+        "threads": 10,
+        "host_state": "uncontended higher boost"
+      },
+      "protocol": "batch=1, 50 warmup + 200 timed pure (preloaded) + 200 timed E2E from JPEG + loading + RSS memory",
+      "covers": [
+        "dinov2_fp32_original"
+      ]
+    },
+    "dinov2_phase2_subprocess_1212": {
+      "timestamp": "2026-11-10T12:12:43",
+      "env": {
+        "torch": "2.10.0+cpu",
+        "engine": "onednn",
+        "threads": 10,
+        "cpu_freq_mhz": 1300.0,
+        "isolated_subprocesses": true
+      },
+      "protocol": "Isolated subprocess per variant, batch=1, 50 warmup + 200 timed pure (+ E2E for FP32 original & Dynamic INT8; E2E N/A for Folded-224) + loading + RSS",
+      "covers": [
+        "dinov2_fp32_original",
+        "dinov2_native_dynamic_int8",
+        "dinov2_fixed224_folded_int8"
+      ]
+    }
+  },
+  "models": [
+    {
+      "model_id": "mobilenetv2_fp32_original",
+      "model_name": "MobileNetV2 FP32 Original",
+      "architecture_family": "MobileNetV2 (alpha=1.00, 224x224, GAP->Dense(256)->Drop(0.2)->Dense(64)->Drop(0.1)->Dense(3))",
+      "precision_and_optimization": "FP32 (Unmodified Original Baseline)",
+      "checkpoint_or_artifact_path": "models/best_mobilenetv2.keras",
+      "artifact_retention_status": "Retained Original Checkpoint",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 64,
+      "correct_predictions": 2264,
+      "classification": {
+        "accuracy": 0.9096022498995581,
+        "macro_precision": 0.9110915272774314,
+        "macro_recall": 0.9145324835752328,
+        "macro_f1": 0.9126654729963718,
+        "weighted_f1": 0.9092942217358537,
+        "macro_auc": 0.9794132589867597,
+        "per_class": {
+          "BCC": {
+            "precision": 0.9304347826086956,
+            "recall": 0.9654135338345865,
+            "f1": 0.9476014760147602,
+            "support": 665,
+            "auc": 0.992793661786044
+          },
+          "Melanoma": {
+            "precision": 0.8902714932126696,
+            "recall": 0.870575221238938,
+            "f1": 0.8803131991051454,
+            "support": 904,
+            "auc": 0.9641502191451942
+          },
+          "Nevus": {
+            "precision": 0.912568306010929,
+            "recall": 0.907608695652174,
+            "f1": 0.9100817438692098,
+            "support": 920,
+            "auc": 0.9812958960290409
+          }
+        },
+        "confusion_matrix": [
+          [
+            642,
+            21,
+            2
+          ],
+          [
+            39,
+            787,
+            78
+          ],
+          [
+            9,
+            76,
+            835
+          ]
+        ]
+      },
+      "architecture_stats": {
+        "total_params": 2602563,
+        "trainable_params": 2568451,
+        "non_trainable_params": 34112,
+        "prunable_sparsity_pct": 0.0,
+        "overall_sparsity_pct": 0.0
+      },
+      "footprint": {
+        "size_bytes": 31673490,
+        "size_mib": 30.206193923950195,
+        "size_mb_decimal": 31.67349,
+        "gzip9_bytes": 28229451,
+        "gzip9_mib": 26.92170238494873
+      },
+      "benchmarks": {
+        "loading_cold_ms": null,
+        "loading_warm_mean_ms": null,
+        "paired_run": {
+          "run_id": "Audit Run B (ONEDNN=1, 11.6% CPU load)",
+          "runtime": "TensorFlow 2.21.0 Keras (CPU, oneDNN enabled)",
+          "mean_ms": 104.89490600015415,
+          "std_ms": 9.946665500082823,
+          "fps": 9.53335140982471
+        },
+        "other_recorded_runs": {
+          "int8_report_0818_onednn0": {
+            "runtime": "TF 2.21.0 Keras CPU (ONEDNN=0, unlogged host contention)",
+            "mean_ms": 269.5647679996182,
+            "std_ms": 83.04261367652319,
+            "fps": 3.709683603761662
+          },
+          "pruning_report_0929_onednn1": {
+            "runtime": "TF 2.21.0 Keras CPU (ONEDNN=1, unlogged host load)",
+            "mean_ms": 131.7700224996588,
+            "std_ms": 17.15724779534884,
+            "fps": 7.588979504064282
+          },
+          "audit_run_a_0955_onednn0": {
+            "runtime": "TF 2.21.0 Keras CPU (ONEDNN=0, 37.8% CPU load)",
+            "mean_ms": 160.067550499989,
+            "std_ms": 25.102927004953944,
+            "fps": 6.247362422154818
+          }
+        },
+        "e2e_from_disk": null,
+        "memory_rss_mib": null
+      },
+      "deployment_recommendation_status": "Best Overall Classifier Baseline (Keep as Reference; Convert to Full INT8 TFLite for Edge)",
+      "sources": [
+        "results/int8/mobilenetv2_int8_metrics.json",
+        "results/pruning/mobilenetv2_pruning_metrics.json",
+        "results/pruning/mobilenetv2_pruning_independent_audit.md",
+        "metrics/final_metrics.json",
+        "metrics/classification_report.csv"
+      ]
+    },
+    {
+      "model_id": "mobilenetv2_dynamic_tflite",
+      "model_name": "MobileNetV2 Dynamic TFLite",
+      "architecture_family": "MobileNetV2 (TFLite Dynamic-Range Quantization, FP32 I/O & Activations)",
+      "precision_and_optimization": "Dynamic-Range INT8 Weights / FP32 Activations (tf.lite.Optimize.DEFAULT)",
+      "checkpoint_or_artifact_path": "models/best_mobilenetv2.tflite",
+      "artifact_retention_status": "Retained Original TFLite Checkpoint (Used by streamlit_app.py)",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 1,
+      "correct_predictions": 2262,
+      "classification": {
+        "accuracy": 0.9087987143431097,
+        "macro_precision": 0.9109429998013625,
+        "macro_recall": 0.9135855462048735,
+        "macro_f1": 0.9119870857042779,
+        "weighted_f1": null,
+        "macro_auc": null,
+        "per_class": {
+          "BCC": {
+            "precision": 0.9357664233576642,
+            "recall": 0.9639097744360903,
+            "f1": 0.9496296296296296,
+            "support": 665
+          },
+          "Melanoma": {
+            "precision": 0.8979118329466357,
+            "recall": 0.8561946902654868,
+            "f1": 0.8765571913929785,
+            "support": 904
+          },
+          "Nevus": {
+            "precision": 0.8991507430997877,
+            "recall": 0.9206521739130434,
+            "f1": 0.9097744360902256,
+            "support": 920
+          }
+        },
+        "confusion_matrix": [
+          [
+            641,
+            22,
+            2
+          ],
+          [
+            37,
+            774,
+            93
+          ],
+          [
+            7,
+            66,
+            847
+          ]
+        ]
+      },
+      "architecture_stats": {
+        "total_params": null,
+        "trainable_params": null,
+        "non_trainable_params": null,
+        "prunable_sparsity_pct": null,
+        "overall_sparsity_pct": null
+      },
+      "footprint": {
+        "size_bytes": 2877224,
+        "size_mib": 2.7439346313476562,
+        "size_mb_decimal": 2.877224,
+        "gzip9_bytes": 2501547,
+        "gzip9_mib": 2.3856611251831055
+      },
+      "benchmarks": {
+        "loading_cold_ms": null,
+        "loading_warm_mean_ms": null,
+        "paired_run": {
+          "run_id": "Audit Run B (ONEDNN=1 env, 11.6% CPU load)",
+          "runtime": "TFLite Interpreter + XNNPACK Delegate (CPU)",
+          "mean_ms": 27.76381749972643,
+          "std_ms": 1.7675601963236198,
+          "fps": 36.01810161768473
+        },
+        "other_recorded_runs": {
+          "int8_report_0818_onednn0": {
+            "runtime": "TFLite Interpreter (08:18, unlogged host contention)",
+            "mean_ms": 73.74339200021495,
+            "std_ms": 9.224411863899803,
+            "fps": 13.560537057979175
+          },
+          "pruning_report_0929_onednn1": {
+            "runtime": "TFLite Interpreter (09:29, unlogged host load)",
+            "mean_ms": 38.16828799968789,
+            "std_ms": 10.90641687542645,
+            "fps": 26.19976038768564
+          },
+          "audit_run_a_0955_onednn0": {
+            "runtime": "TFLite Interpreter (09:55, 37.8% CPU load)",
+            "mean_ms": 33.490649499872234,
+            "std_ms": 4.891846335122094,
+            "fps": 29.859080517498324
+          }
+        },
+        "e2e_from_disk": null,
+        "memory_rss_mib": null
+      },
+      "deployment_recommendation_status": "Good Fallback (Smallest 2.74 MiB file, 90.88% acc), but 6.2x Slower & Lower Mel Recall than Full INT8",
+      "sources": [
+        "results/int8/mobilenetv2_int8_metrics.json",
+        "results/int8/mobilenetv2_int8_verification_report.md",
+        "results/pruning/mobilenetv2_pruning_metrics.json",
+        "results/pruning/mobilenetv2_pruning_independent_audit.md"
+      ]
+    },
+    {
+      "model_id": "mobilenetv2_full_int8_tflite",
+      "model_name": "MobileNetV2 Full INT8 TFLite",
+      "architecture_family": "MobileNetV2 (TFLite Full Integer INT8 PTQ, 250 Train Calibration Imgs, int8 I/O)",
+      "precision_and_optimization": "Full Integer INT8 (Weights + Activations + I/O; TFLITE_BUILTINS_INT8)",
+      "checkpoint_or_artifact_path": "models/best_mobilenetv2_full_int8.tflite",
+      "artifact_retention_status": "Retained Quantized Deployment Checkpoint",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 1,
+      "correct_predictions": 2258,
+      "classification": {
+        "accuracy": 0.907191643230213,
+        "macro_precision": 0.9099277142723258,
+        "macro_recall": 0.9106721208561996,
+        "macro_f1": 0.9102510287071893,
+        "weighted_f1": null,
+        "macro_auc": null,
+        "per_class": {
+          "BCC": {
+            "precision": 0.9402985074626866,
+            "recall": 0.9473684210526315,
+            "f1": 0.9438202247191011,
+            "support": 665
+          },
+          "Melanoma": {
+            "precision": 0.8848758465011287,
+            "recall": 0.8672566371681416,
+            "f1": 0.8759776536312849,
+            "support": 904
+          },
+          "Nevus": {
+            "precision": 0.9046087888531619,
+            "recall": 0.9173913043478261,
+            "f1": 0.9109552077711819,
+            "support": 920
+          }
+        },
+        "confusion_matrix": [
+          [
+            630,
+            32,
+            3
+          ],
+          [
+            34,
+            784,
+            86
+          ],
+          [
+            6,
+            70,
+            844
+          ]
+        ]
+      },
+      "architecture_stats": {
+        "total_params": null,
+        "trainable_params": null,
+        "non_trainable_params": null,
+        "prunable_sparsity_pct": null,
+        "overall_sparsity_pct": null
+      },
+      "footprint": {
+        "size_bytes": 3083384,
+        "size_mib": 2.9405441284179688,
+        "size_mb_decimal": 3.083384,
+        "gzip9_bytes": 2553496,
+        "gzip9_mib": 2.4352035522460938
+      },
+      "benchmarks": {
+        "loading_cold_ms": null,
+        "loading_warm_mean_ms": null,
+        "paired_run": {
+          "run_id": "Audit Run B (ONEDNN=1 env, 11.6% CPU load; includes numpy int8 quant/dequant)",
+          "runtime": "TFLite Interpreter + XNNPACK INT8 Kernels (CPU; loop incl. numpy quant/dequant)",
+          "mean_ms": 4.511467499869468,
+          "std_ms": 0.20265221109282625,
+          "fps": 221.65736537588563
+        },
+        "other_recorded_runs": {
+          "int8_report_0818_onednn0": {
+            "runtime": "TFLite Full INT8 + numpy quant/dequant (08:18, unlogged contention)",
+            "mean_ms": 16.34779050003999,
+            "std_ms": 2.4290662571528188,
+            "fps": 61.17034592519116
+          },
+          "pruning_report_0929_onednn1": {
+            "runtime": "TFLite Full INT8 + numpy quant/dequant (09:29, unlogged host load)",
+            "mean_ms": 6.630459999796585,
+            "std_ms": 2.2941074472006333,
+            "fps": 150.81909852871127
+          },
+          "audit_run_a_0955_onednn0": {
+            "runtime": "TFLite Full INT8 + numpy quant/dequant (09:55, 37.8% CPU load)",
+            "mean_ms": 6.8457380000836565,
+            "std_ms": 1.5589066607708781,
+            "fps": 146.07628863210655
+          }
+        },
+        "e2e_from_disk": null,
+        "memory_rss_mib": null
+      },
+      "deployment_recommendation_status": "RECOMMENDED Practical Edge Winner (2.94 MiB, 4.51-16.35 ms, 90.72% acc, 86.73% Mel recall)",
+      "sources": [
+        "results/int8/mobilenetv2_int8_metrics.json",
+        "results/int8/mobilenetv2_int8_verification_report.md",
+        "results/pruning/mobilenetv2_pruning_metrics.json",
+        "results/pruning/mobilenetv2_pruning_independent_audit.md"
+      ]
+    },
+    {
+      "model_id": "mobilenetv2_50pct_pruned",
+      "model_name": "MobileNetV2 50% Pruned (Epoch 5)",
+      "architecture_family": "MobileNetV2 (Unstructured Magnitude Pruning, 50% Conv2D+Dense Sparsity, Stripped Keras)",
+      "precision_and_optimization": "FP32 Dense Container w/ 49.9971% Prunable Zero Weights (47.45% overall)",
+      "checkpoint_or_artifact_path": "models/best_mobilenetv2_pruned.keras",
+      "artifact_retention_status": "Retained Experimental Pruning Checkpoint (Do Not Deploy)",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 64,
+      "correct_predictions": 2078,
+      "classification": {
+        "accuracy": 0.8348734431498593,
+        "macro_precision": 0.8483975425707526,
+        "macro_recall": 0.8332925908461034,
+        "macro_f1": 0.835473764793837,
+        "weighted_f1": null,
+        "macro_auc": null,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8925081433224755,
+            "recall": 0.8240601503759398,
+            "f1": 0.8569194683346364,
+            "support": 665
+          },
+          "Melanoma": {
+            "precision": 0.8794701986754967,
+            "recall": 0.7345132743362832,
+            "f1": 0.8004822182037372,
+            "support": 904
+          },
+          "Nevus": {
+            "precision": 0.7732142857142857,
+            "recall": 0.941304347826087,
+            "f1": 0.8490196078431372,
+            "support": 920
+          }
+        },
+        "confusion_matrix": [
+          [
+            548,
+            39,
+            78
+          ],
+          [
+            64,
+            664,
+            176
+          ],
+          [
+            2,
+            52,
+            866
+          ]
+        ]
+      },
+      "architecture_stats": {
+        "total_params": 2602563,
+        "trainable_params": 2568451,
+        "non_trainable_params": 34112,
+        "prunable_sparsity_pct": 49.997125263989844,
+        "overall_sparsity_pct": 47.44649793299913
+      },
+      "footprint": {
+        "size_bytes": 31673383,
+        "size_mib": 30.20609188079834,
+        "size_mb_decimal": 31.673383,
+        "gzip9_bytes": 6009286,
+        "gzip9_mib": 5.730901718139648
+      },
+      "benchmarks": {
+        "loading_cold_ms": null,
+        "loading_warm_mean_ms": null,
+        "paired_run": {
+          "run_id": "Audit Run B (ONEDNN=1, 11.6% CPU load)",
+          "runtime": "TensorFlow 2.21.0 Keras Dense CPU (oneDNN enabled)",
+          "mean_ms": 101.53577900000528,
+          "std_ms": 3.4365813311749815,
+          "fps": 9.848745041882704
+        },
+        "other_recorded_runs": {
+          "pruning_report_0929_onednn1": {
+            "runtime": "TF 2.21.0 Keras CPU (ONEDNN=1, host contention spike)",
+            "mean_ms": 180.40188700004364,
+            "std_ms": 34.64453159055224,
+            "fps": 5.543179268406201
+          },
+          "audit_run_a_0955_onednn0": {
+            "runtime": "TF 2.21.0 Keras CPU (ONEDNN=0, 37.8% CPU load)",
+            "mean_ms": 154.45965849983622,
+            "std_ms": 22.602677136550337,
+            "fps": 6.474182383363616
+          }
+        },
+        "e2e_from_disk": null,
+        "memory_rss_mib": null
+      },
+      "deployment_recommendation_status": "NOT RECOMMENDED (Severe -13.61 pp Melanoma Recall Loss, 0x Dense CPU Speedup, 30.21 MiB Uncompressed)",
+      "sources": [
+        "results/pruning/mobilenetv2_pruning_metrics.json",
+        "results/pruning/mobilenetv2_pruning_report.md",
+        "results/pruning/mobilenetv2_pruning_independent_audit.md",
+        "results/pruning/mobilenetv2_pruning_history.csv"
+      ]
+    },
+    {
+      "model_id": "dinov2_fp32_original",
+      "model_name": "DINOv2 FP32 Original",
+      "architecture_family": "DINOv2 ViT-B/14 (12 blocks, 12 heads, dim=768, frozen backbone + Linear(768, 3))",
+      "precision_and_optimization": "FP32 (Cached Hub Backbone + 100-Epoch Linear Head Ep50)",
+      "checkpoint_or_artifact_path": "dinov2_vitb14_pretrain.pth + models/dinov2_100_epoch_best.pth",
+      "artifact_retention_status": "Retained Original Backbone Cache + Classifier Head",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 64,
+      "correct_predictions": 2157,
+      "classification": {
+        "accuracy": 0.8666130976295701,
+        "macro_precision": 0.8659724307416986,
+        "macro_recall": 0.8722460971590191,
+        "macro_f1": 0.8682313468255884,
+        "weighted_f1": 0.8656230157940354,
+        "macro_auc": 0.9679502887898647,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8635097493036211,
+            "recall": 0.9323308270676691,
+            "f1": 0.8966015907447578,
+            "support": 665,
+            "auc": 0.986300455085081
+          },
+          "Melanoma": {
+            "precision": 0.8552631578947368,
+            "recall": 0.790929203539823,
+            "f1": 0.8218390804597702,
+            "support": 904,
+            "auc": 0.9435777895647803
+          },
+          "Nevus": {
+            "precision": 0.879144385026738,
+            "recall": 0.8934782608695652,
+            "f1": 0.8862533692722372,
+            "support": 920,
+            "auc": 0.973972621719733
+          }
+        },
+        "confusion_matrix": [
+          [
+            620,
+            38,
+            7
+          ],
+          [
+            83,
+            715,
+            106
+          ],
+          [
+            15,
+            83,
+            822
+          ]
+        ]
+      },
+      "architecture_stats": {
+        "total_params": 86582787,
+        "trainable_params": 2307,
+        "non_trainable_params": 86580480,
+        "prunable_sparsity_pct": 0.0,
+        "overall_sparsity_pct": 0.0
+      },
+      "footprint": {
+        "size_bytes": 346390400,
+        "size_mib": 330.3436279296875,
+        "size_mb_decimal": 346.3904,
+        "gzip9_bytes": null,
+        "gzip9_mib": null
+      },
+      "benchmarks": {
+        "loading_cold_ms": 1581.1303000009502,
+        "loading_warm_mean_ms": 1354.3785999985023,
+        "loading_phase1_cold_ms": 1113.82,
+        "loading_phase1_warm_mean_ms": 1038.3500000000001,
+        "paired_run": {
+          "run_id": "Phase 2 Subprocess (12:12, 1300 MHz CPU clock reading)",
+          "runtime": "PyTorch 2.10.0+cpu (MKL/MKL-DNN, onednn engine, threads=10)",
+          "mean_ms": 373.350535000136,
+          "std_ms": 17.614764885437502,
+          "p50_ms": 371.41479999991134,
+          "fps": 2.6784480166866125
+        },
+        "other_recorded_runs": {
+          "phase1_baseline_1051_boost": {
+            "runtime": "PyTorch 2.10.0+cpu (10:51, sustained boost uncontended host)",
+            "mean_ms": 235.09466600015003,
+            "std_ms": 5.9412410426579525,
+            "p50_ms": 234.54300000230432,
+            "fps": 4.253605651773324
+          }
+        },
+        "e2e_from_disk": {
+          "phase2_mean_ms": 422.7813330002027,
+          "phase2_std_ms": 28.86467407441088,
+          "phase2_fps": 2.3652889140200535,
+          "phase2_preproc_ms": 19.939495000253373,
+          "phase1_mean_ms": 254.78271150033834,
+          "phase1_std_ms": 7.139223138650008,
+          "phase1_fps": 3.924913092066971,
+          "phase1_preproc_ms": 12.249060000249301
+        },
+        "memory_rss_mib": {
+          "phase2_load_delta_mib": 662.32,
+          "phase2_total_inference_delta_mib": 994.13,
+          "phase2_post_inference_peak_rss_mib": 1493.33,
+          "phase2_post_warmup_rss_mib": 1494.08,
+          "phase1_load_delta_mib": 666.92,
+          "phase1_peak_rss_mib": 1113.16
+        }
+      },
+      "deployment_recommendation_status": "Research / Ensemble Backbone Only (Too Slow/Large for Edge at 330.34 MiB & 235-373 ms; Behind MobileNetV2 FP32 Standalone)",
+      "sources": [
+        "results/dinov2/dinov2_baseline_metrics.json",
+        "results/dinov2/dinov2_deployment_baseline_audit.md",
+        "results/dinov2/dinov2_dynamic_int8_metrics.json",
+        "results/dinov2/dinov2_dynamic_int8_report.md",
+        "metrics/final_metrics.json"
+      ]
+    },
+    {
+      "model_id": "dinov2_native_dynamic_int8",
+      "model_name": "DINOv2 Native Dynamic INT8",
+      "architecture_family": "DINOv2 ViT-B/14 (49/49 Linear layers -> DynamicQuantizedLinear via onednn)",
+      "precision_and_optimization": "PyTorch Dynamic INT8 Linear Weights (qint8) / Per-Tensor Dynamic quint8 Activations",
+      "checkpoint_or_artifact_path": "models/dinov2/dinov2_vitb14_dynamic_int8.pth",
+      "artifact_retention_status": "Retained Phase 2 Dynamic INT8 Checkpoint (Do Not Deploy)",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 1,
+      "correct_predictions": 1533,
+      "classification": {
+        "accuracy": 0.6159100040176778,
+        "macro_precision": 0.6816686690418399,
+        "macro_recall": 0.5870734936610477,
+        "macro_f1": 0.5753723049637318,
+        "weighted_f1": 0.5880026771451115,
+        "macro_auc": 0.8336955291310972,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8313253012048193,
+            "recall": 0.3112781954887218,
+            "f1": 0.45295404814004375,
+            "support": 665,
+            "auc": 0.8236190805962275
+          },
+          "Melanoma": {
+            "precision": 0.6460431654676259,
+            "recall": 0.49668141592920356,
+            "f1": 0.5616010006253909,
+            "support": 904,
+            "auc": 0.7717854052092348
+          },
+          "Nevus": {
+            "precision": 0.5676375404530745,
+            "recall": 0.9532608695652174,
+            "f1": 0.7115618661257607,
+            "support": 920,
+            "auc": 0.9056821015878295
+          }
+        },
+        "confusion_matrix": [
+          [
+            207,
+            204,
+            254
+          ],
+          [
+            41,
+            449,
+            414
+          ],
+          [
+            1,
+            42,
+            877
+          ]
+        ],
+        "diagnostic_batch64_accuracy": 0.6054640417838489,
+        "diagnostic_batch64_macro_f1": 0.5620362792804436,
+        "diagnostic_batch64_mel_recall": 0.4811946902654867
+      },
+      "architecture_stats": {
+        "total_params": 86582787,
+        "quantized_module_params": 85019907,
+        "quantized_int8_weights": 84936960,
+        "quantized_module_coverage_pct": 98.1949,
+        "strict_int8_weight_coverage_pct": 98.0991,
+        "prunable_sparsity_pct": 0.0
+      },
+      "footprint": {
+        "size_bytes": 91627892,
+        "size_mib": 87.3831672668457,
+        "size_mb_decimal": 91.627892,
+        "gzip9_bytes": null,
+        "gzip9_mib": null
+      },
+      "benchmarks": {
+        "loading_cold_ms": 2894.1857000027085,
+        "loading_warm_mean_ms": 3168.7178000017107,
+        "paired_run": {
+          "run_id": "Phase 2 Subprocess (12:12, 1300 MHz CPU clock reading)",
+          "runtime": "PyTorch 2.10.0+cpu onednn DynamicQuantizedLinear (threads=10)",
+          "mean_ms": 173.53662149995216,
+          "std_ms": 27.553090227668264,
+          "p50_ms": 159.92615000141086,
+          "fps": 5.762472447351844
+        },
+        "other_recorded_runs": {},
+        "e2e_from_disk": {
+          "phase2_mean_ms": 176.61224399991625,
+          "phase2_std_ms": 10.269285599008596,
+          "phase2_fps": 5.6621215910742535,
+          "phase2_preproc_ms": 19.79489650009782
+        },
+        "memory_rss_mib": {
+          "phase2_load_delta_mib": 605.08,
+          "phase2_total_inference_delta_mib": 1084.39,
+          "phase2_post_inference_peak_rss_mib": 1584.3,
+          "phase2_post_warmup_rss_mib": 1584.31
+        }
+      },
+      "deployment_recommendation_status": "DO NOT DEPLOY (-25.07 pp Acc & -29.42 pp Mel Recall Collapse due to Blocks 8-11 Outlier Activations)",
+      "sources": [
+        "results/dinov2/dinov2_dynamic_int8_metrics.json",
+        "results/dinov2/dinov2_dynamic_int8_report.md",
+        "models/dinov2/dinov2_vitb14_dynamic_int8.pth",
+        "models/dinov2/dinov2_dynamic_int8_inference.py"
+      ]
+    },
+    {
+      "model_id": "dinov2_fixed224_folded_int8",
+      "model_name": "DINOv2 Fixed-224 Folded Dynamic INT8",
+      "architecture_family": "DINOv2 ViT-B/14 (Experimental Ablation: Fixed 224x224 pos_embed [1,257,768] + Dynamic INT8 Linear)",
+      "precision_and_optimization": "Experimental Folded-pos_embed PyTorch Dynamic INT8 (qint8 Weights / Per-Tensor quint8 Activations)",
+      "checkpoint_or_artifact_path": "scratch/dinov2_vitb14_folded_experimental_int8.pth (Eval/Bench in results/dinov2/dinov2_dynamic_int8_metrics.json)",
+      "artifact_retention_status": "Experimental Scratch Artifact Only (Not Retained in Workspace models/)",
+      "eval_dataset": "ISIC 2019 Image-Level 80/20 Val Split (54.04% lesion overlap leakage)",
+      "eval_sample_count": 2489,
+      "eval_batch_size": 1,
+      "correct_predictions": 1533,
+      "classification": {
+        "accuracy": 0.6159100040176778,
+        "macro_precision": 0.6816686690418399,
+        "macro_recall": 0.5870734936610477,
+        "macro_f1": 0.5753723049637318,
+        "weighted_f1": 0.5880026771451115,
+        "macro_auc": 0.8336955291310972,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8313253012048193,
+            "recall": 0.3112781954887218,
+            "f1": 0.45295404814004375,
+            "support": 665,
+            "auc": 0.8236190805962275
+          },
+          "Melanoma": {
+            "precision": 0.6460431654676259,
+            "recall": 0.49668141592920356,
+            "f1": 0.5616010006253909,
+            "support": 904,
+            "auc": 0.7717854052092348
+          },
+          "Nevus": {
+            "precision": 0.5676375404530745,
+            "recall": 0.9532608695652174,
+            "f1": 0.7115618661257607,
+            "support": 920,
+            "auc": 0.9056821015878295
+          }
+        },
+        "confusion_matrix": [
+          [
+            207,
+            204,
+            254
+          ],
+          [
+            41,
+            449,
+            414
+          ],
+          [
+            1,
+            42,
+            877
+          ]
+        ]
+      },
+      "architecture_stats": {
+        "total_params": 85728003,
+        "quantized_module_params": 85019907,
+        "quantized_int8_weights": 84936960,
+        "quantized_module_coverage_pct": 99.174,
+        "strict_int8_weight_coverage_pct": 99.0773,
+        "prunable_sparsity_pct": 0.0
+      },
+      "footprint": {
+        "size_bytes": 88211872,
+        "size_mib": 84.12539672851562,
+        "size_mb_decimal": 88.211872,
+        "gzip9_bytes": null,
+        "gzip9_mib": null
+      },
+      "benchmarks": {
+        "loading_cold_ms": 2800.7963999989443,
+        "loading_warm_mean_ms": 2748.330700000224,
+        "paired_run": {
+          "run_id": "Phase 2 Subprocess (12:12, 1300 MHz CPU clock reading)",
+          "runtime": "PyTorch 2.10.0+cpu onednn DynamicQuantizedLinear (folded pos_embed, threads=10)",
+          "mean_ms": 155.2424879996761,
+          "std_ms": 9.880091718691896,
+          "p50_ms": 152.5811000028625,
+          "fps": 6.4415355157287
+        },
+        "other_recorded_runs": {},
+        "e2e_from_disk": null,
+        "memory_rss_mib": {
+          "phase2_load_delta_mib": 609.47,
+          "phase2_total_inference_delta_mib": 1129.87,
+          "phase2_post_inference_peak_rss_mib": 1628.85,
+          "phase2_post_warmup_rss_mib": 1637.84
+        }
+      },
+      "deployment_recommendation_status": "DO NOT DEPLOY (Experimental Ablation Only; Identical 61.59% / 49.67% Mel Recall Failure; E2E Not Benchmarked)",
+      "sources": [
+        "results/dinov2/dinov2_dynamic_int8_metrics.json",
+        "results/dinov2/dinov2_dynamic_int8_report.md"
+      ]
+    }
+  ],
+  "historical_and_unverified_references": {
+    "ensemble_05_05_on_leaky_val": {
+      "weights": {
+        "MobileNetV2": 0.5,
+        "DINOv2": 0.5
+      },
+      "accuracy": 0.9136199276817999,
+      "macro_f1": 0.9166498560471671,
+      "melanoma_recall": 0.8738938053097345,
+      "macro_auc": 0.9820640619905726,
+      "caveat": "Evaluated on leaky 2,489 val split (54.04% lesion overlap; clean non-overlap accuracy = 87.15%). Not an independent test set."
+    },
+    "ensemble_04_06_on_leaky_val": {
+      "weights": {
+        "MobileNetV2": 0.4,
+        "DINOv2": 0.6
+      },
+      "accuracy": 0.9075934110084372,
+      "macro_f1": 0.9100863616983373,
+      "melanoma_recall": 0.8517699115044248,
+      "caveat": "Evaluated on same leaky 2,489 val split; trails standalone MobileNetV2 FP32 (90.76% vs 90.96%)."
+    },
+    "uncapped_ensemble_mismatch": {
+      "source": "evaluate_final_ensemble.py / results/best_ensemble_classification_report.csv",
+      "sample_count": 4144,
+      "accuracy": 0.7234555984555985,
+      "caveat": "Mismatched uncapped Nevus split (2,575 Nevus samples) + secondary 30-epoch head dinov2_classifier_best.pth; incompatible with canonical 2,489 split."
+    },
+    "unsubstantiated_html_test_claim": {
+      "source": "architecture_diagram.html",
+      "claimed_split": "70% Train / 15% Val / 15% Test",
+      "claimed_ensemble_acc_pct": 91.44,
+      "status": "UNVERIFIED (no held-out test set script, split manifest, or prediction artifact exists in repository)."
+    },
+    "dinov2_epoch_history_csv_note": {
+      "source": "results/dinov2_epoch_history.csv",
+      "peak_logged_val_acc_pct": 86.82,
+      "status": "No corresponding Ep35 checkpoint exists on disk; canonical saved checkpoint dinov2_100_epoch_best.pth achieves 86.6613%."
+    }
+  },
+  "unavailable_or_unverified_metrics": [
+    {
+      "models": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned"
+      ],
+      "metric": "Peak or incremental process RAM usage (MiB)",
+      "status": "N/A (not measured/logged in INT8 verification, pruning evaluation, or independent audit artifacts)"
+    },
+    {
+      "models": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned",
+        "dinov2_fixed224_folded_int8"
+      ],
+      "metric": "End-to-end from-disk JPEG inference latency & E2E FPS",
+      "status": "N/A (MobileNetV2 scripts measured preloaded RAM tensors excluding JPEG I/O & /255.0; Folded-224 Phase 2 skipped E2E intentionally as null)"
+    },
+    {
+      "models": [
+        "mobilenetv2_fp32_original",
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned"
+      ],
+      "metric": "Cold/warm model loading time (ms)",
+      "status": "N/A (not measured/logged in MobileNetV2 benchmark artifacts; repo template benchmark.py has no saved Windows comparison JSON)"
+    },
+    {
+      "models": [
+        "mobilenetv2_dynamic_tflite",
+        "mobilenetv2_full_int8_tflite",
+        "mobilenetv2_50pct_pruned"
+      ],
+      "metric": "Weighted F1 / Macro ROC-AUC",
+      "status": "N/A (not stored in mobilenetv2_int8_metrics.json or mobilenetv2_pruning_metrics.json)"
+    },
+    {
+      "models": [
+        "dinov2_fp32_original",
+        "dinov2_native_dynamic_int8",
+        "dinov2_fixed224_folded_int8"
+      ],
+      "metric": "Gzip-9 compressed archive size",
+      "status": "N/A (gzip-9 entropy test was performed only across the 4 MobileNetV2 variants)"
+    },
+    {
+      "models": [
+        "All 7 models"
+      ],
+      "metric": "Held-out patient/lesion-grouped independent test set performance",
+      "status": "UNVERIFIED / Non-existent (all 7 models evaluated on legacy leaky 2,489 val split; architecture_diagram.html 91.44% test claim unverified)"
+    }
+  ],
+  "source_file_inventory": [
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2.keras",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2.tflite",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2_full_int8.tflite",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2_pruned.keras",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_100_epoch_best.pth",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_classifier_best.pth",
+    "C:\\Users\\HP\\.cache\\torch\\hub\\checkpoints\\dinov2_vitb14_pretrain.pth",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2\\dinov2_vitb14_dynamic_int8.pth",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2\\dinov2_dynamic_int8_inference.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\class_names.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluation.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluate_final_ensemble.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\streamlit_app.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\prediction.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\prediction_int8.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\architecture_diagram.html",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\quantize_and_evaluate_int8.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\prune_and_train_mobilenetv2.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluate_pruned_mobilenetv2.py",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\int8\\mobilenetv2_int8_metrics.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\int8\\mobilenetv2_int8_verification_report.md",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\pruning\\mobilenetv2_pruning_metrics.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\pruning\\mobilenetv2_pruning_report.md",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\pruning\\mobilenetv2_pruning_independent_audit.md",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\pruning\\mobilenetv2_pruning_history.csv",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_baseline_metrics.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_deployment_baseline_audit.md",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_layer_parameter_inventory.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_dynamic_int8_metrics.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_dynamic_int8_report.md",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\lesion_overlap_audit.txt",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\final_metrics.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\classification_report.csv",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\ensemble_04_06_metrics.json",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\ensemble_classification_report.csv",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\ensemble_weight_comparison.csv",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\best_ensemble_classification_report.csv",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2_epoch_history.csv",
+    "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\mobilenetv2_epoch_history.csv"
+  ],
+  "companion_scratch_sources": [
+    "C:\\Users\\HP\\.gemini\\antigravity\\brain\\2c749fb0-eed6-40fb-aabe-c32512150f72\\scratch\\audit_part2_onednn_0.json",
+    "C:\\Users\\HP\\.gemini\\antigravity\\brain\\2c749fb0-eed6-40fb-aabe-c32512150f72\\scratch\\audit_part2_onednn_1.json",
+    "C:\\Users\\HP\\.gemini\\antigravity\\brain\\2c749fb0-eed6-40fb-aabe-c32512150f72\\scratch\\dinov2_vitb14_folded_experimental_int8.pth"
+  ]
+}

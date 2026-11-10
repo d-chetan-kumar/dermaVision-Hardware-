@@ -1,0 +1,103 @@
+{
+    "split_name": "revision_v1",
+    "dataset": "ISIC_2019_curated_12445",
+    "strategy": "StratifiedGroupKFold_two_stage",
+    "random_seed": 42,
+    "target_ratios": {
+        "train": 0.7,
+        "val": 0.15,
+        "test": 0.15
+    },
+    "total_samples": 12445,
+    "total_unique_known_lesions": 5502,
+    "total_missing_lesion_id_samples": 1886,
+    "total_groups": 7388,
+    "cross_partition_overlap": {
+        "train_val_lesion_overlap": 0,
+        "train_test_lesion_overlap": 0,
+        "val_test_lesion_overlap": 0,
+        "train_val_group_overlap": 0,
+        "train_test_group_overlap": 0,
+        "val_test_group_overlap": 0,
+        "status": "VERIFIED_ZERO_LEAKAGE"
+    },
+    "manifest_hashes_sha256": {
+        "train.csv": "f8a31b9d42fffe8bde97195c8e7297def6e5807cf6649751c7ee9fa6616b8e88",
+        "val.csv": "75da1423e640f0c09db3c1977956410dcad6c2d12048abb00113322b8a03a0e5",
+        "test.csv": "9786bb0e634abf4fad5a1e7d97b3c33d960024bc3138fc05c9ec7d9f3cb26c51"
+    },
+    "partitions": {
+        "train": {
+            "sample_count": 8712,
+            "sample_percentage": 70.0,
+            "unique_known_lesions": 3847,
+            "missing_lesion_id_samples": 1321,
+            "unique_group_count": 5168,
+            "class_distribution": {
+                "BCC": {
+                    "count": 2333,
+                    "percentage_within_partition": 26.78,
+                    "percentage_of_total_class": 70.21
+                },
+                "Melanoma": {
+                    "count": 3156,
+                    "percentage_within_partition": 36.23,
+                    "percentage_of_total_class": 69.79
+                },
+                "Nevus": {
+                    "count": 3223,
+                    "percentage_within_partition": 36.99,
+                    "percentage_of_total_class": 70.07
+                }
+            }
+        },
+        "val": {
+            "sample_count": 1875,
+            "sample_percentage": 15.07,
+            "unique_known_lesions": 828,
+            "missing_lesion_id_samples": 283,
+            "unique_group_count": 1111,
+            "class_distribution": {
+                "BCC": {
+                    "count": 477,
+                    "percentage_within_partition": 25.44,
+                    "percentage_of_total_class": 14.35
+                },
+                "Melanoma": {
+                    "count": 707,
+                    "percentage_within_partition": 37.71,
+                    "percentage_of_total_class": 15.63
+                },
+                "Nevus": {
+                    "count": 691,
+                    "percentage_within_partition": 36.85,
+                    "percentage_of_total_class": 15.02
+                }
+            }
+        },
+        "test": {
+            "sample_count": 1858,
+            "sample_percentage": 14.93,
+            "unique_known_lesions": 827,
+            "missing_lesion_id_samples": 282,
+            "unique_group_count": 1109,
+            "class_distribution": {
+                "BCC": {
+                    "count": 513,
+                    "percentage_within_partition": 27.61,
+                    "percentage_of_total_class": 15.44
+                },
+                "Melanoma": {
+                    "count": 659,
+                    "percentage_within_partition": 35.47,
+                    "percentage_of_total_class": 14.57
+                },
+                "Nevus": {
+                    "count": 686,
+                    "percentage_within_partition": 36.92,
+                    "percentage_of_total_class": 14.91
+                }
+            }
+        }
+    }
+}

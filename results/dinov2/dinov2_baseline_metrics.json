@@ -1,0 +1,950 @@
+{
+  "audit_metadata": {
+    "generated_at": "2026-11-10T10:51:02",
+    "audit_phase": "Phase 1 \u2014 Read-Only Verification & Baseline Audit",
+    "mode": "READ_ONLY_AUDIT",
+    "workspace": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)"
+  },
+  "checkpoints": {
+    "primary_head": {
+      "relative_path": "models/dinov2_100_epoch_best.pth",
+      "file_meta": {
+        "path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_100_epoch_best.pth",
+        "exists": true,
+        "size_bytes": 11669,
+        "size_kb": 11.4,
+        "size_mb": 0.0111,
+        "mtime_iso": "2026-08-26T22:57:47",
+        "sha256": "783e31fb03a60a178b81724c70db5878b107389be228f4c5ced2f5e61c88d725"
+      },
+      "top_level_keys": [
+        "model_state_dict",
+        "feature_dim",
+        "num_classes",
+        "class_names",
+        "class_to_idx",
+        "model_type",
+        "backbone",
+        "best_val_accuracy",
+        "best_epoch",
+        "epochs",
+        "learning_rate",
+        "weight_decay"
+      ],
+      "metadata": {
+        "feature_dim": 768,
+        "num_classes": 3,
+        "class_names": [
+          "BCC",
+          "Melanoma",
+          "Nevus"
+        ],
+        "class_to_idx": {
+          "BCC": 0,
+          "Melanoma": 1,
+          "Nevus": 2
+        },
+        "model_type": "DINOv2LinearClassifier",
+        "backbone": "DINOv2 ViT-B/14",
+        "best_val_accuracy": 0.8666130976295701,
+        "best_epoch": 50,
+        "epochs": 100,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001
+      },
+      "state_dict_keys": [
+        "classifier.weight",
+        "classifier.bias"
+      ],
+      "total_params_in_ckpt": 2307,
+      "state_dict_summary": {
+        "classifier.weight": {
+          "shape": [
+            3,
+            768
+          ],
+          "dtype": "torch.float32",
+          "numel": 2304,
+          "requires_grad": false,
+          "min": -0.2868199646472931,
+          "max": 0.29851916432380676,
+          "mean": 0.0002547424519434571,
+          "std": 0.07875613868236542,
+          "l2_norm": 3.779494047164917,
+          "row_norms": [
+            2.519407033920288,
+            1.7297803163528442,
+            2.223740339279175
+          ],
+          "values": null
+        },
+        "classifier.bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "torch.float32",
+          "numel": 3,
+          "requires_grad": false,
+          "min": -0.007886236533522606,
+          "max": 0.02800312079489231,
+          "mean": 0.01270111370831728,
+          "std": 0.01851925067603588,
+          "l2_norm": 0.034203510731458664,
+          "row_norms": null,
+          "values": [
+            -0.007886236533522606,
+            0.01798645779490471,
+            0.02800312079489231
+          ]
+        }
+      }
+    },
+    "secondary_head": {
+      "relative_path": "models/dinov2_classifier_best.pth",
+      "file_meta": {
+        "path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_classifier_best.pth",
+        "exists": true,
+        "size_bytes": 11677,
+        "size_kb": 11.4,
+        "size_mb": 0.0111,
+        "mtime_iso": "2026-08-26T22:50:22",
+        "sha256": "e40f3d5d6f01451af7a87807cae2046cfaba1cc18ceef847dc64044b29d82796"
+      },
+      "top_level_keys": [
+        "model_state_dict",
+        "feature_dim",
+        "num_classes",
+        "class_names",
+        "class_to_idx",
+        "model_type",
+        "best_val_accuracy",
+        "best_epoch",
+        "epochs",
+        "learning_rate"
+      ],
+      "metadata": {
+        "feature_dim": 768,
+        "num_classes": 3,
+        "class_names": [
+          "BCC",
+          "Melanoma",
+          "Nevus"
+        ],
+        "class_to_idx": {
+          "BCC": 0,
+          "Melanoma": 1,
+          "Nevus": 2
+        },
+        "model_type": "DINOv2LinearClassifier",
+        "best_val_accuracy": 0.864202490960225,
+        "best_epoch": 15,
+        "epochs": 30,
+        "learning_rate": 0.001
+      },
+      "state_dict_keys": [
+        "classifier.weight",
+        "classifier.bias"
+      ],
+      "total_params_in_ckpt": 2307,
+      "state_dict_summary": {
+        "classifier.weight": {
+          "shape": [
+            3,
+            768
+          ],
+          "dtype": "torch.float32",
+          "numel": 2304,
+          "requires_grad": false,
+          "min": -0.18340101838111877,
+          "max": 0.2096417248249054,
+          "mean": -0.00012994196731597185,
+          "std": 0.049042657017707825,
+          "l2_norm": 2.3535451889038086,
+          "row_norms": [
+            1.5406253337860107,
+            1.1084388494491577,
+            1.3917652368545532
+          ],
+          "values": null
+        },
+        "classifier.bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "torch.float32",
+          "numel": 3,
+          "requires_grad": false,
+          "min": -0.026554947718977928,
+          "max": 0.02777656726539135,
+          "mean": 0.00938220415264368,
+          "std": 0.031125398352742195,
+          "l2_norm": 0.046921830624341965,
+          "row_norms": null,
+          "values": [
+            -0.026554947718977928,
+            0.02777656726539135,
+            0.026924991980195045
+          ]
+        }
+      }
+    },
+    "cached_backbone": {
+      "file_meta": {
+        "path": "C:\\Users\\HP\\.cache\\torch\\hub\\checkpoints\\dinov2_vitb14_pretrain.pth",
+        "exists": true,
+        "size_bytes": 346378731,
+        "size_kb": 338260.48,
+        "size_mb": 330.3325,
+        "mtime_iso": "2026-08-26T23:28:05",
+        "sha256": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73"
+      },
+      "tensor_count": 175,
+      "total_params": 86580480,
+      "exact_match_with_hub_model": true
+    },
+    "head_checkpoint_comparison": {
+      "classifier.weight": {
+        "max_abs_diff": 0.15649732947349548,
+        "mean_abs_diff": 0.03455992415547371,
+        "l2_diff": 2.099177837371826,
+        "cosine_similarity_flat": 0.8666012287139893,
+        "cosine_similarity_per_row": [
+          0.875970721244812,
+          0.8311775922775269,
+          0.8772070407867432
+        ]
+      },
+      "classifier.bias": {
+        "max_abs_diff": 0.018668711185455322,
+        "mean_abs_diff": 0.00984564982354641,
+        "l2_diff": 0.021107567474246025,
+        "cosine_similarity_flat": 0.9115909337997437,
+        "cosine_similarity_per_row": null
+      }
+    },
+    "architecture_summary": {
+      "backbone_name": "dinov2_vitb14 (DinoVisionTransformer)",
+      "img_size_init": 518,
+      "patch_size": 14,
+      "embed_dim": 768,
+      "depth": 12,
+      "num_heads": 12,
+      "mlp_ratio": 4,
+      "init_values_layerscale": 1.0,
+      "ffn_layer": "mlp",
+      "num_register_tokens": 0,
+      "backbone_total_params": 86580480,
+      "backbone_buffers": 0,
+      "classifier_head_params": 2307,
+      "combined_total_params": 86582787,
+      "frozen_backbone_trainable_params": 2307,
+      "role_breakdown": {
+        "token_or_pos_embed:cls_token": 768,
+        "token_or_pos_embed:pos_embed": 1052160,
+        "token_or_pos_embed:mask_token": 768,
+        "patch_embed": 452352,
+        "blocks_layernorm": 36864,
+        "blocks_attn_qkv_linear": 21261312,
+        "blocks_attn_proj_linear": 7087104,
+        "blocks_layerscale": 18432,
+        "blocks_mlp_fc1_linear": 28348416,
+        "blocks_mlp_fc2_linear": 28320768,
+        "final_norm": 1536,
+        "classifier_head_linear": 2307
+      },
+      "module_category_counts": {
+        "DinoVisionTransformer": {
+          "module_count": 1,
+          "params": 1053696
+        },
+        "Conv2d": {
+          "module_count": 1,
+          "params": 452352
+        },
+        "LayerNorm": {
+          "module_count": 25,
+          "params": 38400
+        },
+        "Linear": {
+          "module_count": 48,
+          "params": 85017600
+        },
+        "LayerScale": {
+          "module_count": 24,
+          "params": 18432
+        }
+      }
+    }
+  },
+  "preprocessing_and_dataset": {
+    "class_names": [
+      "BCC",
+      "Melanoma",
+      "Nevus"
+    ],
+    "class_to_idx": {
+      "BCC": 0,
+      "Melanoma": 1,
+      "Nevus": 2
+    },
+    "idx_to_class": {
+      "0": "BCC",
+      "1": "Melanoma",
+      "2": "Nevus"
+    },
+    "split_rule": "ISIC_2019_Training_GroundTruth.csv (MEL==1.0, NV==1.0.head(4600), BCC==1.0); train_test_split(test_size=0.20, stratify=label, random_state=42)",
+    "train_samples": 9956,
+    "validation_samples": 2489,
+    "validation_class_distribution": {
+      "Nevus": 920,
+      "Melanoma": 904,
+      "BCC": 665
+    },
+    "transform_spec": {
+      "color_mode": "RGB",
+      "resize": [
+        224,
+        224
+      ],
+      "interpolation": "BILINEAR (torchvision default, direct squash)",
+      "tensor_range": "[0.0, 1.0] (ToTensor)",
+      "normalize_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "normalize_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "sample_validation_rows": [
+      {
+        "index": 0,
+        "image": "ISIC_0055396",
+        "class": "BCC",
+        "label": 0,
+        "image_path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\ISIC_2019_Training_Input\\ISIC_2019_Training_Input\\ISIC_0055396.jpg"
+      },
+      {
+        "index": 1,
+        "image": "ISIC_0066952",
+        "class": "Melanoma",
+        "label": 1,
+        "image_path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\ISIC_2019_Training_Input\\ISIC_2019_Training_Input\\ISIC_0066952.jpg"
+      },
+      {
+        "index": 2,
+        "image": "ISIC_0026581",
+        "class": "Nevus",
+        "label": 2,
+        "image_path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\ISIC_2019_Training_Input\\ISIC_2019_Training_Input\\ISIC_0026581.jpg"
+      },
+      {
+        "index": 3,
+        "image": "ISIC_0055143",
+        "class": "Melanoma",
+        "label": 1,
+        "image_path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\ISIC_2019_Training_Input\\ISIC_2019_Training_Input\\ISIC_0055143.jpg"
+      },
+      {
+        "index": 4,
+        "image": "ISIC_0028122",
+        "class": "BCC",
+        "label": 0,
+        "image_path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\ISIC_2019_Training_Input\\ISIC_2019_Training_Input\\ISIC_0028122.jpg"
+      }
+    ],
+    "labels_match_cached_npy": true
+  },
+  "evaluation_2489_val": {
+    "feature_extraction_seconds_batch64": 587.515,
+    "dinov2_100_epoch_best": {
+      "correct": 2157,
+      "total": 2489,
+      "accuracy": 0.8666130976295701,
+      "accuracy_percent": 86.6613,
+      "macro_precision": 0.8659724307416986,
+      "macro_recall": 0.8722460971590191,
+      "macro_f1": 0.8682313468255884,
+      "weighted_precision": 0.8662935766365404,
+      "weighted_recall": 0.8666130976295701,
+      "weighted_f1": 0.8656230157940354,
+      "macro_auc": 0.9679502887898647,
+      "weighted_auc": 0.9662269732343488,
+      "per_class_auc": {
+        "BCC": 0.986300455085081,
+        "Melanoma": 0.9435777895647803,
+        "Nevus": 0.973972621719733
+      },
+      "per_class": {
+        "BCC": {
+          "precision": 0.8635097493036211,
+          "recall": 0.9323308270676691,
+          "f1": 0.8966015907447578,
+          "support": 665,
+          "auc": 0.986300455085081
+        },
+        "Melanoma": {
+          "precision": 0.8552631578947368,
+          "recall": 0.790929203539823,
+          "f1": 0.8218390804597702,
+          "support": 904,
+          "auc": 0.9435777895647803
+        },
+        "Nevus": {
+          "precision": 0.879144385026738,
+          "recall": 0.8934782608695652,
+          "f1": 0.8862533692722372,
+          "support": 920,
+          "auc": 0.973972621719733
+        }
+      },
+      "confusion_matrix": [
+        [
+          620,
+          38,
+          7
+        ],
+        [
+          83,
+          715,
+          106
+        ],
+        [
+          15,
+          83,
+          822
+        ]
+      ],
+      "prob_sum_min": 0.9999998211860657,
+      "prob_sum_max": 1.0000001192092896,
+      "ckpt_saved_best_val_accuracy": 0.8666130976295701,
+      "ckpt_best_epoch": 50,
+      "ckpt_epochs": 100,
+      "exact_match_with_ckpt_saved_metric": true,
+      "comparison_with_cached_npy": {
+        "max_abs_prob_diff": 4.738569259643555e-06,
+        "mean_abs_prob_diff": 2.0133440159497695e-07,
+        "argmax_agreement_count": 2489,
+        "argmax_agreement_rate": 1.0
+      }
+    },
+    "dinov2_classifier_best": {
+      "correct": 2151,
+      "total": 2489,
+      "accuracy": 0.864202490960225,
+      "accuracy_percent": 86.4202,
+      "macro_precision": 0.8693785004516711,
+      "macro_recall": 0.8642070258370049,
+      "macro_f1": 0.8661692351157683,
+      "weighted_precision": 0.8648259941108281,
+      "weighted_recall": 0.864202490960225,
+      "weighted_f1": 0.8638909682444993,
+      "macro_auc": 0.9665835775529934,
+      "weighted_auc": 0.9648319367895104,
+      "per_class_auc": {
+        "BCC": 0.9853152618388076,
+        "Melanoma": 0.9405369755171549,
+        "Nevus": 0.9738984953030178
+      },
+      "per_class": {
+        "BCC": {
+          "precision": 0.9158730158730158,
+          "recall": 0.8676691729323308,
+          "f1": 0.8911196911196911,
+          "support": 665,
+          "auc": 0.9853152618388076
+        },
+        "Melanoma": {
+          "precision": 0.8365714285714285,
+          "recall": 0.8097345132743363,
+          "f1": 0.8229342327150084,
+          "support": 904,
+          "auc": 0.9405369755171549
+        },
+        "Nevus": {
+          "precision": 0.8556910569105691,
+          "recall": 0.9152173913043479,
+          "f1": 0.884453781512605,
+          "support": 920,
+          "auc": 0.9738984953030178
+        }
+      },
+      "confusion_matrix": [
+        [
+          577,
+          73,
+          15
+        ],
+        [
+          45,
+          732,
+          127
+        ],
+        [
+          8,
+          70,
+          842
+        ]
+      ],
+      "prob_sum_min": 0.9999998807907104,
+      "prob_sum_max": 1.0000001192092896,
+      "ckpt_saved_best_val_accuracy": 0.864202490960225,
+      "ckpt_best_epoch": 15,
+      "ckpt_epochs": 30,
+      "exact_match_with_ckpt_saved_metric": true,
+      "comparison_with_cached_npy": {
+        "max_abs_prob_diff": 0.5711501836776733,
+        "mean_abs_prob_diff": 0.04446347430348396,
+        "argmax_agreement_count": 2331,
+        "argmax_agreement_rate": 0.9365206910405786
+      }
+    },
+    "cached_npy_metrics": {
+      "correct": 2157,
+      "total": 2489,
+      "accuracy": 0.8666130976295701,
+      "accuracy_percent": 86.6613,
+      "macro_precision": 0.8659724307416986,
+      "macro_recall": 0.8722460971590191,
+      "macro_f1": 0.8682313468255884,
+      "weighted_precision": 0.8662935766365404,
+      "weighted_recall": 0.8666130976295701,
+      "weighted_f1": 0.8656230157940354,
+      "macro_auc": 0.9679500561516544,
+      "weighted_auc": 0.9662267197531009,
+      "per_class_auc": {
+        "BCC": 0.986300455085081,
+        "Melanoma": 0.9435770916501494,
+        "Nevus": 0.973972621719733
+      },
+      "per_class": {
+        "BCC": {
+          "precision": 0.8635097493036211,
+          "recall": 0.9323308270676691,
+          "f1": 0.8966015907447578,
+          "support": 665,
+          "auc": 0.986300455085081
+        },
+        "Melanoma": {
+          "precision": 0.8552631578947368,
+          "recall": 0.790929203539823,
+          "f1": 0.8218390804597702,
+          "support": 904,
+          "auc": 0.9435770916501494
+        },
+        "Nevus": {
+          "precision": 0.879144385026738,
+          "recall": 0.8934782608695652,
+          "f1": 0.8862533692722372,
+          "support": 920,
+          "auc": 0.973972621719733
+        }
+      },
+      "confusion_matrix": [
+        [
+          620,
+          38,
+          7
+        ],
+        [
+          83,
+          715,
+          106
+        ],
+        [
+          15,
+          83,
+          822
+        ]
+      ],
+      "prob_sum_min": 0.9999998807907104,
+      "prob_sum_max": 1.0000001192092896
+    }
+  },
+  "hardware_and_environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "system": "Windows",
+    "release": "11",
+    "machine": "AMD64",
+    "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+    "cpu_registry": {
+      "processor_name": "12th Gen Intel(R) Core(TM) i5-1235U",
+      "vendor": "GenuineIntel",
+      "base_mhz": 2496
+    },
+    "cpu_count_logical": 12,
+    "cpu_count_physical": 10,
+    "ram_total_gb": 15.65,
+    "ram_available_gb": 4.83,
+    "torch_version": "2.10.0+cpu",
+    "torch_cuda_available": false,
+    "torch_num_threads": 10,
+    "torch_num_interop_threads": 10,
+    "torch_mkldnn_enabled": true,
+    "torch_openmp_enabled": true,
+    "torch_quantized_engine": "onednn",
+    "torch_quantized_supported_engines": [
+      "onednn"
+    ],
+    "torch_config": "PyTorch built with:\n  - C++ Version: 201703\n  - MSVC 194234444\n  - Intel(R) oneAPI Math Kernel Library Version 2025.3-Product Build 20251007 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.7.1 (Git Hash 8d263e693366ef8db40acc569cc7d8edf644556d)\n  - OpenMP 2019\n  - LAPACK is enabled (usually provided by MKL)\n  - CPU capability usage: AVX2\n  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=449b1768410104d3ed79d3bcfe4ba1d65c7f22c0, CXX_COMPILER=C:/actions-runner/_work/pytorch/pytorch/pytorch/.ci/pytorch/windows/tmp_bin/sccache-cl.exe, CXX_FLAGS=/DWIN32 /D_WINDOWS /EHsc /Zc:__cplusplus /bigobj /FS /utf-8 -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE /wd4624 /wd4068 /wd4067 /wd4267 /wd4661 /wd4717 /wd4244 /wd4804 /wd4273, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.10.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=OFF, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "packages": {
+      "torch": "2.10.0",
+      "torchvision": "0.25.0",
+      "torchaudio": null,
+      "timm": null,
+      "transformers": null,
+      "xformers": null,
+      "onnx": null,
+      "onnxruntime": null,
+      "onnxscript": null,
+      "openvino": null,
+      "intel-extension-for-pytorch": null,
+      "tensorflow": "2.21.0",
+      "ai-edge-litert": null,
+      "tflite-runtime": null,
+      "numpy": "2.4.2",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.5.2",
+      "pillow": "12.1.1",
+      "psutil": "7.2.2",
+      "streamlit": "1.55.0"
+    }
+  },
+  "deployment_benchmark": {
+    "system_and_runtime": {
+      "device": "cpu",
+      "torch_version": "2.10.0+cpu",
+      "torch_num_threads": 10,
+      "torch_num_interop_threads": 10,
+      "mkldnn_available": true,
+      "openmp_available": true,
+      "cpu_freq_current_mhz": 1300.0,
+      "cpu_freq_max_mhz": 1300.0
+    },
+    "file_sizes": {
+      "backbone_pretrain_bytes": 346378731,
+      "backbone_pretrain_mb": 330.3325,
+      "head_100_epoch_bytes": 11669,
+      "head_100_epoch_kb": 11.4,
+      "head_classifier_best_bytes": 11677,
+      "head_classifier_best_kb": 11.4,
+      "total_deploy_bytes": 346390400,
+      "total_deploy_mb": 330.3436
+    },
+    "memory_rss_mb": {
+      "before_model_load": 363.41,
+      "after_backbone_load": 1030.33,
+      "after_head_load": 1030.34,
+      "after_warmup": 1084.66,
+      "after_inference": 1113.16,
+      "backbone_delta_mb": 666.92
+    },
+    "model_loading_ms": {
+      "backbone_cold_1st_load_ms": 1112.61,
+      "backbone_warm_reload_trials_ms": [
+        985.92,
+        1026.44,
+        1098.29
+      ],
+      "backbone_warm_reload_mean_ms": 1036.88,
+      "head_cold_1st_load_ms": 1.21,
+      "head_warm_reload_trials_ms": [
+        1.42,
+        1.51,
+        1.49
+      ],
+      "head_warm_reload_mean_ms": 1.47
+    },
+    "preprocessing_batch1_200imgs": {
+      "decode_rgb_open": {
+        "n": 200,
+        "mean_ms": 8.468928500296897,
+        "std_pop_ms": 2.8551632273548506,
+        "std_sample_ms": 2.8623280145984564,
+        "min_ms": 3.2550999967497773,
+        "p50_median_ms": 8.26605000111158,
+        "p95_ms": 12.705155001822273,
+        "p99_ms": 13.63077199930558,
+        "max_ms": 14.06200000201352,
+        "throughput_fps": 118.07869200512707
+      },
+      "resize_totensor_normalize": {
+        "n": 200,
+        "mean_ms": 3.780131499952404,
+        "std_pop_ms": 1.178922930370608,
+        "std_sample_ms": 1.1818813363530707,
+        "min_ms": 1.716600003419444,
+        "p50_median_ms": 4.088099998625694,
+        "p95_ms": 5.33201000362169,
+        "p99_ms": 5.566310994545346,
+        "max_ms": 5.960900001809932,
+        "throughput_fps": 264.54106160396566
+      },
+      "total_preprocessing": {
+        "n": 200,
+        "mean_ms": 12.249060000249301,
+        "std_pop_ms": 3.8922140282528686,
+        "std_sample_ms": 3.9019812055378065,
+        "min_ms": 5.6324000033782795,
+        "p50_median_ms": 12.035100000503007,
+        "p95_ms": 17.938135002259514,
+        "p99_ms": 18.555670001660474,
+        "max_ms": 18.800099998770747,
+        "throughput_fps": 81.63891759691334
+      }
+    },
+    "inference_batch1_preloaded_200imgs": {
+      "backbone_only": {
+        "n": 200,
+        "mean_ms": 235.00244050010224,
+        "std_pop_ms": 5.923807350505093,
+        "std_sample_ms": 5.938672636990938,
+        "min_ms": 206.47370000369847,
+        "p50_median_ms": 234.43164999844157,
+        "p95_ms": 246.01717999939865,
+        "p99_ms": 249.27570800311514,
+        "max_ms": 249.59259999741334,
+        "throughput_fps": 4.2552749574511965
+      },
+      "head_and_softmax_in_loop": {
+        "n": 200,
+        "mean_ms": 0.09222550004778896,
+        "std_pop_ms": 0.023564267478737452,
+        "std_sample_ms": 0.023623399986966408,
+        "min_ms": 0.06690000009257346,
+        "p50_median_ms": 0.08914999853004701,
+        "p95_ms": 0.11750999983632937,
+        "p99_ms": 0.2101629991375375,
+        "max_ms": 0.26449999859323725,
+        "throughput_fps": 10842.988105044971
+      },
+      "head_and_softmax_micro_1000": {
+        "n": 1000,
+        "mean_ms": 0.05929379999724915,
+        "std_pop_ms": 0.1815887761407804,
+        "std_sample_ms": 0.18167963868143802,
+        "min_ms": 0.03719999949680641,
+        "p50_median_ms": 0.03999999898951501,
+        "p95_ms": 0.11292000599496503,
+        "p99_ms": 0.3205399950093123,
+        "max_ms": 5.261600002995692,
+        "throughput_fps": 16865.16971498527
+      },
+      "model_combined_no_io": {
+        "n": 200,
+        "mean_ms": 235.09466600015003,
+        "std_pop_ms": 5.926369327111544,
+        "std_sample_ms": 5.9412410426579525,
+        "min_ms": 206.5465000050608,
+        "p50_median_ms": 234.54300000230432,
+        "p95_ms": 246.09149499956402,
+        "p99_ms": 249.379339000443,
+        "max_ms": 249.65949999750592,
+        "throughput_fps": 4.253605651773324
+      }
+    },
+    "end_to_end_from_disk_200imgs": {
+      "n": 200,
+      "mean_ms": 254.78271150033834,
+      "std_pop_ms": 7.1213527147809845,
+      "std_sample_ms": 7.139223138650008,
+      "min_ms": 240.7082999998238,
+      "p50_median_ms": 254.95040000168956,
+      "p95_ms": 264.90093000284105,
+      "p99_ms": 275.8076119975157,
+      "max_ms": 292.3657999999705,
+      "throughput_fps": 3.924913092066971
+    }
+  },
+  "preservation_verification": {
+    "verified_at": "2026-11-10T10:51:02",
+    "total_files_checked": 18,
+    "mutated_files_count": 0,
+    "all_hashes_match": true,
+    "files": {
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_100_epoch_best.pth": {
+        "exists": true,
+        "size_bytes": 11669,
+        "mtime_iso": "2026-08-26T22:57:47",
+        "pre_sha256": "783e31fb03a60a178b81724c70db5878b107389be228f4c5ced2f5e61c88d725",
+        "post_sha256": "783e31fb03a60a178b81724c70db5878b107389be228f4c5ced2f5e61c88d725",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_classifier_best.pth": {
+        "exists": true,
+        "size_bytes": 11677,
+        "mtime_iso": "2026-08-26T22:50:22",
+        "pre_sha256": "e40f3d5d6f01451af7a87807cae2046cfaba1cc18ceef847dc64044b29d82796",
+        "post_sha256": "e40f3d5d6f01451af7a87807cae2046cfaba1cc18ceef847dc64044b29d82796",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "C:\\Users\\HP\\.cache\\torch\\hub\\checkpoints\\dinov2_vitb14_pretrain.pth": {
+        "exists": true,
+        "size_bytes": 346378731,
+        "mtime_iso": "2026-08-26T23:28:05",
+        "pre_sha256": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73",
+        "post_sha256": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2.keras": {
+        "exists": true,
+        "size_bytes": 31673490,
+        "mtime_iso": "2026-08-17T13:57:56",
+        "pre_sha256": "ebbd575e3d7b340d8d806515abc918cc5260b8cd4b8ef4c41c93f9582ebf33d4",
+        "post_sha256": "ebbd575e3d7b340d8d806515abc918cc5260b8cd4b8ef4c41c93f9582ebf33d4",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2.tflite": {
+        "exists": true,
+        "size_bytes": 2877224,
+        "mtime_iso": "2026-08-29T14:47:36",
+        "pre_sha256": "acf368659274be0fca0bfd6d4715f9a515e7d701d44592aee33fae4e73b2b0eb",
+        "post_sha256": "acf368659274be0fca0bfd6d4715f9a515e7d701d44592aee33fae4e73b2b0eb",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2_full_int8.tflite": {
+        "exists": true,
+        "size_bytes": 3083384,
+        "mtime_iso": "2026-11-10T08:11:58",
+        "pre_sha256": "00924d9d127fd73438ba526ac6bbe28ac3fdc12ee3fff4272212aa82ae075da7",
+        "post_sha256": "00924d9d127fd73438ba526ac6bbe28ac3fdc12ee3fff4272212aa82ae075da7",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2_pruned.keras": {
+        "exists": true,
+        "size_bytes": 31673383,
+        "mtime_iso": "2026-11-10T09:22:07",
+        "pre_sha256": "0364f6c4d152c7ccf6d555aadd49eb82bf293f52983bb29bbc73eee4acc3814f",
+        "post_sha256": "0364f6c4d152c7ccf6d555aadd49eb82bf293f52983bb29bbc73eee4acc3814f",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluation.py": {
+        "exists": true,
+        "size_bytes": 20755,
+        "mtime_iso": "2026-08-28T17:41:47",
+        "pre_sha256": "55b7c934ebad767c0208e77c5300a314d78ab0e68883846acfeae0e813a8a78b",
+        "post_sha256": "55b7c934ebad767c0208e77c5300a314d78ab0e68883846acfeae0e813a8a78b",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluate_final_ensemble.py": {
+        "exists": true,
+        "size_bytes": 11293,
+        "mtime_iso": "2026-08-28T17:41:47",
+        "pre_sha256": "3bf83cd176265da896c2ad3b1c901271a051d205839eac8a457e5aef20e0b854",
+        "post_sha256": "3bf83cd176265da896c2ad3b1c901271a051d205839eac8a457e5aef20e0b854",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\streamlit_app.py": {
+        "exists": true,
+        "size_bytes": 91483,
+        "mtime_iso": "2026-08-31T11:03:05",
+        "pre_sha256": "925f7505bd7b726d94b0763589f9e22aeaca039f0ead7dae2806507e16bbe08d",
+        "post_sha256": "925f7505bd7b726d94b0763589f9e22aeaca039f0ead7dae2806507e16bbe08d",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\verify_dinov2.py": {
+        "exists": true,
+        "size_bytes": 3076,
+        "mtime_iso": "2026-08-27T00:08:49",
+        "pre_sha256": "900f2134495729409bd00335f942a97aee1b6f25e0773c3c5b00a449d406da8a",
+        "post_sha256": "900f2134495729409bd00335f942a97aee1b6f25e0773c3c5b00a449d406da8a",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\verify_ensemble.py": {
+        "exists": true,
+        "size_bytes": 3809,
+        "mtime_iso": "2026-08-27T00:41:44",
+        "pre_sha256": "6672d6689cb63dfe826a77fcb530f2f6a772e5b12371b10e739b0ba7618390f0",
+        "post_sha256": "6672d6689cb63dfe826a77fcb530f2f6a772e5b12371b10e739b0ba7618390f0",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\sweep_weights.py": {
+        "exists": true,
+        "size_bytes": 3273,
+        "mtime_iso": "2026-08-27T01:02:24",
+        "pre_sha256": "507399cfcc4d9b97354b8945aa145c5fb4af40e4002e3be5c953dd5d7d688f0d",
+        "post_sha256": "507399cfcc4d9b97354b8945aa145c5fb4af40e4002e3be5c953dd5d7d688f0d",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\final_metrics.json": {
+        "exists": true,
+        "size_bytes": 1428,
+        "mtime_iso": "2026-08-27T09:28:11",
+        "pre_sha256": "732806ebc9ed6087ef2ec22705c0e7467d3c4b72b92d31632d2aaca1d58b0fa0",
+        "post_sha256": "732806ebc9ed6087ef2ec22705c0e7467d3c4b72b92d31632d2aaca1d58b0fa0",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\dinov2_classification_report.csv": {
+        "exists": true,
+        "size_bytes": 484,
+        "mtime_iso": "2026-08-27T09:28:08",
+        "pre_sha256": "115016868a7418446bf7dd3aeac0f78fb29a524f54c8377d47bc37bebdbafa0e",
+        "post_sha256": "115016868a7418446bf7dd3aeac0f78fb29a524f54c8377d47bc37bebdbafa0e",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\dinov2_val_probabilities.npy": {
+        "exists": true,
+        "size_bytes": 29996,
+        "mtime_iso": "2026-11-09T12:53:21",
+        "pre_sha256": "da0a29d3dbecf3d049a31517376beb91b2486ce4766cc56fbf193ec9b35e932d",
+        "post_sha256": "da0a29d3dbecf3d049a31517376beb91b2486ce4766cc56fbf193ec9b35e932d",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\val_ground_truth.npy": {
+        "exists": true,
+        "size_bytes": 10084,
+        "mtime_iso": "2026-11-09T12:53:21",
+        "pre_sha256": "dae9a29b4f694ac1ea0e04c8d0dd7adba6b563d7cc34f87392807cee66e6bb71",
+        "post_sha256": "dae9a29b4f694ac1ea0e04c8d0dd7adba6b563d7cc34f87392807cee66e6bb71",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2_epoch_history.csv": {
+        "exists": true,
+        "size_bytes": 1546,
+        "mtime_iso": "2026-08-28T17:36:56",
+        "pre_sha256": "200952011861f66ca8fbe392ec0bbd6b91c0dadb16242ac63529e3eabdb0c004",
+        "post_sha256": "200952011861f66ca8fbe392ec0bbd6b91c0dadb16242ac63529e3eabdb0c004",
+        "sha256_match": true,
+        "size_match": true,
+        "mtime_match": true
+      }
+    }
+  }
+}

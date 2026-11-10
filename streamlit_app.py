@@ -1844,21 +1844,12 @@ Please upload or drag and drop a clinical skin image file on the upload area abo
     st.markdown("<div class='eval-subtitle' style='color:#38BDF8;'>MobileNetV2 Training Performance</div>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;'>Final Validation Accuracy: <b>90.12%</b> | Training Epochs: <b>50</b></p>", unsafe_allow_html=True)
     
-    c1, c2 = st.columns(2)
-    mb_acc_path = base_dir / "graphs" / "mobilenetv2_accuracy.png"
-    mb_loss_path = base_dir / "graphs" / "mobilenetv2_loss.png"
+    mb_graph_path = base_dir / "Picture2-C.png"
     
-    with c1:
-        if mb_acc_path.exists():
-            st.image(str(mb_acc_path), use_container_width=True, caption="Training and Validation Accuracy")
-        else:
-            st.warning(f"Graph file not found: {mb_acc_path}")
-            
-    with c2:
-        if mb_loss_path.exists():
-            st.image(str(mb_loss_path), use_container_width=True, caption="Training and Validation Loss")
-        else:
-            st.warning(f"Graph file not found: {mb_loss_path}")
+    if mb_graph_path.exists():
+        st.image(str(mb_graph_path), use_container_width=True, caption="MobileNetV2 Performance")
+    else:
+        st.warning(f"Graph file not found: {mb_graph_path}")
             
     st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
     
@@ -1866,21 +1857,12 @@ Please upload or drag and drop a clinical skin image file on the upload area abo
     st.markdown("<div class='eval-subtitle' style='color:#38BDF8;'>DINOv2 Training Performance</div>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;'>Best Validation Accuracy: <b>86.82%</b> | Best Epoch: <b>35</b> | Training Epochs: <b>50</b></p>", unsafe_allow_html=True)
     
-    c3, c4 = st.columns(2)
-    dino_acc_path = base_dir / "graphs" / "dinov2_accuracy.png"
-    dino_loss_path = base_dir / "graphs" / "dinov2_loss.png"
+    dino_graph_path = base_dir / "Picture1-C.png"
     
-    with c3:
-        if dino_acc_path.exists():
-            st.image(str(dino_acc_path), use_container_width=True, caption="Training and Validation Accuracy")
-        else:
-            st.warning(f"Graph file not found: {dino_acc_path}")
-            
-    with c4:
-        if dino_loss_path.exists():
-            st.image(str(dino_loss_path), use_container_width=True, caption="Training and Validation Loss")
-        else:
-            st.warning(f"Graph file not found: {dino_loss_path}")
+    if dino_graph_path.exists():
+        st.image(str(dino_graph_path), use_container_width=True, caption="DINOv2 Performance")
+    else:
+        st.warning(f"Graph file not found: {dino_graph_path}")
             
     st.markdown("</div>", unsafe_allow_html=True)
             
@@ -2071,26 +2053,7 @@ Please upload or drag and drop a clinical skin image file on the upload area abo
         else:
             st.info("Model comparison chart not found.")
 
-        st.markdown("<hr style='border: 1px solid #334155; margin: 40px 0;'>", unsafe_allow_html=True)
 
-        # ------------------------------------------------------------
-        # DINOV2 TRAINING HISTORY
-        # ------------------------------------------------------------
-        st.markdown("<div class='eval-title' style='color:#38BDF8;'>DINOV2 TRAINING HISTORY</div>", unsafe_allow_html=True)
-        col1, col2 = st.columns(2)
-        
-        has_acc = os.path.exists("metrics/dinov2_training_validation_accuracy.png")
-        has_loss = os.path.exists("metrics/dinov2_training_validation_loss.png")
-        
-        if not has_acc and not has_loss:
-            st.info("DINOv2 training history graphs are not available.")
-        else:
-            with col1:
-                if has_acc:
-                    st.image(Image.open("metrics/dinov2_training_validation_accuracy.png"), caption="Training vs Validation Accuracy", use_container_width=True)
-            with col2:
-                if has_loss:
-                    st.image(Image.open("metrics/dinov2_training_validation_loss.png"), caption="Training vs Validation Loss", use_container_width=True)
                     
     else:
         st.info("Final model evaluation has not been generated yet.")

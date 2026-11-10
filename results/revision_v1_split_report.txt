@@ -1,0 +1,82 @@
+================================================================================
+DERMAVISION RESEARCH PROJECT: REVISED 3-WAY GROUPED DATASET PARTITION
+MANIFEST AUDIT & SCIENTIFIC VALIDATION REPORT (REVISION V1)
+================================================================================
+
+Date: November 9, 2026
+Splitting Protocol: Two-Stage StratifiedGroupKFold
+Target Ratios: Training 70% | Validation 15% | Testing 15%
+Random Seed: 42 (reproducible)
+Manifest Directory: data/splits/revision_v1/
+
+--------------------------------------------------------------------------------
+1. DATASET TOTALS & PARTITION SIZE BREAKDOWN
+--------------------------------------------------------------------------------
+Total Curated Images:                12,445 (100.00%)
+Total Known Unique Lesions:          5,502
+Total Missing Lesion-ID Samples:     1,886 (15.15%)
+Total Disjoint Split Groups:         7,388
+
+Partition       |   Images |   Actual % |   Target % |  Known Lesions |  Missing Lesion ID
+-------------------------------------------------------------------------------------
+Training        |    8,712 |     70.00% |     70.00% |          3,847 |              1,321
+Validation      |    1,875 |     15.07% |     15.00% |            828 |                283
+Testing         |    1,858 |     14.93% |     15.00% |            827 |                282
+-------------------------------------------------------------------------------------
+Total           |   12,445 |    100.00% |    100.00% |          5,502 |              1,886
+
+--------------------------------------------------------------------------------
+2. CLASS DISTRIBUTION PER PARTITION
+--------------------------------------------------------------------------------
+
+Training Set (Total: 8,712 images):
+  - BCC       : 2,333 images |  26.78% of partition |  70.21% of class total
+  - Melanoma  : 3,156 images |  36.23% of partition |  69.79% of class total
+  - Nevus     : 3,223 images |  36.99% of partition |  70.07% of class total
+
+Validation Set (Total: 1,875 images):
+  - BCC       :   477 images |  25.44% of partition |  14.35% of class total
+  - Melanoma  :   707 images |  37.71% of partition |  15.63% of class total
+  - Nevus     :   691 images |  36.85% of partition |  15.02% of class total
+
+Testing Set (Total: 1,858 images):
+  - BCC       :   513 images |  27.61% of partition |  15.44% of class total
+  - Melanoma  :   659 images |  35.47% of partition |  14.57% of class total
+  - Nevus     :   686 images |  36.92% of partition |  14.91% of class total
+
+--------------------------------------------------------------------------------
+3. CROSS-PARTITION LESION OVERLAP VERIFICATION (DATA LEAKAGE CHECK)
+--------------------------------------------------------------------------------
+Train vs. Validation Overlapping Lesion IDs: 0 (VERIFIED: ZERO LEAKAGE)
+Train vs. Testing    Overlapping Lesion IDs: 0 (VERIFIED: ZERO LEAKAGE)
+Val   vs. Testing    Overlapping Lesion IDs: 0 (VERIFIED: ZERO LEAKAGE)
+Train vs. Validation Overlapping Group IDs:  0 (VERIFIED: ZERO LEAKAGE)
+Train vs. Testing    Overlapping Group IDs:  0 (VERIFIED: ZERO LEAKAGE)
+Val   vs. Testing    Overlapping Group IDs:  0 (VERIFIED: ZERO LEAKAGE)
+
+--------------------------------------------------------------------------------
+4. REPRODUCIBILITY & INTEGRITY VERIFICATION
+--------------------------------------------------------------------------------
+Deterministic Reproducibility Test: PASSED (Repeated generation yielded identical indices)
+train.csv SHA-256: f8a31b9d42fffe8bde97195c8e7297def6e5807cf6649751c7ee9fa6616b8e88
+val.csv   SHA-256: 75da1423e640f0c09db3c1977956410dcad6c2d12048abb00113322b8a03a0e5
+test.csv  SHA-256: 9786bb0e634abf4fad5a1e7d97b3c33d960024bc3138fc05c9ec7d9f3cb26c51
+
+--------------------------------------------------------------------------------
+5. SCIENTIFIC OBSERVATIONS & STRATIFICATION LIMITATIONS
+--------------------------------------------------------------------------------
+1. Perfect 70.00% Training Partition:
+   The training partition contains exactly 8,712 images (70.00% of 12,445).
+   Validation contains 1,875 images (15.07%), and Testing contains 1,858 images (14.93%).
+2. Group Constraints on Exact Class Ratios:
+   Because entire multi-image lesions (some comprising up to 31 images) must be assigned
+   as indivisible units to a single partition, exact continuous stratification is
+   discrete. Despite this constraint, class representation in Validation (BCC: 14.35%,
+   Melanoma: 15.63%, Nevus: 15.02%) and Testing (BCC: 15.44%, Melanoma: 14.57%, Nevus: 14.91%)
+   deviates by less than 0.65% from the nominal 15.00% target.
+3. Missing Lesion ID Independence:
+   The 1,886 images lacking lesion_id metadata (BCC: 0, Melanoma: 337, Nevus: 1,549) have
+   been assigned unique group IDs ('unk_<image_id>'). While this follows standard ISIC
+   benchmark protocol, it cannot biologically guarantee that two unannotated images do
+   not originate from the same patient. This limitation must be stated transparently.
+================================================================================

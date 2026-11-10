@@ -1,9 +1,22 @@
-ai-edge-litert
-streamlit
-numpy
-pillow
-fpdf2
-scikit-learn
-pandas
-matplotlib
-seaborn
+# Core Web Application, Visualization & Classical Evaluation
+streamlit>=1.36.0
+numpy>=1.26.0
+pillow>=10.0.0
+fpdf2>=2.7.0
+scikit-learn>=1.4.0
+pandas>=2.1.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+tqdm>=4.66.0
+psutil>=5.9.0
+
+# Lightweight Edge TFLite Runtime (Linux / Raspberry Pi ARM64)
+ai-edge-litert; platform_system == "Linux"
+
+# Deep Learning, TFLite Conversion, Pruning & Grad-CAM Explainability
+tensorflow>=2.16.0
+tf-keras>=2.16.0
+tensorflow-model-optimization>=0.8.0
+torch>=2.2.0
+torchvision>=0.17.0
+nbformat>=5.9.0

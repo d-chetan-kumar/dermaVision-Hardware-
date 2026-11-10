@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 1880 894" width="1880" height="894"
+     shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+
+  <defs>
+    <style type="text/css">
+      text { font-family: Arial, Helvetica, "DejaVu Sans", sans-serif; }
+    </style>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111111"/>
+    </marker>
+    <marker id="arrG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#15803d"/>
+    </marker>
+    <marker id="arrP" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#7e22ce"/>
+    </marker>
+    <marker id="arrSlate" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="#334155"/>
+    </marker>
+    <clipPath id="clip-lesion">
+      <rect x="37" y="274" width="148" height="148" rx="8"/>
+    </clipPath>
+    <clipPath id="clip-vit-patch">
+      <rect x="716" y="492" width="54" height="54" rx="4"/>
+    </clipPath>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect x="0" y="0" width="1880" height="894" fill="#ffffff"/>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       1. DATASET BOX (x: 20..202, w: 182, y: 155..635)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="stage-dataset">
+    <rect x="20" y="155" width="182" height="480" rx="18" fill="#ffffff" stroke="#111111" stroke-width="2.4"/>
+    <text x="111" y="190" text-anchor="middle" font-size="19" font-weight="700" fill="#111111">Dataset</text>
+    <text x="111" y="216" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">ISIC 2019</text>
+    <text x="111" y="239" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1d4ed8">12,445 Images</text>
+    <text x="111" y="259" text-anchor="middle" font-size="12.5" fill="#334155">(BCC, Melanoma, Nevus)</text>
+
+    <!-- Embedded dermoscopic sample -->
+    <image x="37" y="274" width="148" height="148" preserveAspectRatio="xMidYMid slice"
+           clip-path="url(#clip-lesion)" xlink:href="data:image/jpeg;base64,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"/>
+    <rect x="37" y="274" width="148" height="148" rx="8" fill="none" stroke="#64748b" stroke-width="1.2"/>
+
+    <line x1="34" y1="438" x2="188" y2="438" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="111" y="459" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">Class Counts</text>
+
+    <circle cx="42" cy="482" r="4.5" fill="#16a34a"/>
+    <text x="53" y="487" font-size="13" fill="#1e293b">Nevus</text>
+    <text x="186" y="487" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b">4,600</text>
+
+    <circle cx="42" cy="507" r="4.5" fill="#ea580c"/>
+    <text x="53" y="512" font-size="13" fill="#1e293b">Melanoma</text>
+    <text x="186" y="512" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b">4,522</text>
+
+    <circle cx="42" cy="532" r="4.5" fill="#dc2626"/>
+    <text x="53" y="537" font-size="13" fill="#1e293b">BCC</text>
+    <text x="186" y="537" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b">3,323</text>
+
+    <line x1="34" y1="549" x2="188" y2="549" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="37" y="571" font-size="13.5" font-weight="700" fill="#0f172a">Total</text>
+    <text x="186" y="571" text-anchor="end" font-size="13.5" font-weight="700" fill="#1d4ed8">12,445</text>
+
+    <rect x="37" y="588" width="148" height="28" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="111" y="606" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">224 × 224 × 3 RGB</text>
+  </g>
+
+  <!-- Arrow Dataset -> Preprocessing -->
+  <line x1="202" y1="395" x2="224" y2="395" stroke="#111111" stroke-width="2.2" marker-end="url(#arr)"/>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       2. PREPROCESSING BOX (x: 226..450, w: 224, y: 155..635)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="stage-preprocessing">
+    <rect x="226" y="155" width="224" height="480" rx="18" fill="#ffffff" stroke="#111111" stroke-width="2.4"/>
+    <text x="338" y="192" text-anchor="middle" font-size="19" font-weight="700" fill="#111111">Preprocessing</text>
+    <line x1="242" y1="210" x2="434" y2="210" stroke="#cbd5e1" stroke-width="1.2"/>
+
+    <text x="240" y="238" font-size="13.5" font-weight="700" fill="#111111">• Resize Input</text>
+    <text x="252" y="257" font-size="12.5" fill="#475569">224 × 224 × 3 (RGB)</text>
+
+    <text x="240" y="288" font-size="13.5" font-weight="700" fill="#111111">• Data Augmentation</text>
+    <text x="252" y="307" font-size="12" font-weight="700" fill="#15803d">(MobileNetV2 Train Split)</text>
+    <text x="252" y="325" font-size="12" fill="#475569">Rotation, Zoom, Translation</text>
+
+    <text x="240" y="357" font-size="13.5" font-weight="700" fill="#111111">• Normalization</text>
+    <text x="250" y="376" font-size="11.8" font-weight="700" fill="#166534">– MobileNetV2: [0, 1] (/ 255)</text>
+    <text x="250" y="395" font-size="11.8" font-weight="700" fill="#6b21a8">– DINOv2: ImageNet Mean/Std</text>
+
+    <text x="240" y="427" font-size="13.5" font-weight="700" fill="#111111">• Tensor Conversion</text>
+    <text x="252" y="446" font-size="12" fill="#475569">Float32 standardized batches</text>
+
+    <line x1="242" y1="470" x2="434" y2="470" stroke="#e2e8f0" stroke-width="1.2" stroke-dasharray="4,3"/>
+
+    <!-- Mini pipeline icons -->
+    <rect x="243" y="492" width="52" height="32" rx="4" fill="#fee2e2" stroke="#94a3b8" stroke-width="1"/>
+    <text x="269" y="512" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Image</text>
+    <line x1="295" y1="508" x2="310" y2="508" stroke="#475569" stroke-width="1.4" marker-end="url(#arrSlate)"/>
+    <rect x="312" y="492" width="52" height="32" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+    <text x="338" y="512" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">Norm</text>
+    <line x1="364" y1="508" x2="379" y2="508" stroke="#475569" stroke-width="1.4" marker-end="url(#arrSlate)"/>
+    <rect x="381" y="492" width="52" height="32" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+    <text x="407" y="512" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">Tensor</text>
+
+    <rect x="244" y="566" width="188" height="46" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2"/>
+    <text x="338" y="586" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1d4ed8">224 × 224 × 3 float32</text>
+    <text x="338" y="604" text-anchor="middle" font-size="12" fill="#475569">Classes: 0=BCC, 1=Mel, 2=Nev</text>
+  </g>
+
+  <!-- Arrow Preprocessing -> Data Split -->
+  <line x1="450" y1="395" x2="470" y2="395" stroke="#111111" stroke-width="2.2" marker-end="url(#arr)"/>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       3. DATA SPLIT BOX (x: 472..652, w: 180, y: 155..635)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="stage-datasplit">
+    <rect x="472" y="155" width="180" height="480" rx="18" fill="#ffffff" stroke="#111111" stroke-width="2.4"/>
+    <text x="562" y="192" text-anchor="middle" font-size="19" font-weight="700" fill="#111111">Data Split</text>
+    <text x="562" y="216" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1d4ed8">Actual 80:20 Split</text>
+    <text x="562" y="236" text-anchor="middle" font-size="12.5" fill="#475569">(12,445 Images)</text>
+
+    <!-- 2-slice pie chart -->
+    <path d="M 562.00 336.00 L 562.00 274.00 A 62 62 0 1 1 503.03 316.84 Z" fill="#3b82f6" stroke="#ffffff" stroke-width="2"/>
+    <path d="M 562.00 336.00 L 503.03 316.84 A 62 62 0 0 1 562.00 274.00 Z" fill="#4ade80" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="562" cy="336" r="62" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+    <text x="580.8" y="366.9" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">80%</text>
+    <text x="540.8" y="311.9" text-anchor="middle" font-size="13.5" font-weight="700" fill="#052e16">20%</text>
+
+    <!-- Legend -->
+    <circle cx="490" cy="426" r="7" fill="#3b82f6"/>
+    <text x="504" y="431" font-size="13.5" font-weight="700" fill="#111111">Training (80%)</text>
+    <text x="504" y="449" font-size="12.5" fill="#334155">9,956 images</text>
+
+    <circle cx="490" cy="478" r="7" fill="#4ade80"/>
+    <text x="504" y="483" font-size="13.5" font-weight="700" fill="#111111">Validation (20%)</text>
+    <text x="504" y="501" font-size="12.5" fill="#334155">2,489 images</text>
+
+    <rect x="480" y="520" width="164" height="100" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+    <text x="562" y="540" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Validation Breakdown:</text>
+    <text x="562" y="559" text-anchor="middle" font-size="12" fill="#334155">BCC: 665  |  Mel: 904</text>
+    <text x="562" y="577" text-anchor="middle" font-size="12" fill="#334155">Nevus: 920</text>
+    <line x1="490" y1="588" x2="634" y2="588" stroke="#cbd5e1" stroke-width="0.9"/>
+    <text x="562" y="606" text-anchor="middle" font-size="11.2" fill="#475569">Stratified Image Split (Seed 42)</text>
+  </g>
+
+  <!-- Orthogonal Split Arrows: Data Split -> Branch 1 & Branch 2 -->
+  <g id="connectors-split-to-models">
+    <path d="M 652 395 L 672 395 L 672 203 L 694 203" fill="none" stroke="#111111" stroke-width="2.2" marker-end="url(#arr)"/>
+    <path d="M 652 395 L 672 395 L 672 586 L 694 586" fill="none" stroke="#111111" stroke-width="2.2" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       4. TWO SEPARATE MODEL BRANCHES (x: 696..1106, w: 410)
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- BRANCH 1: MobileNetV2 (y: 24..382) -->
+  <g id="branch-mobilenetv2">
+    <rect x="696" y="24" width="410" height="358" rx="18" fill="#dcfce7" stroke="#111111" stroke-width="2.4"/>
+    <rect x="781" y="34" width="240" height="30" rx="13" fill="#ffffff" stroke="#15803d" stroke-width="1.8"/>
+    <text x="901" y="54" text-anchor="middle" font-size="14.5" font-weight="700" fill="#14532d">Branch 1: MobileNetV2 (CNN)</text>
+
+    <!-- Internal schematic canvas -->
+    <rect x="710" y="72" width="382" height="148" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="1.4"/>
+
+    <!-- Input block (x: 715..753, w: 38) -->
+    <rect x="715" y="88" width="38" height="62" rx="4" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.2"/>
+    <text x="734" y="115" text-anchor="middle" font-size="11.5" font-weight="700" fill="#14532d">Input</text>
+    <text x="734" y="132" text-anchor="middle" font-size="11" fill="#166534">224²</text>
+    <line x1="753" y1="119" x2="760" y2="119" stroke="#15803d" stroke-width="1.4" marker-end="url(#arrG)"/>
+
+    <!-- Conv / Inverted Residual Backbone (x: 761..827, center: 794) -->
+    <rect x="761" y="94" width="16" height="50" rx="2" fill="#86efac" stroke="#15803d" stroke-width="1"/>
+    <rect x="780" y="100" width="15" height="38" rx="2" fill="#4ade80" stroke="#15803d" stroke-width="1"/>
+    <rect x="798" y="105" width="14" height="28" rx="2" fill="#22c55e" stroke="#15803d" stroke-width="1"/>
+    <rect x="815" y="110" width="12" height="18" rx="2" fill="#16a34a" stroke="#14532d" stroke-width="1"/>
+    <text x="794" y="167" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">MobileNetV2</text>
+    <text x="794" y="182" text-anchor="middle" font-size="10.5" fill="#166534">Inv. Res. Backbone</text>
+    <line x1="827" y1="119" x2="834" y2="119" stroke="#15803d" stroke-width="1.4" marker-end="url(#arrG)"/>
+
+    <!-- GAP (x: 835..873, w: 38) -->
+    <rect x="835" y="92" width="38" height="54" rx="4" fill="#15803d" stroke="#14532d" stroke-width="1.2"/>
+    <text x="854" y="116" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">GAP</text>
+    <text x="854" y="133" text-anchor="middle" font-size="10.5" fill="#dcfce7">1280</text>
+    <line x1="873" y1="119" x2="880" y2="119" stroke="#15803d" stroke-width="1.4" marker-end="url(#arrG)"/>
+
+    <!-- Dense 256 + Drop 0.2 (x: 882..944, w: 62) -->
+    <rect x="882" y="85" width="62" height="37" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+    <text x="913" y="101" text-anchor="middle" font-size="11.2" font-weight="700" fill="#14532d">Dense 256</text>
+    <text x="913" y="116" text-anchor="middle" font-size="10.5" fill="#166534">ReLU</text>
+    <rect x="882" y="127" width="62" height="24" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+    <text x="913" y="143" text-anchor="middle" font-size="10.5" font-weight="700" fill="#92400e">Drop 0.2</text>
+    <line x1="944" y1="119" x2="951" y2="119" stroke="#15803d" stroke-width="1.4" marker-end="url(#arrG)"/>
+
+    <!-- Dense 64 + Drop 0.1 (x: 953..1011, w: 58) -->
+    <rect x="953" y="85" width="58" height="37" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+    <text x="982" y="101" text-anchor="middle" font-size="11.2" font-weight="700" fill="#14532d">Dense 64</text>
+    <text x="982" y="116" text-anchor="middle" font-size="10.5" fill="#166534">ReLU</text>
+    <rect x="953" y="127" width="58" height="24" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+    <text x="982" y="143" text-anchor="middle" font-size="10.5" font-weight="700" fill="#92400e">Drop 0.1</text>
+    <line x1="1011" y1="119" x2="1018" y2="119" stroke="#15803d" stroke-width="1.4" marker-end="url(#arrG)"/>
+
+    <!-- Dense 3 Softmax (x: 1020..1088, w: 68) -->
+    <rect x="1020" y="85" width="68" height="66" rx="5" fill="#f0fdf4" stroke="#15803d" stroke-width="1.5"/>
+    <text x="1054" y="104" text-anchor="middle" font-size="11.2" font-weight="700" fill="#14532d">Dense 3</text>
+    <text x="1054" y="119" text-anchor="middle" font-size="10.5" fill="#166534">Softmax</text>
+    <line x1="1026" y1="126" x2="1082" y2="126" stroke="#86efac" stroke-width="0.9"/>
+    <text x="1054" y="143" text-anchor="middle" font-size="10.8" font-weight="700" fill="#0f172a">P<tspan dy="2" font-size="8.8">M</tspan><tspan dy="-2"> (3 cls)</tspan></text>
+
+    <text x="985" y="176" text-anchor="middle" font-size="11.8" font-weight="700" fill="#15803d">Custom Classification Head</text>
+    <text x="901" y="207" text-anchor="middle" font-size="10.8" font-weight="700" fill="#064e3b">
+      GAP → Dense 256 → Dropout 0.2 → Dense 64 → Dropout 0.1 → Dense 3
+    </text>
+
+    <!-- Summary bullets below inner graphic -->
+    <text x="714" y="244" font-size="12.5" fill="#14532d">• ImageNet-Pretrained Backbone (alpha = 1.00, 2.60M total params)</text>
+    <text x="714" y="266" font-size="12.5" font-weight="700" fill="#052e16">• Head: GAP → Dense(256, ReLU) → Dropout(0.2) →</text>
+    <text x="724" y="286" font-size="12.5" font-weight="700" fill="#052e16">Dense(64, ReLU) → Dropout(0.1) → Dense(3, Softmax)</text>
+    <text x="714" y="310" font-size="12.5" fill="#14532d">• Independent CNN Branch — 3 Output Probabilities (P<tspan dy="3" font-size="10.5">M</tspan><tspan dy="-3">)</tspan></text>
+    <text x="714" y="332" font-size="12" fill="#166534">• Input Scale: [0, 1] (/ 255.0)  |  Best Keras Checkpoint Retained</text>
+    <text x="714" y="354" font-size="12" font-weight="700" fill="#14532d">• Evaluated Separately &amp; Compressed (TFLite INT8 / Pruning)</text>
+  </g>
+
+  <!-- BRANCH 2: DINOv2 (y: 414..772) -->
+  <g id="branch-dinov2">
+    <rect x="696" y="414" width="410" height="358" rx="18" fill="#f3e8ff" stroke="#111111" stroke-width="2.4"/>
+    <rect x="781" y="424" width="240" height="30" rx="13" fill="#ffffff" stroke="#7e22ce" stroke-width="1.8"/>
+    <text x="901" y="444" text-anchor="middle" font-size="14.5" font-weight="700" fill="#3b0764">Branch 2: DINOv2 (ViT-B/14)</text>
+
+    <!-- Internal schematic canvas -->
+    <rect x="710" y="462" width="382" height="150" rx="10" fill="#ffffff" stroke="#d8b4fe" stroke-width="1.4"/>
+
+    <!-- Patch Embedding 14x14 grid (x: 716..770, center: 743) -->
+    <image x="716" y="492" width="54" height="54" preserveAspectRatio="xMidYMid slice"
+           clip-path="url(#clip-vit-patch)" xlink:href="data:image/jpeg;base64,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"/>
+    <rect x="716" y="492" width="54" height="54" rx="4" fill="none" stroke="#7e22ce" stroke-width="1.4"/>
+    <line x1="729.5" y1="492" x2="729.5" y2="546" stroke="#7e22ce" stroke-width="0.7" opacity="0.8"/>
+    <line x1="743"   y1="492" x2="743"   y2="546" stroke="#7e22ce" stroke-width="0.7" opacity="0.8"/>
+    <line x1="756.5" y1="492" x2="756.5" y2="546" stroke="#7e22ce" stroke-width="0.7" opacity="0.8"/>
+    <line x1="716" y1="505.5" x2="770" y2="505.5" stroke="#7e22ce" stroke-width="0.7" opacity="0.8"/>
+    <line x1="716" y1="519"   x2="770" y2="519"   stroke="#7e22ce" stroke-width="0.7" opacity="0.8"/>
+    <line x1="716" y1="532.5" x2="770" y2="532.5" stroke="#7e22ce" stroke-width="0.7" opacity="0.8"/>
+    <text x="743" y="482" text-anchor="middle" font-size="11.2" font-weight="700" fill="#581c87">Patches</text>
+    <text x="743" y="564" text-anchor="middle" font-size="11" font-weight="700" fill="#581c87">224×224</text>
+    <text x="743" y="579" text-anchor="middle" font-size="10.2" fill="#7e22ce">14×14 patch</text>
+    <line x1="770" y1="519" x2="782" y2="519" stroke="#7e22ce" stroke-width="1.4" marker-end="url(#arrP)"/>
+
+    <!-- 257 Tokens (x: 784..832, w: 48, center: 808) -->
+    <text x="808" y="482" text-anchor="middle" font-size="11.2" font-weight="700" fill="#581c87">Tokens</text>
+    <rect x="784" y="488" width="48" height="16" rx="3" fill="#fef08a" stroke="#ca8a04" stroke-width="1"/>
+    <text x="808" y="500" text-anchor="middle" font-size="10.2" font-weight="700" fill="#854d0e">[CLS] 1</text>
+    <rect x="784" y="506" width="48" height="9.5" rx="2" fill="#e9d5ff" stroke="#9333ea" stroke-width="0.9"/>
+    <rect x="784" y="517.5" width="48" height="9.5" rx="2" fill="#d8b4fe" stroke="#9333ea" stroke-width="0.9"/>
+    <rect x="784" y="529" width="48" height="9.5" rx="2" fill="#c084fc" stroke="#9333ea" stroke-width="0.9"/>
+    <rect x="784" y="540.5" width="48" height="9.5" rx="2" fill="#a855f7" stroke="#7e22ce" stroke-width="0.9"/>
+    <text x="808" y="564" text-anchor="middle" font-size="11" font-weight="700" fill="#3b0764">257 tokens</text>
+    <text x="808" y="579" text-anchor="middle" font-size="10.2" fill="#7e22ce">(1 + 256)</text>
+    <line x1="832" y1="519" x2="849" y2="519" stroke="#7e22ce" stroke-width="1.4" marker-end="url(#arrP)"/>
+
+    <!-- 12 Transformer Blocks (x: 851..971, w: 120, center: 911) -->
+    <text x="911" y="482" text-anchor="middle" font-size="11.2" font-weight="700" fill="#581c87">ViT-B/14 Encoder</text>
+    <rect x="851" y="488" width="120" height="63" rx="5" fill="#e9d5ff" stroke="#7e22ce" stroke-width="1.4"/>
+    <rect x="856" y="493" width="110" height="17" rx="2" fill="#ffffff" stroke="#a855f7" stroke-width="0.9"/>
+    <text x="911" y="505" text-anchor="middle" font-size="10.2" font-weight="700" fill="#4c1d95">Self-Attention (12h)</text>
+    <rect x="856" y="513" width="110" height="17" rx="2" fill="#ffffff" stroke="#a855f7" stroke-width="0.9"/>
+    <text x="911" y="525" text-anchor="middle" font-size="10.2" font-weight="700" fill="#4c1d95">MLP + LayerScale</text>
+    <text x="911" y="545" text-anchor="middle" font-size="10.5" font-weight="700" fill="#3b0764">12 Blocks · 768-D</text>
+    <text x="911" y="564" text-anchor="middle" font-size="10.5" font-weight="700" fill="#3b0764">12 Transformer Blocks</text>
+    <text x="911" y="579" text-anchor="middle" font-size="10" fill="#7e22ce">768-D Embedding (Frozen)</text>
+    <line x1="971" y1="519" x2="988" y2="519" stroke="#7e22ce" stroke-width="1.4" marker-end="url(#arrP)"/>
+
+    <!-- Linear 768 -> 3 (x: 990..1084, w: 94, center: 1037) -->
+    <text x="1037" y="482" text-anchor="middle" font-size="11.2" font-weight="700" fill="#581c87">Linear Head</text>
+    <rect x="990" y="488" width="94" height="63" rx="5" fill="#faf5ff" stroke="#7e22ce" stroke-width="1.5"/>
+    <text x="1037" y="506" text-anchor="middle" font-size="12" font-weight="700" fill="#3b0764">Linear</text>
+    <text x="1037" y="522" text-anchor="middle" font-size="12" font-weight="700" fill="#6b21a8">768 → 3</text>
+    <line x1="997" y1="529" x2="1077" y2="529" stroke="#d8b4fe" stroke-width="0.9"/>
+    <text x="1037" y="545" text-anchor="middle" font-size="10.8" font-weight="700" fill="#0f172a">Softmax (P<tspan dy="2" font-size="8.8">D</tspan><tspan dy="-2">)</tspan></text>
+    <text x="1037" y="564" text-anchor="middle" font-size="11" font-weight="700" fill="#3b0764">Linear Probe</text>
+    <text x="1037" y="579" text-anchor="middle" font-size="10.2" fill="#7e22ce">2,307 params</text>
+
+    <text x="901" y="601" text-anchor="middle" font-size="11.8" font-weight="700" fill="#3b0764">
+      ViT-B/14 · 257 Tokens · 12 Blocks · 768-D → Linear(768 → 3)
+    </text>
+
+    <!-- Summary bullets below inner graphic -->
+    <text x="714" y="635" font-size="12.5" fill="#3b0764">• Frozen ViT-B/14 Backbone (LVD-142M; 86.58M total params)</text>
+    <text x="714" y="657" font-size="12.5" font-weight="700" fill="#2e1065">• 257 Tokens (1 [CLS] + 256 Patches of 14×14 px)</text>
+    <text x="714" y="679" font-size="12.5" font-weight="700" fill="#2e1065">• 12 Transformer Blocks  |  768-D Embedding</text>
+    <text x="714" y="701" font-size="12.5" font-weight="700" fill="#2e1065">• Trainable Classifier Head: Linear(768 → 3) + Softmax</text>
+    <text x="714" y="724" font-size="12.5" fill="#3b0764">• Independent ViT Branch — 3 Output Probabilities (P<tspan dy="3" font-size="10.5">D</tspan><tspan dy="-3">)</tspan></text>
+    <text x="714" y="746" font-size="11.8" fill="#581c87">• Evaluated Separately &amp; Tested Under Dynamic INT8 Quantization</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       5. MODEL EVALUATION STAGE (x: 1144..1376, w: 232, y: 24..772)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="stage-evaluation">
+    <rect x="1144" y="24" width="232" height="748" rx="18" fill="#f8fafc" stroke="#111111" stroke-width="2.4"/>
+    <rect x="1144" y="24" width="232" height="46" rx="16" fill="#e2e8f0" stroke="#111111" stroke-width="2.4"/>
+    <text x="1260" y="45" text-anchor="middle" font-size="15.5" font-weight="700" fill="#0f172a">Model Evaluation</text>
+    <text x="1260" y="62" text-anchor="middle" font-size="11.8" font-weight="700" fill="#334155">Baseline FP32 (Val n = 2,489)</text>
+
+    <!-- Top Eval Card: MobileNetV2 FP32 (y: 80..354) -->
+    <rect x="1154" y="80" width="212" height="274" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+    <rect x="1154" y="80" width="212" height="32" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="1260" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#14532d">MobileNetV2 (FP32)</text>
+
+    <text x="1166" y="136" font-size="12.5" fill="#334155">Val Accuracy:</text>
+    <text x="1354" y="136" text-anchor="end" font-size="13.5" font-weight="700" fill="#15803d">90.96%</text>
+
+    <text x="1166" y="162" font-size="12.5" fill="#334155">Macro F1-Score:</text>
+    <text x="1354" y="162" text-anchor="end" font-size="13" font-weight="700" fill="#111111">91.27%</text>
+
+    <line x1="1166" y1="175" x2="1354" y2="175" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="1166" y="196" font-size="12.5" fill="#334155">Melanoma Recall:</text>
+    <text x="1354" y="196" text-anchor="end" font-size="13" font-weight="700" fill="#c2410c">87.06%</text>
+
+    <text x="1166" y="220" font-size="12.5" fill="#334155">BCC Recall:</text>
+    <text x="1354" y="220" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">96.54%</text>
+
+    <text x="1166" y="244" font-size="12.5" fill="#334155">Nevus Recall:</text>
+    <text x="1354" y="244" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">90.76%</text>
+
+    <line x1="1166" y1="257" x2="1354" y2="257" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="1166" y="278" font-size="12.5" fill="#334155">Model Size:</text>
+    <text x="1354" y="278" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">30.21 MiB</text>
+
+    <text x="1166" y="302" font-size="12.5" fill="#334155">CPU Latency (b=1):</text>
+    <text x="1354" y="302" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">104.89 ms</text>
+
+    <rect x="1164" y="317" width="192" height="26" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+    <text x="1260" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">Highest Accuracy Reference</text>
+
+    <!-- Bottom Eval Card: DINOv2 FP32 (y: 450..724) -->
+    <rect x="1154" y="450" width="212" height="274" rx="12" fill="#ffffff" stroke="#7e22ce" stroke-width="2"/>
+    <rect x="1154" y="450" width="212" height="32" rx="10" fill="#f3e8ff" stroke="#7e22ce" stroke-width="1.6"/>
+    <text x="1260" y="471" text-anchor="middle" font-size="13.5" font-weight="700" fill="#3b0764">DINOv2 ViT-B/14 (FP32)</text>
+
+    <text x="1166" y="506" font-size="12.5" fill="#334155">Val Accuracy:</text>
+    <text x="1354" y="506" text-anchor="end" font-size="13.5" font-weight="700" fill="#6b21a8">86.66%</text>
+
+    <text x="1166" y="532" font-size="12.5" fill="#334155">Macro F1-Score:</text>
+    <text x="1354" y="532" text-anchor="end" font-size="13" font-weight="700" fill="#111111">86.82%</text>
+
+    <line x1="1166" y1="545" x2="1354" y2="545" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="1166" y="566" font-size="12.5" fill="#334155">Melanoma Recall:</text>
+    <text x="1354" y="566" text-anchor="end" font-size="13" font-weight="700" fill="#c2410c">79.09%</text>
+
+    <text x="1166" y="590" font-size="12.5" fill="#334155">BCC Recall:</text>
+    <text x="1354" y="590" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">93.23%</text>
+
+    <text x="1166" y="614" font-size="12.5" fill="#334155">Nevus Recall:</text>
+    <text x="1354" y="614" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">89.35%</text>
+
+    <line x1="1166" y1="627" x2="1354" y2="627" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="1166" y="648" font-size="12.5" fill="#334155">Model Size:</text>
+    <text x="1354" y="648" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">330.34 MiB</text>
+
+    <text x="1166" y="672" font-size="12.5" fill="#334155">CPU Latency (b=1):</text>
+    <text x="1354" y="672" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">373.35 ms</text>
+
+    <rect x="1164" y="687" width="192" height="26" rx="5" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1"/>
+    <text x="1260" y="705" text-anchor="middle" font-size="12" font-weight="700" fill="#6b21a8">Heavy Transformer Baseline</text>
+
+    <text x="1260" y="761" text-anchor="middle" font-size="12" fill="#475569">Independent Per-Branch Eval</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       6. OPTIMIZATION EXPERIMENTS STAGE (x: 1408..1692, w: 284, y: 24..772)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="stage-optimization">
+    <rect x="1408" y="24" width="284" height="748" rx="18" fill="#fffdf5" stroke="#111111" stroke-width="2.4"/>
+    <rect x="1408" y="24" width="284" height="46" rx="16" fill="#fef08a" stroke="#111111" stroke-width="2.4"/>
+    <text x="1550" y="45" text-anchor="middle" font-size="15.5" font-weight="700" fill="#111111">Optimization Experiments</text>
+    <text x="1550" y="62" text-anchor="middle" font-size="11.8" font-weight="700" fill="#713f12">Quantization &amp; Pruning (CPU Benchmarked)</text>
+
+    <!-- Top Opt Card: MobileNetV2 Optimization (y: 80..372) -->
+    <rect x="1418" y="80" width="264" height="292" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+    <rect x="1418" y="80" width="264" height="30" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="1550" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">MobileNetV2 Compression</text>
+
+    <!-- RECOMMENDED EDGE CANDIDATE CARD -->
+    <rect x="1426" y="118" width="248" height="108" rx="9" fill="#ecfdf5" stroke="#059669" stroke-width="2.4"/>
+    <rect x="1434" y="125" width="232" height="22" rx="6" fill="#059669"/>
+    <text x="1550" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">★ RECOMMENDED EDGE CANDIDATE</text>
+    <text x="1550" y="164" text-anchor="middle" font-size="13.5" font-weight="700" fill="#064e3b">MobileNetV2 Full INT8 TFLite</text>
+    <text x="1550" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">90.72% Acc  |  86.73% Mel Rec</text>
+    <text x="1550" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">2.94 MiB  |  4.51 ms (221.7 FPS)</text>
+    <text x="1550" y="218" text-anchor="middle" font-size="11.8" fill="#065f46">10.3× smaller, 23.3× faster vs FP32</text>
+
+    <!-- Dynamic INT8 TFLite -->
+    <rect x="1426" y="234" width="248" height="58" rx="7" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2"/>
+    <text x="1436" y="252" font-size="12" font-weight="700" fill="#1e293b">Dynamic INT8 TFLite</text>
+    <text x="1436" y="269" font-size="11.8" fill="#334155">90.88% Acc | 85.62% Mel | 2.74 MiB</text>
+    <text x="1436" y="286" font-size="11.8" fill="#475569">27.76 ms (36.0 FPS) · App Fallback</text>
+
+    <!-- 50% Pruned -->
+    <rect x="1426" y="300" width="248" height="62" rx="7" fill="#fff1f2" stroke="#fda4af" stroke-width="1.2"/>
+    <text x="1434" y="318" font-size="12" font-weight="700" fill="#9f1239">50% Unstructured Pruned (Ep 5)</text>
+    <text x="1434" y="335" font-size="11.6" fill="#881337">83.49% Acc | 73.45% Mel (-13.61 pp)</text>
+    <text x="1434" y="352" font-size="11.2" font-weight="700" fill="#be123c">101.54 ms (No Speedup · Do Not Deploy)</text>
+
+    <!-- Bottom Opt Card: DINOv2 Optimization (y: 434..728) -->
+    <rect x="1418" y="434" width="264" height="294" rx="12" fill="#ffffff" stroke="#7e22ce" stroke-width="2"/>
+    <rect x="1418" y="434" width="264" height="30" rx="10" fill="#f3e8ff" stroke="#7e22ce" stroke-width="1.6"/>
+    <text x="1550" y="454" text-anchor="middle" font-size="13" font-weight="700" fill="#3b0764">DINOv2 Compression (PyTorch)</text>
+
+    <!-- Native Dynamic INT8 -->
+    <rect x="1426" y="474" width="248" height="86" rx="8" fill="#fff1f2" stroke="#e11d48" stroke-width="1.6"/>
+    <text x="1436" y="493" font-size="12.5" font-weight="700" fill="#9f1239">Native Dynamic INT8 (b=1)</text>
+    <text x="1436" y="512" font-size="12" font-weight="700" fill="#be123c">61.59% Acc (-25.07 pp)</text>
+    <text x="1436" y="530" font-size="11.8" fill="#881337">49.67% Mel Recall (-29.42 pp)</text>
+    <text x="1436" y="548" font-size="11.8" fill="#475569">87.38 MiB  |  173.54 ms (5.76 FPS)</text>
+
+    <!-- Folded-224 Ablation -->
+    <rect x="1426" y="570" width="248" height="72" rx="8" fill="#fff1f2" stroke="#fda4af" stroke-width="1.2"/>
+    <text x="1436" y="589" font-size="12" font-weight="700" fill="#9f1239">Fixed-224 Folded INT8 (Exp.)</text>
+    <text x="1436" y="607" font-size="11.8" fill="#881337">61.59% Acc  |  49.67% Mel Recall</text>
+    <text x="1436" y="625" font-size="11.8" fill="#475569">84.13 MiB  |  155.24 ms (6.44 FPS)</text>
+
+    <!-- Failure diagnosis banner -->
+    <rect x="1426" y="654" width="248" height="62" rx="8" fill="#ffe4e6" stroke="#be123c" stroke-width="1.3"/>
+    <text x="1550" y="675" text-anchor="middle" font-size="12" font-weight="700" fill="#881337">DO NOT DEPLOY DINOv2 INT8</text>
+    <text x="1550" y="693" text-anchor="middle" font-size="11.8" fill="#9f1239">Block 8–11 Outlier Activations</text>
+    <text x="1550" y="709" text-anchor="middle" font-size="11.8" fill="#9f1239">Saturate Per-Tensor quint8</text>
+
+    <text x="1550" y="761" text-anchor="middle" font-size="11.8" fill="#475569">Host CPU Benchmarked (i5-1235U, b=1)</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PLANAR ZERO-CROSSING CONNECTORS (rendered cleanly over open corridors)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="connectors-models-to-eval-opt-and-outputs">
+    <!-- 1) MobileNetV2 -> Eval FP32 -->
+    <line x1="1106" y1="203" x2="1152" y2="203" stroke="#111111" stroke-width="2.2" marker-end="url(#arr)"/>
+
+    <!-- 2) MobileNetV2 -> Optimization (visible across open corridor y=386) -->
+    <path d="M 1106 336 L 1124 336 L 1124 386 L 1390 386 L 1390 172 L 1416 172"
+          fill="none" stroke="#15803d" stroke-width="2.2" stroke-dasharray="6,3" marker-end="url(#arrG)"/>
+
+    <!-- 3) DINOv2 -> Eval FP32 -->
+    <line x1="1106" y1="586" x2="1152" y2="586" stroke="#111111" stroke-width="2.2" marker-end="url(#arr)"/>
+
+    <!-- 4) DINOv2 -> Optimization (visible across lower open corridor y=738) -->
+    <path d="M 1106 738 L 1390 738 L 1390 586 L 1416 586"
+          fill="none" stroke="#7e22ce" stroke-width="2.2" stroke-dasharray="6,3" marker-end="url(#arrP)"/>
+
+    <!-- 5) Recommended Edge Candidate (Full INT8 TFLite) -> Classification Outputs -->
+    <path d="M 1674 172 L 1707 172 L 1707 374 L 1722 374"
+          fill="none" stroke="#059669" stroke-width="2.4" marker-end="url(#arrG)"/>
+
+    <!-- 6) DINOv2 FP32 (Verified Baseline) -> Classification Outputs via open opt corridor y=405 -->
+    <path d="M 1366 495 L 1388 495 L 1388 405 L 1707 405 L 1707 412 L 1722 412"
+          fill="none" stroke="#7e22ce" stroke-width="2.2" marker-end="url(#arrP)"/>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       7. CLASSIFICATION OUTPUTS BOX (x: 1724..1860, w: 136, y: 175..605)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="stage-outputs">
+    <rect x="1724" y="175" width="136" height="430" rx="16" fill="#ffffff" stroke="#111111" stroke-width="2.4" stroke-dasharray="8,4"/>
+    <text x="1792" y="210" text-anchor="middle" font-size="15.5" font-weight="700" fill="#111111">Classification</text>
+    <text x="1792" y="230" text-anchor="middle" font-size="15.5" font-weight="700" fill="#111111">Outputs</text>
+    <text x="1792" y="250" text-anchor="middle" font-size="12" fill="#475569">3 Lesion Classes</text>
+
+    <line x1="1738" y1="264" x2="1846" y2="264" stroke="#cbd5e1" stroke-width="1.2"/>
+
+    <!-- BCC Class -->
+    <rect x="1740" y="282" width="104" height="68" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="1792" y="311" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b">BCC</text>
+    <text x="1792" y="332" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Class 0</text>
+
+    <!-- Melanoma Class -->
+    <rect x="1740" y="368" width="104" height="68" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+    <text x="1792" y="397" text-anchor="middle" font-size="15.5" font-weight="700" fill="#9a3412">Melanoma</text>
+    <text x="1792" y="418" text-anchor="middle" font-size="12" font-weight="700" fill="#c2410c">Class 1</text>
+
+    <!-- Nevus Class -->
+    <rect x="1740" y="454" width="104" height="68" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="1792" y="483" text-anchor="middle" font-size="16" font-weight="700" fill="#166534">Nevus</text>
+    <text x="1792" y="504" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">Class 2</text>
+
+    <line x1="1738" y1="538" x2="1846" y2="538" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="1792" y="560" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Per-Branch Argmax</text>
+    <text x="1792" y="579" text-anchor="middle" font-size="11.5" fill="#475569">Independent Outputs</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BOTTOM LEGEND, PIPELINE SUMMARY & LIMITATION NOTE (x: 20..1860, y: 788..882)
+       ══════════════════════════════════════════════════════════════════ -->
+  <g id="legend-bar">
+    <rect x="20" y="788" width="1840" height="94" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+
+    <text x="36" y="810" font-size="12" font-weight="700" fill="#1e293b">Legend:</text>
+
+    <rect x="96" y="799" width="16" height="12" rx="3" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+    <text x="118" y="810" font-size="12" fill="#334155">MobileNetV2 Branch</text>
+
+    <rect x="256" y="799" width="16" height="12" rx="3" fill="#f3e8ff" stroke="#7e22ce" stroke-width="1.5"/>
+    <text x="278" y="810" font-size="12" fill="#334155">DINOv2 (ViT-B/14) Branch</text>
+
+    <rect x="446" y="799" width="16" height="12" rx="3" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+    <text x="468" y="810" font-size="12" fill="#334155">Baseline Model Evaluation (n = 2,489)</text>
+
+    <rect x="702" y="799" width="16" height="12" rx="3" fill="#fef08a" stroke="#854d0e" stroke-width="1.5"/>
+    <text x="724" y="810" font-size="12" fill="#334155">Optimization Experiments</text>
+
+    <rect x="896" y="799" width="16" height="12" rx="3" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="918" y="810" font-size="12" font-weight="700" fill="#065f46">Recommended Edge Candidate (Full INT8 TFLite)</text>
+
+    <rect x="1256" y="799" width="16" height="12" rx="3" fill="#ffffff" stroke="#111111" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="1278" y="810" font-size="12" fill="#334155">Classification Outputs (BCC, Melanoma, Nevus)</text>
+
+    <line x1="1588" y1="805" x2="1624" y2="805" stroke="#111111" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="1632" y="810" font-size="12" fill="#334155">Independent Branch Flow</text>
+
+    <text x="36" y="835" font-size="12.2" fill="#334155">
+      Pipeline Overview: Independent CNN (MobileNetV2) and ViT (DINOv2 ViT-B/14) branches trained on ISIC 2019 (12,445 images; 80:20 split), evaluated separately and benchmarked on CPU (Intel Core i5-1235U).
+    </text>
+
+    <rect x="34" y="846" width="1812" height="26" rx="5" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.1"/>
+    <text x="44" y="863" font-size="12.2" font-weight="700" fill="#78350f">
+      Limitation: Image-level stratified split with 54.04% validation lesion-ID overlap with training. CPU benchmarks were conducted on an Intel Core i5-1235U host; no external clinical or independent test-set validation is claimed.
+    </text>
+  </g>
+</svg>

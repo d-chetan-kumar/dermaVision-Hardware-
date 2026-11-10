@@ -1,0 +1,24 @@
+{
+    "model": "MobileNetV2",
+    "dataset_split": "revision_v1",
+    "train_manifest": "data/splits/revision_v1/train.csv",
+    "train_manifest_sha256": "f8a31b9d42fffe8bde97195c8e7297def6e5807cf6649751c7ee9fa6616b8e88",
+    "val_manifest": "data/splits/revision_v1/val.csv",
+    "val_manifest_sha256": "75da1423e640f0c09db3c1977956410dcad6c2d12048abb00113322b8a03a0e5",
+    "batch_size": 64,
+    "initial_learning_rate": 0.0001,
+    "optimizer": "Adam",
+    "loss": "SparseCategoricalCrossentropy",
+    "input_scaling": "div255",
+    "freeze_batch_normalization": false,
+    "use_class_weights": false,
+    "class_weights": null,
+    "epochs": 50,
+    "image_size": [
+        224,
+        224,
+        3
+    ],
+    "seed": 42,
+    "created_at": "2026-11-09 14:29:45"
+}

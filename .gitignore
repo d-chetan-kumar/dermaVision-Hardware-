@@ -1,41 +1,63 @@
-# Large Datasets
+# ==============================================================================
+# DermaVision — Repository .gitignore
+# ==============================================================================
+
+# 1. Raw ISIC 2019 Dataset & Raw Dataset CSVs
+# Keep experiment CSVs in results/, metrics/, and data/splits/ tracked while ignoring raw datasets.
 ISIC_2019_Training_Input/
 dermavision-isic-2019/
-*.csv
+ISIC_2019_Training_GroundTruth.csv
+ISIC_2019_Training_Metadata.csv
+ISIC_2019_*.csv
 
-# Model Weights
-# .tflite models are small (~8MB) — committed for direct Raspberry Pi deployment
-# .keras models are large (~30MB+) — excluded; regenerate via convert_to_tflite.py
+# 2. Large Intermediate / Rejected Model Checkpoints & Caches (>50-100 MB or redundant)
+# Compact deployment .tflite models (~3 MB) and small linear-probe .pth heads (~11 KB) remain tracked.
+# Note: Original models/best_mobilenetv2.keras (already tracked) stays tracked for Grad-CAM / baseline reference.
 models/*.keras
+models/**/*.keras
 models/*.h5
+models/dinov2/*.pth
+results/pruning/checkpoints/
+*.h5
 *.pb
+dinov2_vitb14_pretrain.pth
 
-# Python caches and compiled files
+# 3. Kaggle Packaging Archives & Temporary Scratch Files
+dermavision_kaggle_pack/
+dermavision_kaggle_pack.zip
+scratch/
+scratch_*.png
+
+# 4. Python, TensorFlow, Keras & Matplotlib Caches
 __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+.keras_cache/
 
-# Environments
+# 5. Virtual Environments
 .env
+.env.*
 .venv
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
-# Streamlit config (secrets, etc)
+# 6. Secrets, Credentials & Keys
 .streamlit/secrets.toml
 .streamlit/credentials.toml
+secrets.json
+credentials.json
+*.pem
+*.key
 
-# IDEs and Editors
+# 7. IDEs, Editors & Logs
 .vscode/
 .idea/
 *.swp
 *.swo
 .DS_Store
-
-# Output logs and temporary files
 *.log
-scratch/

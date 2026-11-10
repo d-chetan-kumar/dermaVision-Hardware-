@@ -1,0 +1,62 @@
+import numpy as np
+import tensorflow as tf
+from PIL import Image
+import matplotlib.cm as cm
+
+def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None):
+    """
+    Generates a Grad-CAM heatmap for a given image and model.
+    """
+    grad_model = tf.keras.models.Model(
+        inputs=[model.inputs], 
+        outputs=[model.get_layer(last_conv_layer_name).output, model.output]
+    )
+
+    with tf.GradientTape() as tape:
+        last_conv_layer_output, preds = grad_model(img_array)
+        if pred_index is None:
+            pred_index = tf.argmax(preds[0])
+        class_channel = preds[:, pred_index]
+
+    grads = tape.gradient(class_channel, last_conv_layer_output)
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
+    last_conv_layer_output = last_conv_layer_output[0]
+    heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+    heatmap = tf.squeeze(heatmap)
+
+    heatmap = tf.maximum(heatmap, 0)
+    max_val = tf.math.reduce_max(heatmap)
+    if max_val != 0:
+        heatmap = heatmap / max_val
+    return heatmap.numpy()
+
+def overlay_gradcam(img_path, heatmap, alpha=0.4):
+    """
+    Overlays the heatmap on the original image.
+    """
+    img = Image.open(img_path).convert("RGB")
+    img_width, img_height = img.size
+
+    heatmap = np.uint8(255 * heatmap)
+
+    # Use Matplotlib's colormap registry
+    try:
+        jet = cm.get_cmap("jet")
+    except AttributeError:
+        import matplotlib as mpl
+        jet = mpl.colormaps["jet"]
+
+    jet_colors = jet(np.arange(256))[:, :3]
+    jet_heatmap = jet_colors[heatmap]
+
+    jet_heatmap = tf.keras.utils.array_to_img(jet_heatmap)
+    jet_heatmap = jet_heatmap.resize((img_width, img_height), resample=Image.LANCZOS)
+    jet_heatmap = tf.keras.utils.img_to_array(jet_heatmap)
+    
+    img_array = tf.keras.utils.img_to_array(img)
+
+    superimposed_img = jet_heatmap * alpha + img_array * (1 - alpha)
+    superimposed_img = tf.keras.utils.array_to_img(superimposed_img)
+    
+    return superimposed_img

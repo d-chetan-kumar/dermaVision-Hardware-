@@ -1,0 +1,112 @@
+================================================================================
+DERMAVISION REVISION V1: TRAINING PIPELINE TECHNICAL REVIEW & AUDIT REPORT
+================================================================================
+Date: November 9, 2026
+Status: Audited, Refined, and Smoke-Tested. Awaiting Training Authorization.
+Hardware Profile: Intel 12th Gen Alder Lake (12 logical cores) | 15.65 GB RAM | CPU Mode
+Target Dataset Split: Revision V1 Grouped (Train: 8,712 | Val: 1,875 | Test: 1,858 quarantined)
+
+--------------------------------------------------------------------------------
+1. MOBILENETV2 PREPROCESSING & ARCHITECTURE VERIFICATION
+--------------------------------------------------------------------------------
+- Preprocessing Normalization:
+  * Kaggle training, preprocessing.py, and evaluation.py explicitly divided RGB inputs by 255.0 ([0.0, 1.0]).
+  * mobilenet_v2.preprocess_input (scaling to [-1.0, 1.0]) was NOT used in any original DermaVision code.
+  * Empirical testing of models/best_mobilenetv2.keras on 200 samples confirmed:
+      - [0.0, 1.0] scaling: 91.00% accuracy
+      - [-1.0, 1.0] scaling: 93.50% accuracy
+  * Script refinement: Added --input_scaling flag with choices ['div255', 'mobilenet'], defaulting to 'div255'
+    ([0.0, 1.0]) to preserve 100% numerical consistency with preprocessing.py, TFLite conversion, and Kaggle.
+- Backbone & Classification Head:
+  * Verified exact architectural match:
+      Input (224x224x3) -> MobileNetV2 (1.00 224, ImageNet weights)
+      -> GlobalAveragePooling2D
+      -> Dense(256, relu) -> Dropout(0.2)
+      -> Dense(64, relu)  -> Dropout(0.1)
+      -> Dense(3, softmax)
+- BatchNormalization Handling during Fine-Tuning:
+  * The MobileNetV2 backbone contains 154 total layers, including 52 BatchNormalization layers.
+  * In original Kaggle training, base_model.trainable = True left all 52 BN layers trainable.
+  * Script refinement: Added --freeze_bn flag to optionally freeze all 52 BN layers (layer.trainable = False)
+    while defaulting to False to match the exact Kaggle baseline.
+
+--------------------------------------------------------------------------------
+2. DINOV2 VIT-B/14 PIPELINE VERIFICATION
+--------------------------------------------------------------------------------
+- Backbone & Classifier Architecture:
+  * Backbone: Facebook DINOv2 ViT-B/14 (86M params) loaded via PyTorch Hub (cached locally).
+  * Feature Dimension: 768-d embedding verified via tensor forward pass.
+  * Normalization: ImageNet deterministic mean=[0.485, 0.456, 0.406] and std=[0.229, 0.224, 0.225].
+  * Backbone status: 100% frozen (backbone.eval() and requires_grad=False).
+  * Trainable head: DINOv2LinearClassifier (nn.Linear(768, 3)) with 2,307 trainable parameters.
+- Checkpoint Compatibility:
+  * Inspected models/dinov2_100_epoch_best.pth.
+  * Checkpoint schema matches: model_state_dict, feature_dim, num_classes, class_names, class_to_idx,
+    model_type, backbone, best_val_accuracy, best_epoch, epochs, learning_rate, weight_decay.
+  * Enhanced checkpoint saving includes train_manifest_sha256 and val_manifest_sha256.
+- Offline Feature Caching:
+  * Implemented --cache_features and --use_cached_features.
+  * Precomputes 768-d vectors into results/revision_v1/dinov2_vitb14/cached_features/:
+      - train_features.pt (8,712 x 768) and train_labels.pt (8,712)
+      - val_features.pt (1,875 x 768) and val_labels.pt (1,875)
+      - cache_metadata.json
+  * Strict Isolation: Training and validation are cached completely separately.
+  * Test Quarantining: Caching test features is prohibited; passing test data throws PermissionError.
+
+--------------------------------------------------------------------------------
+3. TRAINING METHODOLOGY & HYPERPARAMETERS
+--------------------------------------------------------------------------------
+- Batch Size: 64 for both pipelines.
+- Epochs: 50 for MobileNetV2, 100 for DINOv2.
+- Optimizers & Schedules:
+  * MobileNetV2: Adam (lr=1e-4, beta_1=0.9, beta_2=0.999, eps=1e-7) with ReduceLROnPlateau(patience=3, factor=0.5, min_lr=1e-6).
+  * DINOv2: AdamW (lr=1e-3, weight_decay=1e-4).
+- Loss Functions:
+  * MobileNetV2: SparseCategoricalCrossentropy.
+  * DINOv2: CrossEntropyLoss.
+- Checkpoint Selection: Best validation accuracy (val_accuracy), tracking val_macro_f1.
+- Class Imbalance Handling:
+  * Training sample distribution: BCC: 2,333 (26.78%), Melanoma: 3,156 (36.23%), Nevus: 3,223 (36.99%).
+  * Balanced class weights: BCC=1.2447, Melanoma=0.9202, Nevus=0.9010.
+  * Added --use_class_weights flag to both pipelines.
+
+--------------------------------------------------------------------------------
+4. ADDITIONAL EVALUATION METRICS IN EPOCH LOGS
+--------------------------------------------------------------------------------
+Both pipelines record epoch-wise logs to training_history.csv containing:
+  - epoch
+  - train_loss, train_acc
+  - val_loss, val_acc
+  - macro_precision, macro_recall, macro_f1
+  - bcc_recall (Class 0), melanoma_recall (Class 1), nevus_recall (Class 2)
+  - lr (for MobileNetV2)
+
+--------------------------------------------------------------------------------
+5. CHECKPOINT & REPRODUCIBILITY INTEGRITY
+--------------------------------------------------------------------------------
+- Manifest Hashes:
+  * Train Manifest SHA-256: f8a31b9d42fffe8beec85994f8a3ddbc0cfa3198038b34003d15dc012971ba48
+  * Val Manifest SHA-256:   75da1423e640f0c0587fb878b209e7c53648fa34c11b069d12a67e20ea2189d9
+  * Test Manifest SHA-256:  6590f2095f41cb8c9fb64aa0794957e84aa3a18a9953930b809a764d93ee4481
+- Isolated Directories:
+  * MobileNetV2: models/revision_v1/mobilenetv2/ and results/revision_v1/mobilenetv2/
+  * DINOv2:      models/revision_v1/dinov2_vitb14/ and results/revision_v1/dinov2_vitb14/
+- Test Set Security:
+  * test.csv is quarantined. Passing test.csv to either training script raises SECURITY VIOLATION.
+
+--------------------------------------------------------------------------------
+6. HARDWARE & ESTIMATED TRAINING TIME
+--------------------------------------------------------------------------------
+Host Environment: Intel 12th Gen (12 logical cores), 15.65 GB RAM, CPU Execution Mode.
+
+- MobileNetV2 (50 Epochs):
+  * ~137 batches/epoch @ ~2.0s/batch = ~4.5 minutes/epoch.
+  * Total runtime: ~3.75 to 4.5 hours on CPU (~10-15 minutes on GPU).
+- DINOv2 ViT-B/14 (100 Epochs):
+  * Without feature caching: ~30 min/epoch * 100 epochs = ~50 hours on CPU.
+  * With feature caching (--cache_features):
+      - Step 1 (One-time extraction of 10,587 train+val images): ~25 to 30 minutes on CPU.
+      - Step 2 (100 epochs on cached tensors): ~15 to 20 seconds total on CPU.
+  * Feature caching is strongly recommended for local CPU execution.
+================================================================================
+

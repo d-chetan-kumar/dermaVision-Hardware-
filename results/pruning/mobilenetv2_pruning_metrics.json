@@ -1,0 +1,403 @@
+{
+    "sparsity": {
+        "conv_zeros": 1062706,
+        "conv_total": 2125536,
+        "conv_sparsity_percent": 49.99708308868916,
+        "dense_zeros": 172119,
+        "dense_total": 344256,
+        "dense_sparsity_percent": 49.99738566648076,
+        "dw_zeros": 0,
+        "dw_total": 64224,
+        "dw_sparsity_percent": 0.0,
+        "bn_zeros": 0,
+        "bn_total": 68224,
+        "bias_zeros": 0,
+        "bias_total": 323,
+        "prunable_zeros": 1234825,
+        "prunable_total": 2469792,
+        "prunable_sparsity_percent": 49.997125263989844,
+        "all_zeros": 1234825,
+        "all_total": 2602563,
+        "overall_sparsity_percent": 47.44649793299913,
+        "conv_layers": [
+            [
+                "Conv1",
+                432,
+                864,
+                0.5
+            ],
+            [
+                "expanded_conv_project",
+                256,
+                512,
+                0.5
+            ],
+            [
+                "block_1_expand",
+                768,
+                1536,
+                0.5
+            ],
+            [
+                "block_1_project",
+                1152,
+                2304,
+                0.5
+            ],
+            [
+                "block_2_expand",
+                1728,
+                3456,
+                0.5
+            ],
+            [
+                "block_2_project",
+                1728,
+                3456,
+                0.5
+            ],
+            [
+                "block_3_expand",
+                1728,
+                3456,
+                0.5
+            ],
+            [
+                "block_3_project",
+                2304,
+                4608,
+                0.5
+            ],
+            [
+                "block_4_expand",
+                3072,
+                6144,
+                0.5
+            ],
+            [
+                "block_4_project",
+                3072,
+                6144,
+                0.5
+            ],
+            [
+                "block_5_expand",
+                3072,
+                6144,
+                0.5
+            ],
+            [
+                "block_5_project",
+                3072,
+                6144,
+                0.5
+            ],
+            [
+                "block_6_expand",
+                3072,
+                6144,
+                0.5
+            ],
+            [
+                "block_6_project",
+                6144,
+                12288,
+                0.5
+            ],
+            [
+                "block_7_expand",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_7_project",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_8_expand",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_8_project",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_9_expand",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_9_project",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_10_expand",
+                12287,
+                24576,
+                0.4999593098958333
+            ],
+            [
+                "block_10_project",
+                18431,
+                36864,
+                0.4999728732638889
+            ],
+            [
+                "block_11_expand",
+                27646,
+                55296,
+                0.49996383101851855
+            ],
+            [
+                "block_11_project",
+                27646,
+                55296,
+                0.49996383101851855
+            ],
+            [
+                "block_12_expand",
+                27646,
+                55296,
+                0.49996383101851855
+            ],
+            [
+                "block_12_project",
+                27646,
+                55296,
+                0.49996383101851855
+            ],
+            [
+                "block_13_expand",
+                27646,
+                55296,
+                0.49996383101851855
+            ],
+            [
+                "block_13_project",
+                46077,
+                92160,
+                0.49996744791666664
+            ],
+            [
+                "block_14_expand",
+                76796,
+                153600,
+                0.49997395833333336
+            ],
+            [
+                "block_14_project",
+                76796,
+                153600,
+                0.49997395833333336
+            ],
+            [
+                "block_15_expand",
+                76796,
+                153600,
+                0.49997395833333336
+            ],
+            [
+                "block_15_project",
+                76796,
+                153600,
+                0.49997395833333336
+            ],
+            [
+                "block_16_expand",
+                76796,
+                153600,
+                0.49997395833333336
+            ],
+            [
+                "block_16_project",
+                153591,
+                307200,
+                0.499970703125
+            ],
+            [
+                "Conv_1",
+                204788,
+                409600,
+                0.499970703125
+            ]
+        ],
+        "dense_layers": [
+            [
+                "dense",
+                163831,
+                327680,
+                0.4999725341796875
+            ],
+            [
+                "dense_1",
+                8192,
+                16384,
+                0.5
+            ],
+            [
+                "dense_2",
+                96,
+                192,
+                0.5
+            ]
+        ]
+    },
+    "fp32_validation_metrics": {
+        "accuracy": 0.9096022498995581,
+        "macro_precision": 0.9110915272774314,
+        "macro_recall": 0.9145324835752328,
+        "macro_f1": 0.9126654729963718,
+        "per_class": {
+            "BCC": {
+                "precision": 0.9304347826086956,
+                "recall": 0.9654135338345865,
+                "f1": 0.9476014760147602,
+                "support": 665
+            },
+            "Melanoma": {
+                "precision": 0.8902714932126696,
+                "recall": 0.870575221238938,
+                "f1": 0.8803131991051454,
+                "support": 904
+            },
+            "Nevus": {
+                "precision": 0.912568306010929,
+                "recall": 0.907608695652174,
+                "f1": 0.9100817438692098,
+                "support": 920
+            }
+        },
+        "confusion_matrix": [
+            [
+                642,
+                21,
+                2
+            ],
+            [
+                39,
+                787,
+                78
+            ],
+            [
+                9,
+                76,
+                835
+            ]
+        ]
+    },
+    "pruned_validation_metrics": {
+        "accuracy": 0.8348734431498593,
+        "macro_precision": 0.8483975425707526,
+        "macro_recall": 0.8332925908461034,
+        "macro_f1": 0.835473764793837,
+        "per_class": {
+            "BCC": {
+                "precision": 0.8925081433224755,
+                "recall": 0.8240601503759398,
+                "f1": 0.8569194683346364,
+                "support": 665
+            },
+            "Melanoma": {
+                "precision": 0.8794701986754967,
+                "recall": 0.7345132743362832,
+                "f1": 0.8004822182037372,
+                "support": 904
+            },
+            "Nevus": {
+                "precision": 0.7732142857142857,
+                "recall": 0.941304347826087,
+                "f1": 0.8490196078431372,
+                "support": 920
+            }
+        },
+        "confusion_matrix": [
+            [
+                548,
+                39,
+                78
+            ],
+            [
+                64,
+                664,
+                176
+            ],
+            [
+                2,
+                52,
+                866
+            ]
+        ]
+    },
+    "deltas": {
+        "accuracy_pp": -7.472880674969873,
+        "melanoma_recall_pp": -13.606194690265482
+    },
+    "model_comparison": [
+        {
+            "name": "Original FP32 Keras",
+            "path": "models/best_mobilenetv2.keras",
+            "raw_size_mb": 30.206193923950195,
+            "raw_size_bytes": 31673490,
+            "gz_size_mb": 26.92170238494873,
+            "gz_size_bytes": 28229451,
+            "sparsity_label": "0.0000% (Overall: 0.0000%)",
+            "mean_latency_ms": 131.7700224996588,
+            "std_latency_ms": 17.15724779534884,
+            "fps": 7.588979504064282,
+            "comp_vs_fp32_percent": 0.0,
+            "gz_comp_vs_raw_percent": 10.873569663463044
+        },
+        {
+            "name": "Dynamic-Range TFLite",
+            "path": "models/best_mobilenetv2.tflite",
+            "raw_size_mb": 2.7439346313476562,
+            "raw_size_bytes": 2877224,
+            "gz_size_mb": 2.3856611251831055,
+            "gz_size_bytes": 2501547,
+            "sparsity_label": "Unpruned (Quantized Weights)",
+            "mean_latency_ms": 38.16828799968789,
+            "std_latency_ms": 10.90641687542645,
+            "fps": 26.19976038768564,
+            "comp_vs_fp32_percent": 90.91598683946734,
+            "gz_comp_vs_raw_percent": 13.056925703386323
+        },
+        {
+            "name": "Full Integer INT8 TFLite",
+            "path": "models/best_mobilenetv2_full_int8.tflite",
+            "raw_size_mb": 2.9405441284179688,
+            "raw_size_bytes": 3083384,
+            "gz_size_mb": 2.4352035522460938,
+            "gz_size_bytes": 2553496,
+            "sparsity_label": "Unpruned (Full INT8)",
+            "mean_latency_ms": 6.630459999796585,
+            "std_latency_ms": 2.2941074472006333,
+            "fps": 150.81909852871127,
+            "comp_vs_fp32_percent": 90.26509551047263,
+            "gz_comp_vs_raw_percent": 17.185274360896983
+        },
+        {
+            "name": "Pruned Keras",
+            "path": "models/best_mobilenetv2_pruned.keras",
+            "raw_size_mb": 30.20609188079834,
+            "raw_size_bytes": 31673383,
+            "gz_size_mb": 5.730901718139648,
+            "gz_size_bytes": 6009286,
+            "sparsity_label": "49.9971% (Overall: 47.4465%)",
+            "mean_latency_ms": 180.40188700004364,
+            "std_latency_ms": 34.64453159055224,
+            "fps": 5.543179268406201,
+            "comp_vs_fp32_percent": 0.0003378219451066755,
+            "gz_comp_vs_raw_percent": 81.02733137158098
+        }
+    ]
+}

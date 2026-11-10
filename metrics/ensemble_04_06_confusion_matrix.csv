@@ -1,0 +1,4 @@
+,Pred_BCC,Pred_Melanoma,Pred_Nevus
+Actual_BCC,642,22,1
+Actual_Melanoma,45,770,89
+Actual_Nevus,11,62,847

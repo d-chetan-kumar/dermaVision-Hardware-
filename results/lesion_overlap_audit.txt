@@ -1,0 +1,146 @@
+================================================================================
+DERMAVISION RESEARCH PROJECT: LESION-LEVEL OVERLAP & DATA LEAKAGE AUDIT
+================================================================================
+
+Date of Audit: November 9, 2026
+Dataset: Curated ISIC 2019 (12,445 images across BCC, Melanoma, Nevus)
+Partition Configuration: Stratified random split (random_state=42, test_size=0.20)
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+Total Curated Images:                12,445
+Training Partition (80%):            9,956 images
+Validation Partition (20%):          2,489 images
+Total Unique Known Lesions:          5,502
+Unique Lesions in Training:          4,783
+Unique Lesions in Validation:        1,683
+OVERLAPPING UNIQUE LESIONS:          964 (57.28% of validation lesions)
+VALIDATION IMAGES CONTAMINATED:      1,345 (54.04% of validation images)
+TRAINING IMAGES CONTAMINATED:        2,882 (28.95% of training images)
+Total Contaminated Images:           4,227 (33.97% of entire dataset)
+
+--------------------------------------------------------------------------------
+2. MISSING LESION_ID ANALYSIS
+--------------------------------------------------------------------------------
+Images with missing (NaN) lesion_id in Curated Set: 1,886 (15.15%)
+  - Training Set:    1,498 (15.05%)
+  - Validation Set:  388 (15.59%)
+Breakdown of missing lesion_id by class:
+  - BCC       :     0 missing out of 3,323 (0.00%)
+  - Melanoma  :   337 missing out of 4,522 (7.45%)
+  - Nevus     : 1,549 missing out of 4,600 (33.67%)
+Note: BCC has 0 missing lesion IDs. Melanoma has 337 missing. Nevus has 1,549 missing.
+
+--------------------------------------------------------------------------------
+3. CLASS-BY-CLASS LESION OVERLAP BREAKDOWN
+--------------------------------------------------------------------------------
+Class: BCC
+  Total Images:                      3,323 (Train: 2,658, Val: 665)
+  Unique Lesions:                    Train: 1,223, Val: 531
+  Overlapping Unique Lesions:        444 (83.62% of validation lesions)
+  Contaminated Validation Images:    566 / 665 (85.11%)
+  Contaminated Training Images:      1,072 / 2,658 (40.33%)
+
+Class: Melanoma
+  Total Images:                      4,522 (Train: 3,618, Val: 904)
+  Unique Lesions:                    Train: 1,244, Val: 555
+  Overlapping Unique Lesions:        460 (82.88% of validation lesions)
+  Contaminated Validation Images:    717 / 904 (79.31%)
+  Contaminated Training Images:      1,745 / 3,618 (48.23%)
+
+Class: Nevus
+  Total Images:                      4,600 (Train: 3,680, Val: 920)
+  Unique Lesions:                    Train: 2,316, Val: 597
+  Overlapping Unique Lesions:        60 (10.05% of validation lesions)
+  Contaminated Validation Images:    62 / 920 (6.74%)
+  Contaminated Training Images:      65 / 3,680 (1.77%)
+
+--------------------------------------------------------------------------------
+4. EMPIRICAL LEAKAGE PERFORMANCE IMPACT
+--------------------------------------------------------------------------------
+Evaluation of existing model predictions on overlapping vs. clean validation samples:
+
+Model: MobileNetV2 Standalone
+  Full Validation Set (2,489 images):  Accuracy = 90.96%, Macro F1 = 91.27%
+  Overlapping Lesions (1,345 images):  Accuracy = 94.50%, Macro F1 = 90.20%
+  Clean Non-Overlap   (1,144 images):  Accuracy = 86.80%, Macro F1 = 81.31%
+  Leakage Disparity (Overlap - Clean): +7.70% Accuracy Disparity
+
+Model: DINOv2 Standalone
+  Full Validation Set (2,489 images):  Accuracy = 86.66%, Macro F1 = 86.82%
+  Overlapping Lesions (1,345 images):  Accuracy = 88.92%, Macro F1 = 82.66%
+  Clean Non-Overlap   (1,144 images):  Accuracy = 84.00%, Macro F1 = 75.66%
+  Leakage Disparity (Overlap - Clean): +4.92% Accuracy Disparity
+
+Model: Equal Ensemble (0.5/0.5)
+  Full Validation Set (2,489 images):  Accuracy = 91.36%, Macro F1 = 91.66%
+  Overlapping Lesions (1,345 images):  Accuracy = 94.94%, Macro F1 = 90.71%
+  Clean Non-Overlap   (1,144 images):  Accuracy = 87.15%, Macro F1 = 81.46%
+  Leakage Disparity (Overlap - Clean): +7.79% Accuracy Disparity
+
+Model: Selected Ensemble (0.4/0.6)
+  Full Validation Set (2,489 images):  Accuracy = 90.76%, Macro F1 = 91.01%
+  Overlapping Lesions (1,345 images):  Accuracy = 94.13%, Macro F1 = 89.59%
+  Clean Non-Overlap   (1,144 images):  Accuracy = 86.80%, Macro F1 = 79.84%
+  Leakage Disparity (Overlap - Clean): +7.33% Accuracy Disparity
+
+--------------------------------------------------------------------------------
+5. CAN THE EXISTING 2,489 VALIDATION IMAGES BE RETAINED WITHOUT LEAKAGE?
+--------------------------------------------------------------------------------
+SCIENTIFIC VERDICT: NO.
+
+Detailed Justification:
+1. 1,345 out of the 2,489 validation images (54.04%) belong to lesions that the model
+   encountered during training. For BCC and Melanoma, the contamination exceeds 79%.
+2. Retaining this exact validation set while attempting to remove overlapping lesions
+   from the training set would require deleting 2,882 images (28.95%) from training,
+   severely destabilizing training representations and invalidating existing checkpoints.
+3. Filtering the validation set to keep only non-overlapping lesions shrinks it from
+   2,489 to 1,144 images, with severe class collapse (BCC drops by 85.1% to only 99
+   samples, Melanoma drops by 79.3% to only 187 samples).
+
+--------------------------------------------------------------------------------
+6. SMALLEST SCIENTIFICALLY VALID ADJUSTMENT PRESERVING 12,445 IMAGES
+--------------------------------------------------------------------------------
+Proposed Methodology: Stratified Grouped K-Fold (StratifiedGroupKFold)
+
+Procedure:
+1. Preserve all 12,445 images and their 3 original classes (BCC: 3,323, MEL: 4,522, NV: 4,600).
+2. Assign unified group identifiers:
+   - If lesion_id is present, group_id = lesion_id.
+   - If lesion_id is missing (1,886 images), group_id = 'unk_' + image_id (treat as unique single-image lesion).
+3. Perform a grouped stratified split using StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42):
+   - Training Set:   9,943 images (79.90%)
+   - Validation Set: 2,502 images (20.10%)
+   - Group Overlap:  EXACTLY ZERO (0) overlapping lesions.
+   - Class Distribution in Validation:
+     * BCC:      668 images (20.10% of total BCC)
+     * Melanoma: 896 images (19.81% of total Melanoma)
+     * Nevus:    938 images (20.39% of total Nevus)
+This adjustment shifts only 13 images from train to val (2,502 vs. 2,489), perfectly maintains
+the 80:20 ratio and class balance, and completely resolves patient/lesion data leakage.
+
+--------------------------------------------------------------------------------
+7. STRATEGY FOR RESERVING A GENUINELY INDEPENDENT TEST SET
+--------------------------------------------------------------------------------
+Challenge in Current Setup:
+The curated set exhausts all 3,323 BCC and all 4,522 Melanoma images available in ISIC 2019.
+Therefore, an independent 3-class test set cannot be sourced from remaining ISIC 2019 data alone.
+
+Two Scientifically Rigorous Pathways:
+
+Path A: Internal 3-Way Lesion-Grouped Split (70% Train / 15% Val / 15% Test)
+- Split the 12,445 curated images into:
+  * Training (70%):   ~8,711 images (grouped by lesion_id)
+  * Validation (15%): ~1,867 images (for early stopping & ensemble weight tuning)
+  * Test Set (15%):   ~1,867 images (strictly locked, evaluated ONCE at publication time)
+- Advantage: Self-contained within ISIC 2019, zero lesion leakage.
+- Note: Requires retraining from scratch on the 70% training split.
+
+Path B: External Benchmark Generalization Test Set (PAD-UFES-20 / BCN20000 / Fitzpatrick17k)
+- Retain the current 12,445 dataset for training and validation.
+- Evaluate models on an external dermatological dataset containing confirmed biopsy ground truth
+  for BCC, Melanoma, and Nevus (e.g. PAD-UFES-20 smartphone dermoscopy or HAM10000 held-out).
+- Advantage: Evaluates real-world domain generalization across cameras, skin tones, and clinics.
+================================================================================

@@ -1,0 +1,4318 @@
+{
+  "audit_metadata": {
+    "generated_at": "2026-11-10T10:51:02",
+    "audit_phase": "Phase 1 \u2014 Read-Only Verification & Baseline Audit",
+    "mode": "READ_ONLY_AUDIT",
+    "backbone_hub_repo": "facebookresearch/dinov2",
+    "backbone_entrypoint": "dinov2_vitb14"
+  },
+  "architecture_summary": {
+    "backbone_name": "dinov2_vitb14 (DinoVisionTransformer)",
+    "img_size_init": 518,
+    "patch_size": 14,
+    "embed_dim": 768,
+    "depth": 12,
+    "num_heads": 12,
+    "mlp_ratio": 4,
+    "init_values_layerscale": 1.0,
+    "ffn_layer": "mlp",
+    "num_register_tokens": 0,
+    "backbone_total_params": 86580480,
+    "backbone_buffers": 0,
+    "classifier_head_params": 2307,
+    "combined_total_params": 86582787,
+    "frozen_backbone_trainable_params": 2307,
+    "role_breakdown": {
+      "token_or_pos_embed:cls_token": 768,
+      "token_or_pos_embed:pos_embed": 1052160,
+      "token_or_pos_embed:mask_token": 768,
+      "patch_embed": 452352,
+      "blocks_layernorm": 36864,
+      "blocks_attn_qkv_linear": 21261312,
+      "blocks_attn_proj_linear": 7087104,
+      "blocks_layerscale": 18432,
+      "blocks_mlp_fc1_linear": 28348416,
+      "blocks_mlp_fc2_linear": 28320768,
+      "final_norm": 1536,
+      "classifier_head_linear": 2307
+    },
+    "module_category_counts": {
+      "DinoVisionTransformer": {
+        "module_count": 1,
+        "params": 1053696
+      },
+      "Conv2d": {
+        "module_count": 1,
+        "params": 452352
+      },
+      "LayerNorm": {
+        "module_count": 25,
+        "params": 38400
+      },
+      "Linear": {
+        "module_count": 48,
+        "params": 85017600
+      },
+      "LayerScale": {
+        "module_count": 24,
+        "params": 18432
+      }
+    }
+  },
+  "backbone_checkpoint": {
+    "file_meta": {
+      "path": "C:\\Users\\HP\\.cache\\torch\\hub\\checkpoints\\dinov2_vitb14_pretrain.pth",
+      "exists": true,
+      "size_bytes": 346378731,
+      "size_kb": 338260.48,
+      "size_mb": 330.3325,
+      "mtime_iso": "2026-08-26T23:28:05",
+      "sha256": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73"
+    },
+    "tensor_count": 175,
+    "total_params": 86580480,
+    "exact_match_with_hub_model": true,
+    "head_like_keys": [
+      "blocks.0.mlp.fc1.weight",
+      "blocks.0.mlp.fc1.bias",
+      "blocks.0.mlp.fc2.weight",
+      "blocks.0.mlp.fc2.bias",
+      "blocks.1.mlp.fc1.weight",
+      "blocks.1.mlp.fc1.bias",
+      "blocks.1.mlp.fc2.weight",
+      "blocks.1.mlp.fc2.bias",
+      "blocks.2.mlp.fc1.weight",
+      "blocks.2.mlp.fc1.bias",
+      "blocks.2.mlp.fc2.weight",
+      "blocks.2.mlp.fc2.bias",
+      "blocks.3.mlp.fc1.weight",
+      "blocks.3.mlp.fc1.bias",
+      "blocks.3.mlp.fc2.weight",
+      "blocks.3.mlp.fc2.bias",
+      "blocks.4.mlp.fc1.weight",
+      "blocks.4.mlp.fc1.bias",
+      "blocks.4.mlp.fc2.weight",
+      "blocks.4.mlp.fc2.bias",
+      "blocks.5.mlp.fc1.weight",
+      "blocks.5.mlp.fc1.bias",
+      "blocks.5.mlp.fc2.weight",
+      "blocks.5.mlp.fc2.bias",
+      "blocks.6.mlp.fc1.weight",
+      "blocks.6.mlp.fc1.bias",
+      "blocks.6.mlp.fc2.weight",
+      "blocks.6.mlp.fc2.bias",
+      "blocks.7.mlp.fc1.weight",
+      "blocks.7.mlp.fc1.bias",
+      "blocks.7.mlp.fc2.weight",
+      "blocks.7.mlp.fc2.bias",
+      "blocks.8.mlp.fc1.weight",
+      "blocks.8.mlp.fc1.bias",
+      "blocks.8.mlp.fc2.weight",
+      "blocks.8.mlp.fc2.bias",
+      "blocks.9.mlp.fc1.weight",
+      "blocks.9.mlp.fc1.bias",
+      "blocks.9.mlp.fc2.weight",
+      "blocks.9.mlp.fc2.bias",
+      "blocks.10.mlp.fc1.weight",
+      "blocks.10.mlp.fc1.bias",
+      "blocks.10.mlp.fc2.weight",
+      "blocks.10.mlp.fc2.bias",
+      "blocks.11.mlp.fc1.weight",
+      "blocks.11.mlp.fc1.bias",
+      "blocks.11.mlp.fc2.weight",
+      "blocks.11.mlp.fc2.bias"
+    ],
+    "tensors": {
+      "cls_token": {
+        "shape": [
+          1,
+          1,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "pos_embed": {
+        "shape": [
+          1,
+          1370,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1052160
+      },
+      "mask_token": {
+        "shape": [
+          1,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "patch_embed.proj.weight": {
+        "shape": [
+          768,
+          3,
+          14,
+          14
+        ],
+        "dtype": "torch.float32",
+        "numel": 451584
+      },
+      "patch_embed.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.0.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.0.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.0.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.0.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.0.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.0.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.0.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.1.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.1.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.1.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.1.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.1.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.1.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.1.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.2.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.2.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.2.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.2.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.2.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.2.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.2.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.3.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.3.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.3.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.3.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.3.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.3.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.3.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.4.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.4.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.4.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.4.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.4.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.4.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.4.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.5.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.5.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.5.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.5.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.5.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.5.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.5.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.6.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.6.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.6.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.6.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.6.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.6.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.6.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.7.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.7.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.7.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.7.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.7.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.7.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.7.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.8.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.8.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.8.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.8.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.8.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.8.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.8.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.9.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.9.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.9.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.9.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.9.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.9.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.9.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.10.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.10.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.10.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.10.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.10.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.10.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.10.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.norm1.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.norm1.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.attn.qkv.weight": {
+        "shape": [
+          2304,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1769472
+      },
+      "blocks.11.attn.qkv.bias": {
+        "shape": [
+          2304
+        ],
+        "dtype": "torch.float32",
+        "numel": 2304
+      },
+      "blocks.11.attn.proj.weight": {
+        "shape": [
+          768,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 589824
+      },
+      "blocks.11.attn.proj.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.ls1.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.norm2.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.norm2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.mlp.fc1.weight": {
+        "shape": [
+          3072,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.11.mlp.fc1.bias": {
+        "shape": [
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 3072
+      },
+      "blocks.11.mlp.fc2.weight": {
+        "shape": [
+          768,
+          3072
+        ],
+        "dtype": "torch.float32",
+        "numel": 2359296
+      },
+      "blocks.11.mlp.fc2.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "blocks.11.ls2.gamma": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "norm.weight": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "norm.bias": {
+        "shape": [
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      }
+    }
+  },
+  "classifier_head_checkpoints": {
+    "dinov2_100_epoch_best.pth": {
+      "file_meta": {
+        "path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_100_epoch_best.pth",
+        "exists": true,
+        "size_bytes": 11669,
+        "size_kb": 11.4,
+        "size_mb": 0.0111,
+        "mtime_iso": "2026-08-26T22:57:47",
+        "sha256": "783e31fb03a60a178b81724c70db5878b107389be228f4c5ced2f5e61c88d725"
+      },
+      "raw_type": "dict",
+      "top_level_keys": [
+        "model_state_dict",
+        "feature_dim",
+        "num_classes",
+        "class_names",
+        "class_to_idx",
+        "model_type",
+        "backbone",
+        "best_val_accuracy",
+        "best_epoch",
+        "epochs",
+        "learning_rate",
+        "weight_decay"
+      ],
+      "metadata": {
+        "feature_dim": 768,
+        "num_classes": 3,
+        "class_names": [
+          "BCC",
+          "Melanoma",
+          "Nevus"
+        ],
+        "class_to_idx": {
+          "BCC": 0,
+          "Melanoma": 1,
+          "Nevus": 2
+        },
+        "model_type": "DINOv2LinearClassifier",
+        "backbone": "DINOv2 ViT-B/14",
+        "best_val_accuracy": 0.8666130976295701,
+        "best_epoch": 50,
+        "epochs": 100,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001
+      },
+      "state_dict_keys": [
+        "classifier.weight",
+        "classifier.bias"
+      ],
+      "total_params_in_ckpt": 2307,
+      "state_dict_summary": {
+        "classifier.weight": {
+          "shape": [
+            3,
+            768
+          ],
+          "dtype": "torch.float32",
+          "numel": 2304,
+          "requires_grad": false,
+          "min": -0.2868199646472931,
+          "max": 0.29851916432380676,
+          "mean": 0.0002547424519434571,
+          "std": 0.07875613868236542,
+          "l2_norm": 3.779494047164917,
+          "row_norms": [
+            2.519407033920288,
+            1.7297803163528442,
+            2.223740339279175
+          ],
+          "values": null
+        },
+        "classifier.bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "torch.float32",
+          "numel": 3,
+          "requires_grad": false,
+          "min": -0.007886236533522606,
+          "max": 0.02800312079489231,
+          "mean": 0.01270111370831728,
+          "std": 0.01851925067603588,
+          "l2_norm": 0.034203510731458664,
+          "row_norms": null,
+          "values": [
+            -0.007886236533522606,
+            0.01798645779490471,
+            0.02800312079489231
+          ]
+        }
+      }
+    },
+    "dinov2_classifier_best.pth": {
+      "file_meta": {
+        "path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_classifier_best.pth",
+        "exists": true,
+        "size_bytes": 11677,
+        "size_kb": 11.4,
+        "size_mb": 0.0111,
+        "mtime_iso": "2026-08-26T22:50:22",
+        "sha256": "e40f3d5d6f01451af7a87807cae2046cfaba1cc18ceef847dc64044b29d82796"
+      },
+      "raw_type": "dict",
+      "top_level_keys": [
+        "model_state_dict",
+        "feature_dim",
+        "num_classes",
+        "class_names",
+        "class_to_idx",
+        "model_type",
+        "best_val_accuracy",
+        "best_epoch",
+        "epochs",
+        "learning_rate"
+      ],
+      "metadata": {
+        "feature_dim": 768,
+        "num_classes": 3,
+        "class_names": [
+          "BCC",
+          "Melanoma",
+          "Nevus"
+        ],
+        "class_to_idx": {
+          "BCC": 0,
+          "Melanoma": 1,
+          "Nevus": 2
+        },
+        "model_type": "DINOv2LinearClassifier",
+        "best_val_accuracy": 0.864202490960225,
+        "best_epoch": 15,
+        "epochs": 30,
+        "learning_rate": 0.001
+      },
+      "state_dict_keys": [
+        "classifier.weight",
+        "classifier.bias"
+      ],
+      "total_params_in_ckpt": 2307,
+      "state_dict_summary": {
+        "classifier.weight": {
+          "shape": [
+            3,
+            768
+          ],
+          "dtype": "torch.float32",
+          "numel": 2304,
+          "requires_grad": false,
+          "min": -0.18340101838111877,
+          "max": 0.2096417248249054,
+          "mean": -0.00012994196731597185,
+          "std": 0.049042657017707825,
+          "l2_norm": 2.3535451889038086,
+          "row_norms": [
+            1.5406253337860107,
+            1.1084388494491577,
+            1.3917652368545532
+          ],
+          "values": null
+        },
+        "classifier.bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "torch.float32",
+          "numel": 3,
+          "requires_grad": false,
+          "min": -0.026554947718977928,
+          "max": 0.02777656726539135,
+          "mean": 0.00938220415264368,
+          "std": 0.031125398352742195,
+          "l2_norm": 0.046921830624341965,
+          "row_norms": null,
+          "values": [
+            -0.026554947718977928,
+            0.02777656726539135,
+            0.026924991980195045
+          ]
+        }
+      }
+    },
+    "head_checkpoint_comparison": {
+      "classifier.weight": {
+        "max_abs_diff": 0.15649732947349548,
+        "mean_abs_diff": 0.03455992415547371,
+        "l2_diff": 2.099177837371826,
+        "cosine_similarity_flat": 0.8666012287139893,
+        "cosine_similarity_per_row": [
+          0.875970721244812,
+          0.8311775922775269,
+          0.8772070407867432
+        ]
+      },
+      "classifier.bias": {
+        "max_abs_diff": 0.018668711185455322,
+        "mean_abs_diff": 0.00984564982354641,
+        "l2_diff": 0.021107567474246025,
+        "cosine_similarity_flat": 0.9115909337997437,
+        "cosine_similarity_per_row": null
+      }
+    }
+  },
+  "hub_load_checks": {
+    "github_source": {
+      "success": true,
+      "load_ms": 1415.0914999991073
+    },
+    "local_cache_source": {
+      "success": true,
+      "load_ms": 1144.1078999996535,
+      "repo_path": "C:\\Users\\HP\\.cache\\torch\\hub\\facebookresearch_dinov2_main"
+    }
+  },
+  "module_inventory": [
+    {
+      "scope": "backbone",
+      "name": "<root>",
+      "type": "DinoVisionTransformer",
+      "direct_params": 1053696,
+      "subtree_params": 86580480,
+      "parameters": {
+        "cls_token": {
+          "shape": [
+            1,
+            1,
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "pos_embed": {
+          "shape": [
+            1,
+            1370,
+            768
+          ],
+          "numel": 1052160,
+          "dtype": "torch.float32"
+        },
+        "mask_token": {
+          "shape": [
+            1,
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "patch_embed.proj",
+      "type": "Conv2d",
+      "direct_params": 452352,
+      "subtree_params": 452352,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3,
+            14,
+            14
+          ],
+          "numel": 451584,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "patch_embed.norm",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.0.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.1.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.2.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.3.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.4.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.5.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.6.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.7.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.8.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.9.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.10.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.norm1",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.attn.qkv",
+      "type": "Linear",
+      "direct_params": 1771776,
+      "subtree_params": 1771776,
+      "parameters": {
+        "weight": {
+          "shape": [
+            2304,
+            768
+          ],
+          "numel": 1769472,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            2304
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.attn.proj",
+      "type": "Linear",
+      "direct_params": 590592,
+      "subtree_params": 590592,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            768
+          ],
+          "numel": 589824,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.attn.proj_drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.ls1",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.drop_path1",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.norm2",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.mlp.fc1",
+      "type": "Linear",
+      "direct_params": 2362368,
+      "subtree_params": 2362368,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3072,
+            768
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3072
+          ],
+          "numel": 3072,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.mlp.act",
+      "type": "GELU",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.mlp.fc2",
+      "type": "Linear",
+      "direct_params": 2360064,
+      "subtree_params": 2360064,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768,
+            3072
+          ],
+          "numel": 2359296,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.mlp.drop",
+      "type": "Dropout",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.ls2",
+      "type": "LayerScale",
+      "direct_params": 768,
+      "subtree_params": 768,
+      "parameters": {
+        "gamma": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "blocks.11.drop_path2",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "backbone",
+      "name": "norm",
+      "type": "LayerNorm",
+      "direct_params": 1536,
+      "subtree_params": 1536,
+      "parameters": {
+        "weight": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            768
+          ],
+          "numel": 768,
+          "dtype": "torch.float32"
+        }
+      }
+    },
+    {
+      "scope": "backbone",
+      "name": "head",
+      "type": "Identity",
+      "direct_params": 0,
+      "subtree_params": 0,
+      "parameters": {}
+    },
+    {
+      "scope": "classifier_head",
+      "name": "classifier",
+      "type": "Linear(in_features=768, out_features=3, bias=True)",
+      "direct_params": 2307,
+      "subtree_params": 2307,
+      "parameters": {
+        "weight": {
+          "shape": [
+            3,
+            768
+          ],
+          "numel": 2304,
+          "dtype": "torch.float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "numel": 3,
+          "dtype": "torch.float32"
+        }
+      }
+    }
+  ]
+}

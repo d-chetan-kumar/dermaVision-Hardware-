@@ -1,0 +1,37 @@
+======================================================================
+DERMAVISION WEIGHTED ENSEMBLE EVALUATION (0.4 MobileNetV2 + 0.6 DINOv2)
+======================================================================
+
+Validation Dataset: ISIC 2019 Curated Subset (BCC, Melanoma, Nevus)
+Validation Sample Count: 2489 images
+Checkpoints Used:
+  - MobileNetV2: models/best_mobilenetv2.keras
+  - DINOv2: models/dinov2_100_epoch_best.pth + dinov2_vitb14 backbone
+
+Overall Metrics:
+  - Accuracy:           90.7593%
+  - Macro Precision:    90.8453%
+  - Macro Recall:       91.2612%
+  - Macro F1-Score:     91.0086%
+  - Weighted Precision: 90.7337%
+  - Weighted Recall:    90.7593%
+  - Weighted F1-Score:  90.7032%
+
+Classification Report:
+              precision    recall  f1-score      support
+BCC            0.919771  0.965414  0.942040   665.000000
+Melanoma       0.901639  0.851770  0.875995   904.000000
+Nevus          0.903949  0.920652  0.912224   920.000000
+accuracy       0.907593  0.907593  0.907593     0.907593
+macro avg      0.908453  0.912612  0.910086  2489.000000
+weighted avg   0.907337  0.907593  0.907032  2489.000000
+
+Confusion Matrix:
+[[642  22   1]
+ [ 45 770  89]
+ [ 11  62 847]]
+
+Comparison Across Configurations:
+  1. MobileNetV2 (1.0/0.0): Acc=90.96%, Prec=91.11%, Rec=91.45%, F1=91.27%
+  2. Equal Ensemble (0.5/0.5): Acc=91.36%, Prec=91.51%, Rec=91.85%, F1=91.66%
+  3. Selected Ensemble (0.4/0.6): Acc=90.76%, Prec=90.85%, Rec=91.26%, F1=91.01%

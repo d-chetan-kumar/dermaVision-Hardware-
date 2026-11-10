@@ -1,0 +1,2241 @@
+{
+  "phase_metadata": {
+    "generated_at": "2026-11-10T12:13:14",
+    "phase": "Phase 2 \u2014 Native PyTorch Dynamic INT8 Optimization",
+    "workspace": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)",
+    "artifacts": {
+      "quantized_checkpoint": "models/dinov2/dinov2_vitb14_dynamic_int8.pth",
+      "standalone_inference_module": "models/dinov2/dinov2_dynamic_int8_inference.py",
+      "metrics_json": "results/dinov2/dinov2_dynamic_int8_metrics.json",
+      "report_md": "results/dinov2/dinov2_dynamic_int8_report.md"
+    }
+  },
+  "step1_fp32_baseline_gate": {
+    "metrics": {
+      "correct": 2157,
+      "total": 2489,
+      "accuracy": 0.8666130976295701,
+      "accuracy_percent": 86.6613,
+      "macro_precision": 0.8659724307416986,
+      "macro_recall": 0.8722460971590191,
+      "macro_f1": 0.8682313468255884,
+      "weighted_precision": 0.8662935766365404,
+      "weighted_recall": 0.8666130976295701,
+      "weighted_f1": 0.8656230157940354,
+      "macro_auc": 0.9679502887898647,
+      "weighted_auc": 0.9662269732343488,
+      "per_class": {
+        "BCC": {
+          "precision": 0.8635097493036211,
+          "recall": 0.9323308270676691,
+          "f1": 0.8966015907447578,
+          "support": 665,
+          "auc": 0.986300455085081
+        },
+        "Melanoma": {
+          "precision": 0.8552631578947368,
+          "recall": 0.790929203539823,
+          "f1": 0.8218390804597702,
+          "support": 904,
+          "auc": 0.9435777895647803
+        },
+        "Nevus": {
+          "precision": 0.879144385026738,
+          "recall": 0.8934782608695652,
+          "f1": 0.8862533692722372,
+          "support": 920,
+          "auc": 0.973972621719733
+        }
+      },
+      "confusion_matrix": [
+        [
+          620,
+          38,
+          7
+        ],
+        [
+          83,
+          715,
+          106
+        ],
+        [
+          15,
+          83,
+          822
+        ]
+      ],
+      "predicted_distribution": {
+        "BCC": 718,
+        "Melanoma": 836,
+        "Nevus": 935
+      },
+      "prob_sum_min": 0.9999998211860657,
+      "prob_sum_max": 1.0000001192092896
+    },
+    "eval_elapsed_sec": 684.9671545000019,
+    "batch_size": 64,
+    "vs_phase1_cached_npy": {
+      "max_abs_prob_diff": 4.738569259643555e-06,
+      "argmax_agreement_count": 2489
+    }
+  },
+  "step2_quantization_coverage": {
+    "grand_total_params": 86582787,
+    "quantized_linear_module_count": 49,
+    "quantized_module_total_params": 85019907,
+    "quantized_int8_weight_params": 84936960,
+    "quantized_linear_fp32_bias_params": 82947,
+    "non_quantized_total_params": 1562880,
+    "coverage_module_params_pct": 98.1949,
+    "coverage_strict_int8_weights_pct": 98.0991,
+    "non_quantized_params_pct": 1.8051,
+    "quantized_categories": {
+      "blocks_attn_qkv_linear": {
+        "module_count": 12,
+        "int8_weights": 21233664,
+        "fp32_biases": 27648,
+        "total_params": 21261312
+      },
+      "blocks_attn_proj_linear": {
+        "module_count": 12,
+        "int8_weights": 7077888,
+        "fp32_biases": 9216,
+        "total_params": 7087104
+      },
+      "blocks_mlp_fc1_linear": {
+        "module_count": 12,
+        "int8_weights": 28311552,
+        "fp32_biases": 36864,
+        "total_params": 28348416
+      },
+      "blocks_mlp_fc2_linear": {
+        "module_count": 12,
+        "int8_weights": 28311552,
+        "fp32_biases": 9216,
+        "total_params": 28320768
+      },
+      "classifier_head_linear": {
+        "module_count": 1,
+        "int8_weights": 2304,
+        "fp32_biases": 3,
+        "total_params": 2307
+      }
+    },
+    "unquantized_leaf_modules": {
+      "torch.nn.modules.conv.Conv2d": {
+        "module_count": 1,
+        "params": 452352
+      },
+      "torch.nn.modules.linear.Identity": {
+        "module_count": 26,
+        "params": 0
+      },
+      "torch.nn.modules.normalization.LayerNorm": {
+        "module_count": 25,
+        "params": 38400
+      },
+      "torch.nn.modules.dropout.Dropout": {
+        "module_count": 24,
+        "params": 0
+      },
+      "dinov2.layers.layer_scale.LayerScale": {
+        "module_count": 24,
+        "params": 18432
+      },
+      "torch.nn.modules.activation.GELU": {
+        "module_count": 12,
+        "params": 0
+      }
+    },
+    "direct_backbone_parameters": {
+      "cls_token": {
+        "shape": [
+          1,
+          1,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      },
+      "pos_embed": {
+        "shape": [
+          1,
+          1370,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 1052160
+      },
+      "mask_token": {
+        "shape": [
+          1,
+          768
+        ],
+        "dtype": "torch.float32",
+        "numel": 768
+      }
+    },
+    "quantized_module_list": [
+      {
+        "name": "backbone.blocks.0.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.0.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.0.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.0.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.1.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.1.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.1.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.1.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.2.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.2.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.2.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.2.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.3.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.3.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.3.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.3.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.4.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.4.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.4.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.4.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.5.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.5.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.5.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.5.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.6.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.6.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.6.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.6.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.7.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.7.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.7.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.7.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.8.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.8.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.8.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.8.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.9.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.9.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.9.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.9.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.10.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.10.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.10.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.10.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "backbone.blocks.11.attn.qkv",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_qkv_linear",
+        "in_features": 768,
+        "out_features": 2304,
+        "weight_shape": [
+          2304,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 1769472,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 2304,
+        "module_total_params": 1771776
+      },
+      {
+        "name": "backbone.blocks.11.attn.proj",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_attn_proj_linear",
+        "in_features": 768,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 589824,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 590592
+      },
+      {
+        "name": "backbone.blocks.11.mlp.fc1",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc1_linear",
+        "in_features": 768,
+        "out_features": 3072,
+        "weight_shape": [
+          3072,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3072,
+        "module_total_params": 2362368
+      },
+      {
+        "name": "backbone.blocks.11.mlp.fc2",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "blocks_mlp_fc2_linear",
+        "in_features": 3072,
+        "out_features": 768,
+        "weight_shape": [
+          768,
+          3072
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2359296,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 768,
+        "module_total_params": 2360064
+      },
+      {
+        "name": "classifier",
+        "type": "torch.ao.nn.quantized.dynamic.modules.linear.Linear",
+        "category": "classifier_head_linear",
+        "in_features": 768,
+        "out_features": 3,
+        "weight_shape": [
+          3,
+          768
+        ],
+        "weight_dtype": "torch.qint8",
+        "weight_qscheme": "torch.per_tensor_affine",
+        "weight_numel": 2304,
+        "bias_dtype": "torch.float32",
+        "bias_numel": 3,
+        "module_total_params": 2307
+      }
+    ]
+  },
+  "standalone_reload_max_abs_diff": 0.0,
+  "step3_fixed224_pos_embed_ablation": {
+    "fp32_folded": {
+      "pos_embed_shape": [
+        1,
+        257,
+        768
+      ],
+      "total_params": 85728003,
+      "metrics": {
+        "correct": 2157,
+        "total": 2489,
+        "accuracy": 0.8666130976295701,
+        "accuracy_percent": 86.6613,
+        "macro_precision": 0.8659724307416986,
+        "macro_recall": 0.8722460971590191,
+        "macro_f1": 0.8682313468255884,
+        "weighted_precision": 0.8662935766365404,
+        "weighted_recall": 0.8666130976295701,
+        "weighted_f1": 0.8656230157940354,
+        "macro_auc": 0.9679502887898647,
+        "weighted_auc": 0.9662269732343488,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8635097493036211,
+            "recall": 0.9323308270676691,
+            "f1": 0.8966015907447578,
+            "support": 665,
+            "auc": 0.986300455085081
+          },
+          "Melanoma": {
+            "precision": 0.8552631578947368,
+            "recall": 0.790929203539823,
+            "f1": 0.8218390804597702,
+            "support": 904,
+            "auc": 0.9435777895647803
+          },
+          "Nevus": {
+            "precision": 0.879144385026738,
+            "recall": 0.8934782608695652,
+            "f1": 0.8862533692722372,
+            "support": 920,
+            "auc": 0.973972621719733
+          }
+        },
+        "confusion_matrix": [
+          [
+            620,
+            38,
+            7
+          ],
+          [
+            83,
+            715,
+            106
+          ],
+          [
+            15,
+            83,
+            822
+          ]
+        ],
+        "predicted_distribution": {
+          "BCC": 718,
+          "Melanoma": 836,
+          "Nevus": 935
+        },
+        "prob_sum_min": 0.9999998211860657,
+        "prob_sum_max": 1.0000001192092896
+      },
+      "vs_original_fp32": {
+        "total_images": 2489,
+        "argmax_agreement_count": 2489,
+        "argmax_agreement_rate": 1.0,
+        "argmax_agreement_percent": 100.0,
+        "prediction_flip_count": 0,
+        "prediction_flip_percent": 0.0,
+        "transition_matrix_ref_rows_cand_cols": [
+          [
+            718,
+            0,
+            0
+          ],
+          [
+            0,
+            836,
+            0
+          ],
+          [
+            0,
+            0,
+            935
+          ]
+        ],
+        "outcome_breakdown": {
+          "fp32_correct_to_cand_wrong": 0,
+          "fp32_wrong_to_cand_correct": 0,
+          "both_correct": 2157,
+          "both_wrong_same_pred": 332,
+          "both_wrong_diff_pred": 0
+        },
+        "max_abs_prob_diff": 0.0,
+        "mean_abs_prob_diff": 0.0,
+        "max_abs_logit_diff": 0.0,
+        "mean_abs_logit_diff": 0.0
+      },
+      "eval_elapsed_sec": 685.5653880000027
+    },
+    "int8_folded_batch1": {
+      "scratch_checkpoint_size_bytes": 88211872,
+      "quantization_inventory": {
+        "grand_total_params": 85728003,
+        "quantized_linear_module_count": 49,
+        "quantized_module_total_params": 85019907,
+        "quantized_int8_weight_params": 84936960,
+        "non_quantized_total_params": 708096,
+        "coverage_module_params_pct": 99.174,
+        "coverage_strict_int8_weights_pct": 99.0773
+      },
+      "metrics": {
+        "correct": 1533,
+        "total": 2489,
+        "accuracy": 0.6159100040176778,
+        "accuracy_percent": 61.591,
+        "macro_precision": 0.6816686690418399,
+        "macro_recall": 0.5870734936610477,
+        "macro_f1": 0.5753723049637318,
+        "weighted_precision": 0.6665652406993842,
+        "weighted_recall": 0.6159100040176778,
+        "weighted_f1": 0.5880026771451115,
+        "macro_auc": 0.8336955291310972,
+        "weighted_auc": 0.8351258450648625,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8313253012048193,
+            "recall": 0.3112781954887218,
+            "f1": 0.45295404814004375,
+            "support": 665,
+            "auc": 0.8236190805962275
+          },
+          "Melanoma": {
+            "precision": 0.6460431654676259,
+            "recall": 0.49668141592920356,
+            "f1": 0.5616010006253909,
+            "support": 904,
+            "auc": 0.7717854052092348
+          },
+          "Nevus": {
+            "precision": 0.5676375404530745,
+            "recall": 0.9532608695652174,
+            "f1": 0.7115618661257607,
+            "support": 920,
+            "auc": 0.9056821015878295
+          }
+        },
+        "confusion_matrix": [
+          [
+            207,
+            204,
+            254
+          ],
+          [
+            41,
+            449,
+            414
+          ],
+          [
+            1,
+            42,
+            877
+          ]
+        ],
+        "predicted_distribution": {
+          "BCC": 249,
+          "Melanoma": 695,
+          "Nevus": 1545
+        },
+        "prob_sum_min": 0.9999998807907104,
+        "prob_sum_max": 1.0000001192092896
+      },
+      "vs_original_fp32": {
+        "total_images": 2489,
+        "argmax_agreement_count": 1536,
+        "argmax_agreement_rate": 0.6171153073523503,
+        "argmax_agreement_percent": 61.7115,
+        "prediction_flip_count": 953,
+        "prediction_flip_percent": 38.2885,
+        "transition_matrix_ref_rows_cand_cols": [
+          [
+            213,
+            228,
+            277
+          ],
+          [
+            33,
+            429,
+            374
+          ],
+          [
+            3,
+            38,
+            894
+          ]
+        ],
+        "outcome_breakdown": {
+          "fp32_correct_to_cand_wrong": 760,
+          "fp32_wrong_to_cand_correct": 136,
+          "both_correct": 1397,
+          "both_wrong_same_pred": 139,
+          "both_wrong_diff_pred": 57
+        },
+        "max_abs_prob_diff": 0.9774045944213867,
+        "mean_abs_prob_diff": 0.26397940516471863,
+        "max_abs_logit_diff": 11.03465747833252,
+        "mean_abs_logit_diff": 2.8575680255889893
+      },
+      "vs_primary_int8_batch1": {
+        "total_images": 2489,
+        "argmax_agreement_count": 2489,
+        "argmax_agreement_rate": 1.0,
+        "argmax_agreement_percent": 100.0,
+        "prediction_flip_count": 0,
+        "prediction_flip_percent": 0.0,
+        "transition_matrix_ref_rows_cand_cols": [
+          [
+            249,
+            0,
+            0
+          ],
+          [
+            0,
+            695,
+            0
+          ],
+          [
+            0,
+            0,
+            1545
+          ]
+        ],
+        "outcome_breakdown": {
+          "fp32_correct_to_cand_wrong": 0,
+          "fp32_wrong_to_cand_correct": 0,
+          "both_correct": 1533,
+          "both_wrong_same_pred": 956,
+          "both_wrong_diff_pred": 0
+        },
+        "max_abs_prob_diff": 0.0,
+        "mean_abs_prob_diff": 0.0,
+        "max_abs_logit_diff": 0.0,
+        "mean_abs_logit_diff": 0.0
+      },
+      "eval_elapsed_sec": 680.8474870000064
+    }
+  },
+  "step4_int8_evaluation": {
+    "primary_batch1": {
+      "checkpoint_path": "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2\\dinov2_vitb14_dynamic_int8.pth",
+      "checkpoint_size_bytes": 91627892,
+      "metrics": {
+        "correct": 1533,
+        "total": 2489,
+        "accuracy": 0.6159100040176778,
+        "accuracy_percent": 61.591,
+        "macro_precision": 0.6816686690418399,
+        "macro_recall": 0.5870734936610477,
+        "macro_f1": 0.5753723049637318,
+        "weighted_precision": 0.6665652406993842,
+        "weighted_recall": 0.6159100040176778,
+        "weighted_f1": 0.5880026771451115,
+        "macro_auc": 0.8336955291310972,
+        "weighted_auc": 0.8351258450648625,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8313253012048193,
+            "recall": 0.3112781954887218,
+            "f1": 0.45295404814004375,
+            "support": 665,
+            "auc": 0.8236190805962275
+          },
+          "Melanoma": {
+            "precision": 0.6460431654676259,
+            "recall": 0.49668141592920356,
+            "f1": 0.5616010006253909,
+            "support": 904,
+            "auc": 0.7717854052092348
+          },
+          "Nevus": {
+            "precision": 0.5676375404530745,
+            "recall": 0.9532608695652174,
+            "f1": 0.7115618661257607,
+            "support": 920,
+            "auc": 0.9056821015878295
+          }
+        },
+        "confusion_matrix": [
+          [
+            207,
+            204,
+            254
+          ],
+          [
+            41,
+            449,
+            414
+          ],
+          [
+            1,
+            42,
+            877
+          ]
+        ],
+        "predicted_distribution": {
+          "BCC": 249,
+          "Melanoma": 695,
+          "Nevus": 1545
+        },
+        "prob_sum_min": 0.9999998807907104,
+        "prob_sum_max": 1.0000001192092896
+      },
+      "vs_fp32": {
+        "total_images": 2489,
+        "argmax_agreement_count": 1536,
+        "argmax_agreement_rate": 0.6171153073523503,
+        "argmax_agreement_percent": 61.7115,
+        "prediction_flip_count": 953,
+        "prediction_flip_percent": 38.2885,
+        "transition_matrix_ref_rows_cand_cols": [
+          [
+            213,
+            228,
+            277
+          ],
+          [
+            33,
+            429,
+            374
+          ],
+          [
+            3,
+            38,
+            894
+          ]
+        ],
+        "outcome_breakdown": {
+          "fp32_correct_to_cand_wrong": 760,
+          "fp32_wrong_to_cand_correct": 136,
+          "both_correct": 1397,
+          "both_wrong_same_pred": 139,
+          "both_wrong_diff_pred": 57
+        },
+        "max_abs_prob_diff": 0.9774045944213867,
+        "mean_abs_prob_diff": 0.26397940516471863,
+        "max_abs_logit_diff": 11.03465747833252,
+        "mean_abs_logit_diff": 2.8575680255889893
+      },
+      "eval_elapsed_sec": 883.491892399994,
+      "batch_size": 1
+    },
+    "diagnostic_batch64": {
+      "metrics": {
+        "correct": 1507,
+        "total": 2489,
+        "accuracy": 0.6054640417838489,
+        "accuracy_percent": 60.5464,
+        "macro_precision": 0.674449074258313,
+        "macro_recall": 0.5758962141791569,
+        "macro_f1": 0.5620362792804436,
+        "weighted_precision": 0.6600879414359064,
+        "weighted_recall": 0.6054640417838489,
+        "weighted_f1": 0.575466924845999,
+        "macro_auc": 0.8290845306952224,
+        "weighted_auc": 0.8300262835922385,
+        "per_class": {
+          "BCC": {
+            "precision": 0.8158995815899581,
+            "recall": 0.2932330827067669,
+            "f1": 0.4314159292035398,
+            "support": 665,
+            "auc": 0.8238103482390187
+          },
+          "Melanoma": {
+            "precision": 0.6541353383458647,
+            "recall": 0.4811946902654867,
+            "f1": 0.5544933078393881,
+            "support": 904,
+            "auc": 0.7666403785488959
+          },
+          "Nevus": {
+            "precision": 0.5533123028391167,
+            "recall": 0.9532608695652174,
+            "f1": 0.7001996007984032,
+            "support": 920,
+            "auc": 0.8968028652977527
+          }
+        },
+        "confusion_matrix": [
+          [
+            195,
+            189,
+            281
+          ],
+          [
+            42,
+            435,
+            427
+          ],
+          [
+            2,
+            41,
+            877
+          ]
+        ],
+        "predicted_distribution": {
+          "BCC": 239,
+          "Melanoma": 665,
+          "Nevus": 1585
+        },
+        "prob_sum_min": 0.9999998807907104,
+        "prob_sum_max": 1.0000001192092896
+      },
+      "vs_fp32": {
+        "total_images": 2489,
+        "argmax_agreement_count": 1516,
+        "argmax_agreement_rate": 0.6090799517878666,
+        "argmax_agreement_percent": 60.908,
+        "prediction_flip_count": 973,
+        "prediction_flip_percent": 39.092,
+        "transition_matrix_ref_rows_cand_cols": [
+          [
+            205,
+            213,
+            300
+          ],
+          [
+            30,
+            416,
+            390
+          ],
+          [
+            4,
+            36,
+            895
+          ]
+        ],
+        "outcome_breakdown": {
+          "fp32_correct_to_cand_wrong": 786,
+          "fp32_wrong_to_cand_correct": 136,
+          "both_correct": 1371,
+          "both_wrong_same_pred": 145,
+          "both_wrong_diff_pred": 51
+        },
+        "max_abs_prob_diff": 0.9709503650665283,
+        "mean_abs_prob_diff": 0.2685467302799225,
+        "max_abs_logit_diff": 10.68128490447998,
+        "mean_abs_logit_diff": 2.8684709072113037
+      },
+      "vs_int8_batch1": {
+        "total_images": 2489,
+        "argmax_agreement_count": 2183,
+        "argmax_agreement_rate": 0.8770590598633989,
+        "argmax_agreement_percent": 87.7059,
+        "prediction_flip_count": 306,
+        "prediction_flip_percent": 12.2941,
+        "transition_matrix_ref_rows_cand_cols": [
+          [
+            180,
+            28,
+            41
+          ],
+          [
+            28,
+            563,
+            104
+          ],
+          [
+            31,
+            74,
+            1440
+          ]
+        ],
+        "outcome_breakdown": {
+          "fp32_correct_to_cand_wrong": 124,
+          "fp32_wrong_to_cand_correct": 98,
+          "both_correct": 1409,
+          "both_wrong_same_pred": 774,
+          "both_wrong_diff_pred": 84
+        },
+        "max_abs_prob_diff": 0.39769652485847473,
+        "mean_abs_prob_diff": 0.056793078780174255,
+        "max_abs_logit_diff": 1.2904064655303955,
+        "mean_abs_logit_diff": 0.24512313306331635
+      },
+      "eval_elapsed_sec": 530.0213517000011,
+      "batch_size": 64
+    },
+    "deltas_primary_batch1_vs_fp32": {
+      "accuracy_delta": -0.25070309361189225,
+      "macro_precision_delta": -0.18430376169985874,
+      "macro_recall_delta": -0.28517260349797147,
+      "macro_f1_delta": -0.29285904186185663,
+      "macro_auc_delta": -0.13425475965876743,
+      "per_class_recall_delta": {
+        "BCC": -0.6210526315789473,
+        "Melanoma": -0.2942477876106194,
+        "Nevus": 0.05978260869565222
+      },
+      "per_class_precision_delta": {
+        "BCC": -0.03218444809880183,
+        "Melanoma": -0.20921999242711098,
+        "Nevus": -0.3115068445736635
+      },
+      "per_class_f1_delta": {
+        "BCC": -0.443647542604714,
+        "Melanoma": -0.2602380798343793,
+        "Nevus": -0.17469150314647652
+      }
+    }
+  },
+  "step5_benchmarks": {
+    "hardware_and_environment": {
+      "os": "Windows-11-10.0.26300-SP0",
+      "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+      "cpu_registry": {
+        "processor_name": "12th Gen Intel(R) Core(TM) i5-1235U",
+        "vendor": "GenuineIntel",
+        "base_mhz": 2496
+      },
+      "cpu_count_logical": 12,
+      "cpu_count_physical": 10,
+      "ram_total_gb": 15.65,
+      "ram_available_before_suite_gb": 4.32,
+      "torch_version": "2.10.0+cpu",
+      "torch_supported_engines": [
+        "onednn"
+      ],
+      "torch_config": "PyTorch built with:\n  - C++ Version: 201703\n  - MSVC 194234444\n  - Intel(R) oneAPI Math Kernel Library Version 2025.3-Product Build 20251007 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.7.1 (Git Hash 8d263e693366ef8db40acc569cc7d8edf644556d)\n  - OpenMP 2019\n  - LAPACK is enabled (usually provided by MKL)\n  - CPU capability usage: AVX2\n  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=449b1768410104d3ed79d3bcfe4ba1d65c7f22c0, CXX_COMPILER=C:/actions-runner/_work/pytorch/pytorch/pytorch/.ci/pytorch/windows/tmp_bin/sccache-cl.exe, CXX_FLAGS=/DWIN32 /D_WINDOWS /EHsc /Zc:__cplusplus /bigobj /FS /utf-8 -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE /wd4624 /wd4068 /wd4067 /wd4267 /wd4661 /wd4717 /wd4244 /wd4804 /wd4273, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.10.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=OFF, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n"
+    },
+    "benchmark_protocol": {
+      "batch_size": 1,
+      "warmup_iterations": 50,
+      "timed_iterations": 200,
+      "input_source": "preloaded_val_tensors_in_RAM_for_pure_inference; jpeg_from_disk_for_e2e",
+      "subprocess_isolated_per_model": true
+    },
+    "serialized_file_sizes": {
+      "original_hub_backbone_bytes": 346378731,
+      "original_classifier_head_bytes": 11669,
+      "original_combined_separate_bytes": 346390400,
+      "original_combined_singlefile_bytes": 346399209,
+      "dynamic_int8_preserved_bytes": 91627892,
+      "experimental_folded_int8_scratch_bytes": 88211872
+    },
+    "comparisons": {
+      "pure_inference_speedup_vs_fp32_original": 2.1514,
+      "pure_inference_latency_reduction_pct": 53.52,
+      "e2e_speedup_vs_fp32_original": 2.3938,
+      "e2e_latency_reduction_pct": 58.23,
+      "size_reduction_vs_separate_orig_pct": 73.55,
+      "size_ratio_separate_orig_over_int8": 3.7804,
+      "size_reduction_vs_singlefile_fp32_pct": 73.55,
+      "folded_fp32_speedup_vs_orig_fp32": 1.1152,
+      "folded_int8_speedup_vs_orig_fp32": 2.405
+    },
+    "workers": {
+      "fp32_original": {
+        "mode": "fp32_original",
+        "runtime": {
+          "torch_version": "2.10.0+cpu",
+          "torch_num_threads": 10,
+          "torch_num_interop_threads": 10,
+          "quantized_engine": "onednn",
+          "mkldnn_enabled": true,
+          "openmp_enabled": true,
+          "cpu_freq_current_mhz": 1300.0
+        },
+        "loading_ms": {
+          "cold_load_ms": 1581.1303000009502,
+          "warm_reload_trials_ms": [
+            1453.2717999973102,
+            1298.4891000014613,
+            1311.3748999967356
+          ],
+          "warm_reload_mean_ms": 1354.3785999985023
+        },
+        "memory_rss_mb": {
+          "initial_python_mb": 370.49,
+          "before_model_load_mb": 499.2,
+          "after_model_load_mb": 1161.52,
+          "after_warmup_mb": 1494.08,
+          "after_inference_mb": 1493.33,
+          "model_load_delta_mb": 662.32,
+          "total_with_inference_delta_mb": 994.13
+        },
+        "pure_inference_batch1": {
+          "n": 200,
+          "mean_ms": 373.350535000136,
+          "std_sample_ms": 17.614764885437502,
+          "std_pop_ms": 17.57067278903673,
+          "min_ms": 347.50630000053206,
+          "p50_median_ms": 371.41479999991134,
+          "p95_ms": 398.5056200006511,
+          "p99_ms": 433.0362359982245,
+          "max_ms": 508.7874000018928,
+          "throughput_fps": 2.6784480166866125
+        },
+        "end_to_end_from_disk_batch1": {
+          "n": 200,
+          "mean_ms": 422.7813330002027,
+          "std_sample_ms": 28.86467407441088,
+          "std_pop_ms": 28.79242196090592,
+          "min_ms": 371.50710000423715,
+          "p50_median_ms": 417.6727000012761,
+          "p95_ms": 472.97086000144185,
+          "p99_ms": 507.85014600100106,
+          "max_ms": 651.6063999952166,
+          "throughput_fps": 2.3652889140200535
+        },
+        "preprocessing_in_e2e_batch1": {
+          "n": 200,
+          "mean_ms": 19.939495000253373,
+          "std_sample_ms": 6.159313087814693,
+          "std_pop_ms": 6.143895508971221,
+          "min_ms": 9.667400001490023,
+          "p50_median_ms": 19.667299999127863,
+          "p95_ms": 28.151344996513217,
+          "p99_ms": 30.480358001441335,
+          "max_ms": 32.80689999519382,
+          "throughput_fps": 50.15172149481684
+        }
+      },
+      "fp32_combined_singlefile": {
+        "mode": "fp32_combined_singlefile",
+        "runtime": {
+          "torch_version": "2.10.0+cpu",
+          "torch_num_threads": 10,
+          "torch_num_interop_threads": 10,
+          "quantized_engine": "onednn",
+          "mkldnn_enabled": true,
+          "openmp_enabled": true,
+          "cpu_freq_current_mhz": 1300.0
+        },
+        "loading_ms": {
+          "cold_load_ms": 1806.197300000349,
+          "warm_reload_trials_ms": [
+            1680.2230999965104,
+            1609.0497999975923,
+            1578.418099998089
+          ],
+          "warm_reload_mean_ms": 1622.563666664064
+        },
+        "memory_rss_mb": {
+          "initial_python_mb": 369.2,
+          "before_model_load_mb": 497.87,
+          "after_model_load_mb": 1156.1,
+          "after_warmup_mb": 1472.2,
+          "after_inference_mb": 1472.22,
+          "model_load_delta_mb": 658.23,
+          "total_with_inference_delta_mb": 974.35
+        },
+        "pure_inference_batch1": {
+          "n": 200,
+          "mean_ms": 451.2010705001376,
+          "std_sample_ms": 45.771862138944805,
+          "std_pop_ms": 45.657289087814185,
+          "min_ms": 330.5735000030836,
+          "p50_median_ms": 443.6146500011091,
+          "p95_ms": 533.0945500048983,
+          "p99_ms": 604.5685130001218,
+          "max_ms": 626.3058000040473,
+          "throughput_fps": 2.216306798411497
+        },
+        "end_to_end_from_disk_batch1": null,
+        "preprocessing_in_e2e_batch1": null
+      },
+      "int8_dynamic_preserved": {
+        "mode": "int8_dynamic_preserved",
+        "runtime": {
+          "torch_version": "2.10.0+cpu",
+          "torch_num_threads": 10,
+          "torch_num_interop_threads": 10,
+          "quantized_engine": "onednn",
+          "mkldnn_enabled": true,
+          "openmp_enabled": true,
+          "cpu_freq_current_mhz": 1300.0
+        },
+        "loading_ms": {
+          "cold_load_ms": 2894.1857000027085,
+          "warm_reload_trials_ms": [
+            3170.2258000004804,
+            3200.7958000031067,
+            3135.1318000015453
+          ],
+          "warm_reload_mean_ms": 3168.7178000017107
+        },
+        "memory_rss_mb": {
+          "initial_python_mb": 371.23,
+          "before_model_load_mb": 499.91,
+          "after_model_load_mb": 1104.99,
+          "after_warmup_mb": 1584.31,
+          "after_inference_mb": 1584.3,
+          "model_load_delta_mb": 605.08,
+          "total_with_inference_delta_mb": 1084.39
+        },
+        "pure_inference_batch1": {
+          "n": 200,
+          "mean_ms": 173.53662149995216,
+          "std_sample_ms": 27.553090227668264,
+          "std_pop_ms": 27.484121182758567,
+          "min_ms": 149.38009999605129,
+          "p50_median_ms": 159.92615000141086,
+          "p95_ms": 237.5822449987026,
+          "p99_ms": 259.8886000012135,
+          "max_ms": 309.8621999961324,
+          "throughput_fps": 5.762472447351844
+        },
+        "end_to_end_from_disk_batch1": {
+          "n": 200,
+          "mean_ms": 176.61224399991625,
+          "std_sample_ms": 10.269285599008596,
+          "std_pop_ms": 10.243580213013187,
+          "min_ms": 160.79940000054194,
+          "p50_median_ms": 176.76434999884805,
+          "p95_ms": 194.64019000042754,
+          "p99_ms": 214.09732500520474,
+          "max_ms": 227.90700000041397,
+          "throughput_fps": 5.6621215910742535
+        },
+        "preprocessing_in_e2e_batch1": {
+          "n": 200,
+          "mean_ms": 19.79489650009782,
+          "std_sample_ms": 6.150173722017473,
+          "std_pop_ms": 6.134779020220638,
+          "min_ms": 9.832299998379312,
+          "p50_median_ms": 19.071900002018083,
+          "p95_ms": 28.215695000471896,
+          "p99_ms": 29.133705993663163,
+          "max_ms": 31.296699999074917,
+          "throughput_fps": 50.518071665343555
+        }
+      },
+      "fp32_folded_224": {
+        "mode": "fp32_folded_224",
+        "runtime": {
+          "torch_version": "2.10.0+cpu",
+          "torch_num_threads": 10,
+          "torch_num_interop_threads": 10,
+          "quantized_engine": "onednn",
+          "mkldnn_enabled": true,
+          "openmp_enabled": true,
+          "cpu_freq_current_mhz": 1300.0
+        },
+        "loading_ms": {
+          "cold_load_ms": 1490.0091999952565,
+          "warm_reload_trials_ms": [
+            1376.2067999996361,
+            1424.3752999973367,
+            1423.8203999993857
+          ],
+          "warm_reload_mean_ms": 1408.1341666654528
+        },
+        "memory_rss_mb": {
+          "initial_python_mb": 370.31,
+          "before_model_load_mb": 499.11,
+          "after_model_load_mb": 1162.66,
+          "after_warmup_mb": 1511.16,
+          "after_inference_mb": 1510.8,
+          "model_load_delta_mb": 663.55,
+          "total_with_inference_delta_mb": 1011.69
+        },
+        "pure_inference_batch1": {
+          "n": 200,
+          "mean_ms": 334.7868344998642,
+          "std_sample_ms": 9.765765476142612,
+          "std_pop_ms": 9.741320467900842,
+          "min_ms": 319.42899999557994,
+          "p50_median_ms": 332.2516000007454,
+          "p95_ms": 356.1856200016336,
+          "p99_ms": 373.66315100087377,
+          "max_ms": 378.41589999879943,
+          "throughput_fps": 2.9869752838216987
+        },
+        "end_to_end_from_disk_batch1": null,
+        "preprocessing_in_e2e_batch1": null
+      },
+      "int8_dynamic_folded_224": {
+        "mode": "int8_dynamic_folded_224",
+        "runtime": {
+          "torch_version": "2.10.0+cpu",
+          "torch_num_threads": 10,
+          "torch_num_interop_threads": 10,
+          "quantized_engine": "onednn",
+          "mkldnn_enabled": true,
+          "openmp_enabled": true,
+          "cpu_freq_current_mhz": 1300.0
+        },
+        "loading_ms": {
+          "cold_load_ms": 2800.7963999989443,
+          "warm_reload_trials_ms": [
+            2765.4398000013316,
+            2789.2012000011164,
+            2690.3510999982245
+          ],
+          "warm_reload_mean_ms": 2748.330700000224
+        },
+        "memory_rss_mb": {
+          "initial_python_mb": 370.23,
+          "before_model_load_mb": 498.98,
+          "after_model_load_mb": 1108.45,
+          "after_warmup_mb": 1637.84,
+          "after_inference_mb": 1628.85,
+          "model_load_delta_mb": 609.47,
+          "total_with_inference_delta_mb": 1129.87
+        },
+        "pure_inference_batch1": {
+          "n": 200,
+          "mean_ms": 155.2424879996761,
+          "std_sample_ms": 9.880091718691896,
+          "std_pop_ms": 9.855360536678267,
+          "min_ms": 144.76030000514584,
+          "p50_median_ms": 152.5811000028625,
+          "p95_ms": 172.6370000018505,
+          "p99_ms": 193.0793669957346,
+          "max_ms": 226.37260000192327,
+          "throughput_fps": 6.4415355157287
+        },
+        "end_to_end_from_disk_batch1": null,
+        "preprocessing_in_e2e_batch1": null
+      }
+    }
+  },
+  "root_cause_diagnostics": {
+    "train_sample_count": 10,
+    "sample0_image": "ISIC_0014225_downsampled",
+    "sample0_fp32_logits": [
+      -7.226508140563965,
+      1.44395911693573,
+      5.0064826011657715
+    ],
+    "sample0_int8_logits": [
+      -0.15037935972213745,
+      -0.8484762907028198,
+      -0.21894139051437378
+    ],
+    "block_wise_stats_10_train_imgs": [
+      {
+        "block": 0,
+        "fp_output_abs_max_mean": 1.4975857973098754,
+        "fp_output_abs_max_max": 1.5740208625793457,
+        "fp_output_p99_mean": 0.1588292747735977,
+        "max_over_p99_ratio_mean": 9.461866412174581,
+        "token_norm_max_over_median_mean": 1.4597509980201722,
+        "out_cls_cosine_sim_mean": 0.9976008832454681,
+        "out_cls_cosine_sim_min": 0.9944584369659424
+      },
+      {
+        "block": 1,
+        "fp_output_abs_max_mean": 1.1155516743659972,
+        "fp_output_abs_max_max": 1.1372506618499756,
+        "fp_output_p99_mean": 0.1261867955327034,
+        "max_over_p99_ratio_mean": 8.859675439174357,
+        "token_norm_max_over_median_mean": 1.8021346807479859,
+        "out_cls_cosine_sim_mean": 0.9960643231868744,
+        "out_cls_cosine_sim_min": 0.9937773942947388
+      },
+      {
+        "block": 2,
+        "fp_output_abs_max_mean": 1.63906831741333,
+        "fp_output_abs_max_max": 1.6558459997177124,
+        "fp_output_p99_mean": 0.13090388774871825,
+        "max_over_p99_ratio_mean": 12.543485286847515,
+        "token_norm_max_over_median_mean": 2.0892064571380615,
+        "out_cls_cosine_sim_mean": 0.9982049822807312,
+        "out_cls_cosine_sim_min": 0.9974112510681152
+      },
+      {
+        "block": 3,
+        "fp_output_abs_max_mean": 1.7720398426055908,
+        "fp_output_abs_max_max": 1.8034876585006714,
+        "fp_output_p99_mean": 0.1667225956916809,
+        "max_over_p99_ratio_mean": 10.645133587826304,
+        "token_norm_max_over_median_mean": 2.138780951499939,
+        "out_cls_cosine_sim_mean": 0.997892689704895,
+        "out_cls_cosine_sim_min": 0.9969837069511414
+      },
+      {
+        "block": 4,
+        "fp_output_abs_max_mean": 3.8449779987335204,
+        "fp_output_abs_max_max": 3.8947670459747314,
+        "fp_output_p99_mean": 0.2006586790084839,
+        "max_over_p99_ratio_mean": 19.187602438816008,
+        "token_norm_max_over_median_mean": 2.7750680446624756,
+        "out_cls_cosine_sim_mean": 0.9987179577350617,
+        "out_cls_cosine_sim_min": 0.9982202649116516
+      },
+      {
+        "block": 5,
+        "fp_output_abs_max_mean": 2.31427857875824,
+        "fp_output_abs_max_max": 2.4192709922790527,
+        "fp_output_p99_mean": 0.2764664441347122,
+        "max_over_p99_ratio_mean": 8.38536508374412,
+        "token_norm_max_over_median_mean": 1.4887577414512634,
+        "out_cls_cosine_sim_mean": 0.9949524581432343,
+        "out_cls_cosine_sim_min": 0.9932350516319275
+      },
+      {
+        "block": 6,
+        "fp_output_abs_max_mean": 4.977036952972412,
+        "fp_output_abs_max_max": 5.142858505249023,
+        "fp_output_p99_mean": 0.43228142261505126,
+        "max_over_p99_ratio_mean": 11.523533814620212,
+        "token_norm_max_over_median_mean": 2.4932340383529663,
+        "out_cls_cosine_sim_mean": 0.995710039138794,
+        "out_cls_cosine_sim_min": 0.9940635561943054
+      },
+      {
+        "block": 7,
+        "fp_output_abs_max_mean": 7.712576532363892,
+        "fp_output_abs_max_max": 7.911686897277832,
+        "fp_output_p99_mean": 0.6103969991207123,
+        "max_over_p99_ratio_mean": 12.652686447062944,
+        "token_norm_max_over_median_mean": 3.3233722686767577,
+        "out_cls_cosine_sim_mean": 0.9953083992004395,
+        "out_cls_cosine_sim_min": 0.9940702319145203
+      },
+      {
+        "block": 8,
+        "fp_output_abs_max_mean": 396.66631469726565,
+        "fp_output_abs_max_max": 431.2984924316406,
+        "fp_output_p99_mean": 1.311898410320282,
+        "max_over_p99_ratio_mean": 308.62192490060295,
+        "token_norm_max_over_median_mean": 55.053734588623044,
+        "out_cls_cosine_sim_mean": 0.8619151294231415,
+        "out_cls_cosine_sim_min": 0.8502340316772461
+      },
+      {
+        "block": 9,
+        "fp_output_abs_max_mean": 428.20343017578125,
+        "fp_output_abs_max_max": 463.2638854980469,
+        "fp_output_p99_mean": 1.7675090312957764,
+        "max_over_p99_ratio_mean": 244.7438248460473,
+        "token_norm_max_over_median_mean": 36.39087181091308,
+        "out_cls_cosine_sim_mean": 0.8814061462879181,
+        "out_cls_cosine_sim_min": 0.8639936447143555
+      },
+      {
+        "block": 10,
+        "fp_output_abs_max_mean": 459.47975463867186,
+        "fp_output_abs_max_max": 494.71771240234375,
+        "fp_output_p99_mean": 2.6656780004501344,
+        "max_over_p99_ratio_mean": 172.71029282453037,
+        "token_norm_max_over_median_mean": 22.756829071044923,
+        "out_cls_cosine_sim_mean": 0.7681827247142792,
+        "out_cls_cosine_sim_min": 0.7080262899398804
+      },
+      {
+        "block": 11,
+        "fp_output_abs_max_mean": 158.11116943359374,
+        "fp_output_abs_max_max": 189.0015869140625,
+        "fp_output_p99_mean": 5.0365321159362795,
+        "max_over_p99_ratio_mean": 31.46441576929005,
+        "token_norm_max_over_median_mean": 3.6827395439147947,
+        "out_cls_cosine_sim_mean": 0.14691157639026642,
+        "out_cls_cosine_sim_min": 0.10376536846160889
+      }
+    ],
+    "isolated_layer_same_fp32_input_sample0": [
+      {
+        "module": "backbone.blocks.8.attn.qkv",
+        "weight_dequant_max_abs_err": 0.0006332546472549438,
+        "fp_input_abs_max": 26.15178680419922,
+        "fp_input_p99": 4.125923156738281,
+        "isolated_cls_cosine_sim": 0.9987891912460327,
+        "isolated_cls_max_abs_err": 0.15967267751693726,
+        "isolated_all_max_abs_err": 0.2865741550922394
+      },
+      {
+        "module": "backbone.blocks.8.attn.proj",
+        "weight_dequant_max_abs_err": 0.0009968876838684082,
+        "fp_input_abs_max": 3.0908687114715576,
+        "fp_input_p99": 0.8320753574371338,
+        "isolated_cls_cosine_sim": 0.9988577365875244,
+        "isolated_cls_max_abs_err": 0.01861848309636116,
+        "isolated_all_max_abs_err": 0.05922579765319824
+      },
+      {
+        "module": "backbone.blocks.8.mlp.fc1",
+        "weight_dequant_max_abs_err": 0.0017188191413879395,
+        "fp_input_abs_max": 41.74543762207031,
+        "fp_input_p99": 4.808790683746338,
+        "isolated_cls_cosine_sim": 0.9994841814041138,
+        "isolated_cls_max_abs_err": 0.3473796844482422,
+        "isolated_all_max_abs_err": 1.4670066833496094
+      },
+      {
+        "module": "backbone.blocks.8.mlp.fc2",
+        "weight_dequant_max_abs_err": 0.0010709166526794434,
+        "fp_input_abs_max": 88.68952941894531,
+        "fp_input_p99": 0.613734245300293,
+        "isolated_cls_cosine_sim": 0.5774574279785156,
+        "isolated_cls_max_abs_err": 1.0625219345092773,
+        "isolated_all_max_abs_err": 1.7476027011871338
+      },
+      {
+        "module": "backbone.blocks.10.mlp.fc1",
+        "weight_dequant_max_abs_err": 0.0006358940154314041,
+        "fp_input_abs_max": 41.40642547607422,
+        "fp_input_p99": 5.37354040145874,
+        "isolated_cls_cosine_sim": 0.9997991919517517,
+        "isolated_cls_max_abs_err": 0.23137140274047852,
+        "isolated_all_max_abs_err": 0.355541467666626
+      },
+      {
+        "module": "backbone.blocks.10.mlp.fc2",
+        "weight_dequant_max_abs_err": 0.001661449670791626,
+        "fp_input_abs_max": 4.753259658813477,
+        "fp_input_p99": 0.3373386263847351,
+        "isolated_cls_cosine_sim": 0.9945026636123657,
+        "isolated_cls_max_abs_err": 0.08926904201507568,
+        "isolated_all_max_abs_err": 0.17360174655914307
+      },
+      {
+        "module": "backbone.blocks.11.mlp.fc1",
+        "weight_dequant_max_abs_err": 0.003465414047241211,
+        "fp_input_abs_max": 19.429079055786133,
+        "fp_input_p99": 4.208844184875488,
+        "isolated_cls_cosine_sim": 0.9984215497970581,
+        "isolated_cls_max_abs_err": 0.29288768768310547,
+        "isolated_all_max_abs_err": 0.7423629760742188
+      },
+      {
+        "module": "backbone.blocks.11.mlp.fc2",
+        "weight_dequant_max_abs_err": 0.0014410316944122314,
+        "fp_input_abs_max": 61.91090393066406,
+        "fp_input_p99": 0.5533595681190491,
+        "isolated_cls_cosine_sim": 0.1190592423081398,
+        "isolated_cls_max_abs_err": 4.808180332183838,
+        "isolated_all_max_abs_err": 5.8116912841796875
+      },
+      {
+        "module": "classifier",
+        "weight_dequant_max_abs_err": 0.0011706650257110596,
+        "fp_input_abs_max": 6.249776840209961,
+        "fp_input_p99": 4.676845073699951,
+        "isolated_cls_cosine_sim": 0.999933123588562,
+        "isolated_cls_max_abs_err": 0.07418298721313477,
+        "isolated_all_max_abs_err": 0.07418298721313477
+      }
+    ]
+  },
+  "preservation_verification": {
+    "verified_at": "2026-11-10T12:13:14",
+    "phase1_original_files_checked": 18,
+    "phase1_reports_verified_intact": 3,
+    "mutated_files_count": 0,
+    "all_phase1_hashes_match": true,
+    "files": {
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_100_epoch_best.pth": {
+        "exists": true,
+        "size_bytes": 11669,
+        "mtime_iso": "2026-08-26T22:57:47",
+        "expected_sha256_from_phase1": "783e31fb03a60a178b81724c70db5878b107389be228f4c5ced2f5e61c88d725",
+        "post_phase2_sha256": "783e31fb03a60a178b81724c70db5878b107389be228f4c5ced2f5e61c88d725",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\dinov2_classifier_best.pth": {
+        "exists": true,
+        "size_bytes": 11677,
+        "mtime_iso": "2026-08-26T22:50:22",
+        "expected_sha256_from_phase1": "e40f3d5d6f01451af7a87807cae2046cfaba1cc18ceef847dc64044b29d82796",
+        "post_phase2_sha256": "e40f3d5d6f01451af7a87807cae2046cfaba1cc18ceef847dc64044b29d82796",
+        "sha256_match": true
+      },
+      "C:\\Users\\HP\\.cache\\torch\\hub\\checkpoints\\dinov2_vitb14_pretrain.pth": {
+        "exists": true,
+        "size_bytes": 346378731,
+        "mtime_iso": "2026-08-26T23:28:05",
+        "expected_sha256_from_phase1": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73",
+        "post_phase2_sha256": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2.keras": {
+        "exists": true,
+        "size_bytes": 31673490,
+        "mtime_iso": "2026-08-17T13:57:56",
+        "expected_sha256_from_phase1": "ebbd575e3d7b340d8d806515abc918cc5260b8cd4b8ef4c41c93f9582ebf33d4",
+        "post_phase2_sha256": "ebbd575e3d7b340d8d806515abc918cc5260b8cd4b8ef4c41c93f9582ebf33d4",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2.tflite": {
+        "exists": true,
+        "size_bytes": 2877224,
+        "mtime_iso": "2026-08-29T14:47:36",
+        "expected_sha256_from_phase1": "acf368659274be0fca0bfd6d4715f9a515e7d701d44592aee33fae4e73b2b0eb",
+        "post_phase2_sha256": "acf368659274be0fca0bfd6d4715f9a515e7d701d44592aee33fae4e73b2b0eb",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2_full_int8.tflite": {
+        "exists": true,
+        "size_bytes": 3083384,
+        "mtime_iso": "2026-11-10T08:11:58",
+        "expected_sha256_from_phase1": "00924d9d127fd73438ba526ac6bbe28ac3fdc12ee3fff4272212aa82ae075da7",
+        "post_phase2_sha256": "00924d9d127fd73438ba526ac6bbe28ac3fdc12ee3fff4272212aa82ae075da7",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\models\\best_mobilenetv2_pruned.keras": {
+        "exists": true,
+        "size_bytes": 31673383,
+        "mtime_iso": "2026-11-10T09:22:07",
+        "expected_sha256_from_phase1": "0364f6c4d152c7ccf6d555aadd49eb82bf293f52983bb29bbc73eee4acc3814f",
+        "post_phase2_sha256": "0364f6c4d152c7ccf6d555aadd49eb82bf293f52983bb29bbc73eee4acc3814f",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluation.py": {
+        "exists": true,
+        "size_bytes": 20755,
+        "mtime_iso": "2026-08-28T17:41:47",
+        "expected_sha256_from_phase1": "55b7c934ebad767c0208e77c5300a314d78ab0e68883846acfeae0e813a8a78b",
+        "post_phase2_sha256": "55b7c934ebad767c0208e77c5300a314d78ab0e68883846acfeae0e813a8a78b",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\evaluate_final_ensemble.py": {
+        "exists": true,
+        "size_bytes": 11293,
+        "mtime_iso": "2026-08-28T17:41:47",
+        "expected_sha256_from_phase1": "3bf83cd176265da896c2ad3b1c901271a051d205839eac8a457e5aef20e0b854",
+        "post_phase2_sha256": "3bf83cd176265da896c2ad3b1c901271a051d205839eac8a457e5aef20e0b854",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\streamlit_app.py": {
+        "exists": true,
+        "size_bytes": 91483,
+        "mtime_iso": "2026-08-31T11:03:05",
+        "expected_sha256_from_phase1": "925f7505bd7b726d94b0763589f9e22aeaca039f0ead7dae2806507e16bbe08d",
+        "post_phase2_sha256": "925f7505bd7b726d94b0763589f9e22aeaca039f0ead7dae2806507e16bbe08d",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\verify_dinov2.py": {
+        "exists": true,
+        "size_bytes": 3076,
+        "mtime_iso": "2026-08-27T00:08:49",
+        "expected_sha256_from_phase1": "900f2134495729409bd00335f942a97aee1b6f25e0773c3c5b00a449d406da8a",
+        "post_phase2_sha256": "900f2134495729409bd00335f942a97aee1b6f25e0773c3c5b00a449d406da8a",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\verify_ensemble.py": {
+        "exists": true,
+        "size_bytes": 3809,
+        "mtime_iso": "2026-08-27T00:41:44",
+        "expected_sha256_from_phase1": "6672d6689cb63dfe826a77fcb530f2f6a772e5b12371b10e739b0ba7618390f0",
+        "post_phase2_sha256": "6672d6689cb63dfe826a77fcb530f2f6a772e5b12371b10e739b0ba7618390f0",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\sweep_weights.py": {
+        "exists": true,
+        "size_bytes": 3273,
+        "mtime_iso": "2026-08-27T01:02:24",
+        "expected_sha256_from_phase1": "507399cfcc4d9b97354b8945aa145c5fb4af40e4002e3be5c953dd5d7d688f0d",
+        "post_phase2_sha256": "507399cfcc4d9b97354b8945aa145c5fb4af40e4002e3be5c953dd5d7d688f0d",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\final_metrics.json": {
+        "exists": true,
+        "size_bytes": 1428,
+        "mtime_iso": "2026-08-27T09:28:11",
+        "expected_sha256_from_phase1": "732806ebc9ed6087ef2ec22705c0e7467d3c4b72b92d31632d2aaca1d58b0fa0",
+        "post_phase2_sha256": "732806ebc9ed6087ef2ec22705c0e7467d3c4b72b92d31632d2aaca1d58b0fa0",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\dinov2_classification_report.csv": {
+        "exists": true,
+        "size_bytes": 484,
+        "mtime_iso": "2026-08-27T09:28:08",
+        "expected_sha256_from_phase1": "115016868a7418446bf7dd3aeac0f78fb29a524f54c8377d47bc37bebdbafa0e",
+        "post_phase2_sha256": "115016868a7418446bf7dd3aeac0f78fb29a524f54c8377d47bc37bebdbafa0e",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\dinov2_val_probabilities.npy": {
+        "exists": true,
+        "size_bytes": 29996,
+        "mtime_iso": "2026-11-09T12:53:21",
+        "expected_sha256_from_phase1": "da0a29d3dbecf3d049a31517376beb91b2486ce4766cc56fbf193ec9b35e932d",
+        "post_phase2_sha256": "da0a29d3dbecf3d049a31517376beb91b2486ce4766cc56fbf193ec9b35e932d",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\metrics\\val_ground_truth.npy": {
+        "exists": true,
+        "size_bytes": 10084,
+        "mtime_iso": "2026-11-09T12:53:21",
+        "expected_sha256_from_phase1": "dae9a29b4f694ac1ea0e04c8d0dd7adba6b563d7cc34f87392807cee66e6bb71",
+        "post_phase2_sha256": "dae9a29b4f694ac1ea0e04c8d0dd7adba6b563d7cc34f87392807cee66e6bb71",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2_epoch_history.csv": {
+        "exists": true,
+        "size_bytes": 1546,
+        "mtime_iso": "2026-08-28T17:36:56",
+        "expected_sha256_from_phase1": "200952011861f66ca8fbe392ec0bbd6b91c0dadb16242ac63529e3eabdb0c004",
+        "post_phase2_sha256": "200952011861f66ca8fbe392ec0bbd6b91c0dadb16242ac63529e3eabdb0c004",
+        "sha256_match": true
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_deployment_baseline_audit.md": {
+        "exists": true,
+        "size_bytes": 52648,
+        "mtime_iso": "2026-11-10T10:53:23",
+        "expected_sha256_from_phase1": null,
+        "post_phase2_sha256": "2eccb4de3c8f74796f63e5da040acea716de5b8659ebdc8a67b0c7f2540e2b56",
+        "sha256_match": null
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_baseline_metrics.json": {
+        "exists": true,
+        "size_bytes": 33289,
+        "mtime_iso": "2026-11-10T10:51:07",
+        "expected_sha256_from_phase1": null,
+        "post_phase2_sha256": "aed31eb422b944b1b692d256c0376d55cc99d117b550efd0a913a125d5fe1d02",
+        "sha256_match": null
+      },
+      "c:\\Users\\HP\\OneDrive\\Desktop\\Dermavision(ISIC2019 dataset)\\results\\dinov2\\dinov2_layer_parameter_inventory.json": {
+        "exists": true,
+        "size_bytes": 95720,
+        "mtime_iso": "2026-11-10T10:51:07",
+        "expected_sha256_from_phase1": null,
+        "post_phase2_sha256": "731e51fe6250e472f7f49bda1130089693cf2e31841a1bb1f9f7cb35e6fb5682",
+        "sha256_match": null
+      }
+    }
+  }
+}

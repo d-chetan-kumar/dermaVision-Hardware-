@@ -1,0 +1,55 @@
+{
+    "model": "Weighted Ensemble (0.4 MobileNetV2 + 0.6 DINOv2)",
+    "mobilenetv2_weight": 0.4,
+    "dinov2_weight": 0.6,
+    "validation_samples": 2489,
+    "class_names": [
+        "BCC",
+        "Melanoma",
+        "Nevus"
+    ],
+    "accuracy": 0.9075934110084372,
+    "macro_precision": 0.9084529635266753,
+    "macro_recall": 0.9126118730840184,
+    "macro_f1": 0.9100863616983373,
+    "weighted_precision": 0.9073372448965408,
+    "weighted_recall": 0.9075934110084372,
+    "weighted_f1": 0.9070318715881166,
+    "confusion_matrix": [
+        [
+            642,
+            22,
+            1
+        ],
+        [
+            45,
+            770,
+            89
+        ],
+        [
+            11,
+            62,
+            847
+        ]
+    ],
+    "per_class": {
+        "BCC": {
+            "precision": 0.9197707736389685,
+            "recall": 0.9654135338345865,
+            "f1_score": 0.942039618488628,
+            "support": 665
+        },
+        "Melanoma": {
+            "precision": 0.9016393442622951,
+            "recall": 0.8517699115044248,
+            "f1_score": 0.875995449374289,
+            "support": 904
+        },
+        "Nevus": {
+            "precision": 0.9039487726787621,
+            "recall": 0.9206521739130434,
+            "f1_score": 0.9122240172320948,
+            "support": 920
+        }
+    }
+}
