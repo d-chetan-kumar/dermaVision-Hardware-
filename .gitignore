@@ -61,3 +61,12 @@ credentials.json
 *.swo
 .DS_Store
 *.log
+
+# LaTeX build artefacts (manuscript)
+ISIC_Dermavision_Manuscript/*.aux
+ISIC_Dermavision_Manuscript/*.log
+ISIC_Dermavision_Manuscript/*.out
+ISIC_Dermavision_Manuscript/*.spl
+ISIC_Dermavision_Manuscript/*.fls
+ISIC_Dermavision_Manuscript/*.fdb_latexmk
+ISIC_Dermavision_Manuscript/*.synctex.gz
