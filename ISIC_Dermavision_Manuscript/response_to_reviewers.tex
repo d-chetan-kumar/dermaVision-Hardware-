@@ -49,8 +49,16 @@ We sincerely thank the reviewers for their careful reading and constructive comm
 \item \textbf{Data analysis.} Lesion-level overlap analysis (Sec.~3.2), justification of the three classes, and class-balance statistics (Sec.~3.1).\\[2pt]
 \emph{Justification:} The dataset composition and the data split are now described transparently, so that the scope of the results is clear to the reader (Comments 1.1, 2.1, 2.3, and 2.4).
 
-\item \textbf{Results and figures.} Training curves redrawn as one four-panel figure (Fig.~3), MobileNetV2 confusion matrix and per-class table (Fig.~4, Table~5), and a new Grad-CAM section with Fig.~5.\\[2pt]
-\emph{Justification:} Per-class and Melanoma-specific reporting and visual explanations make the model behaviour easier to assess, and the combined training figure presents the training settings compactly (Comments 2.2, 3.2, and 3.3).
+\item \textbf{Graphs and figures.} All result graphs were regenerated from the experiment logs in a consistent publication style (bold labels, inward ticks, boxed legends):
+\begin{itemize}
+\setlength{\itemsep}{1pt}
+\item Training curves: the two separate MobileNetV2 and DINOv2 accuracy/loss graphs were combined into one four-panel figure (Fig.~3).
+\item Confusion matrix: replaced by the MobileNetV2 FP32 confusion matrix, with a matching per-class table (Fig.~4, Table~5).
+\item Grad-CAM: new figure with heatmaps for one correct case per class and a Melanoma-predicted-as-Nevus case (Fig.~5).
+\item Block diagram: redrawn as described in item~2 (Fig.~1).
+\item The earlier sample-image figure was merged into Figs.~1 and~5, which show the same lesions.
+\end{itemize}
+\emph{Justification:} The regenerated graphs report the deployed MobileNetV2 directly, add per-class and Melanoma-specific evidence and visual explanations, and present the training behaviour of both models side by side in less space, which keeps the manuscript within the ten-page limit (Comments 2.2, 3.2, and 3.3).
 
 \item \textbf{Text.} Abstract, introduction, contributions, discussion, and conclusion rewritten to reflect these changes.\\[2pt]
 \emph{Justification:} The narrative is now consistent with the revised results, discusses the fusion gain, and states the study scope and future work explicitly (Comments 1.6, 2.6, and 3.6).
@@ -173,6 +181,11 @@ Fusion ($w_M=0.4$, $w_D=0.6$) & 90.76\% & 91.01\% & 85.18\% \\
 \textbf{Response:} We thank the reviewer for this suggestion. Table~5 reports per-class precision, recall, and F1 for MobileNetV2 (Melanoma recall 87.06\%), Table~3 reports Melanoma recall for every model variant, and the confusion matrix in Fig.~4 shows that the main error is Melanoma predicted as Nevus (78 images).
 
 \begin{center}
+\includegraphics[width=0.42\textwidth]{mobilenetv2_confusion_matrix.png}\\[4pt]
+\small\textbf{Confusion matrix of MobileNetV2 FP32 (Fig.~4 of the revised manuscript).}
+\end{center}
+
+\begin{center}
 \begin{minipage}{\linewidth}\centering
 \small
 \textbf{Class-level performance of MobileNetV2 FP32}\\[3pt]
@@ -256,9 +269,10 @@ MobileNetV2 correct & 2,247 & 17 \\
 MobileNetV2 wrong & 27 & 198 \\
 \bottomrule
 \end{tabular}
+
+\par\smallskip Exact two-sided McNemar test on the discordant pairs (27 vs.\ 17): $p = 0.174$.
 \end{minipage}
 \end{center}
-\begin{center}\small Exact two-sided McNemar test on the discordant pairs (27 vs.\ 17): $p = 0.174$.\end{center}
 
 \textbf{Revised in the manuscript} (Sec.~4.4 (p.~6)): ``\ldots\ \emph{Equal-weight fusion corrected 27 MobileNetV2 errors and introduced 17 new ones, a net gain of 10 images, and raised recall in every class (BCC $+0.30$, Melanoma $+0.33$, Nevus $+0.54$ percentage points).} \ldots''
 
@@ -309,6 +323,11 @@ MobileNetV2 Full INT8 (reference) & 2.94 MiB & 4.51 ms & 90.72\% & 86.73\% \\
 \textbf{Comment 3.3:} \emph{Training settings should be reported.}
 
 \textbf{Response:} We thank the reviewer for this suggestion. The training settings are reported in the methodology: input size ($224\times224$), normalization for each model, the augmentations used (rotation, zoom, translation), ImageNet and self-supervised pretraining, the classification heads, and 50 training epochs for both models, with the epoch-wise curves in Fig.~3. Owing to the ten-page limit, they are given in the text rather than in a separate table.
+
+\begin{center}
+\includegraphics[width=\textwidth]{training_curves.pdf}\\[4pt]
+\small\textbf{Training and validation curves of MobileNetV2 (a, b) and DINOv2 (c, d) over 50 epochs (Fig.~3 of the revised manuscript).}
+\end{center}
 
 \textbf{Revised in the manuscript} (Sec.~3.3 (p.~4)): ``\ldots\ \emph{The verified MobileNetV2 training pipeline used rotation, zoom, and translation augmentation.} \ldots''
 
