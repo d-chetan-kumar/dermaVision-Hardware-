@@ -44,7 +44,7 @@
 \address[a]{Department of Computer Science and Engineering, Amrita School of Computing, Amrita Vishwa Vidyapeetham,Chennai,601103,India}
 
 \begin{abstract}
-Different skin lesions often look alike in dermoscopic images, which makes automated classification both useful and hard. We compare MobileNetV2 and DINOv2 for separating Basal Cell Carcinoma (BCC), Melanoma, and Nevus in a curated three-class subset of the ISIC 2019 dataset. The study focuses on a reproducible comparison of full-precision, quantized, and pruned models, together with a Grad-CAM explainability assessment. On the existing 2,489-image image-level validation partition, MobileNetV2 FP32 achieved 90.96\% accuracy and 87.06\% Melanoma recall. Full-integer INT8 TFLite conversion reduced the model size from 30.21 MiB to 2.94 MiB, while retaining 90.72\% accuracy and 86.73\% Melanoma recall; batch-one latency was 4.51 ms on the development CPU and 13.92 ms (71.8 FPS) on a Raspberry Pi 4 Model B, compared with 597.59 ms for the FP32 Keras model on the same device. In contrast, 50\% unstructured pruning reduced accuracy to 83.49\%, while native dynamic INT8 quantization of DINOv2 provided a compact 87.38 MiB representation and 173.54 ms host latency, with accuracy of 61.59\% under the evaluated quantization configuration. This points to quantization-aware training and distillation as the next step for the transformer. The two models are evaluated as independent branches; a post-hoc probability-fusion audit gave no reliable gain over MobileNetV2, so fusion is not part of the pipeline. All results are validation results, because lesion-level auditing identified 54.04\% overlap between validation and training images. The findings are therefore comparative, and a grouped held-out test set is still needed before any clinical claim.
+Automated classification of skin lesions using dermoscopic images can assist in distinguishing visually similar lesion categories. This work evaluates MobileNetV2 and DINOv2 for classifying Basal Cell Carcinoma (BCC), Melanoma, and Nevus from a curated three-class subset of the ISIC 2019 dataset. The study focuses on a reproducible comparison of full-precision, quantized, and pruned models, together with a Grad-CAM explainability assessment. On the existing 2,489-image image-level validation partition, MobileNetV2 FP32 achieved 90.96\% accuracy and 87.06\% Melanoma recall. Full-integer INT8 TFLite conversion reduced the model size from 30.21 MiB to 2.94 MiB, while retaining 90.72\% accuracy and 86.73\% Melanoma recall; batch-one latency was 4.51 ms on the development CPU and 13.92 ms (71.8 FPS) on a Raspberry Pi 4 Model B, compared with 597.59 ms for the FP32 Keras model on the same device. In contrast, 50\% unstructured pruning reduced accuracy to 83.49\%, while native dynamic INT8 quantization of DINOv2 provided a compact 87.38 MiB representation and 173.54 ms host latency, with accuracy of 61.59\% under the evaluated quantization configuration. This result identifies a clear opportunity for quantization-aware training and distillation. The two models are evaluated as independent branches; a post-hoc probability-fusion audit gave no reliable gain over MobileNetV2, so fusion is not part of the pipeline. All results are validation results, because lesion-level auditing identified 54.04\% overlap between validation and training images. The results therefore support comparative compression and deployment analysis, but not clinical generalization. Grouped held-out test evaluation remains necessary before any clinical performance claim.
 \end{abstract}
 
 \begin{keyword}
@@ -64,20 +64,21 @@ Skin lesion classification \sep Model compression \sep MobileNetV2 \sep DINOv2 \
 \label{sec:introduction}
 % ============================================================
 
-BCC, Melanoma, and Nevus can look very similar under a dermatoscope, and a missed Melanoma is the most costly error a classifier can make. Two quite different backbones suit this task. MobileNetV2 keeps computation low with inverted residual blocks and depthwise separable convolutions \cite{sandler2018}, while DINOv2 learns its features as a self-supervised vision transformer \cite{oquab2024}. Comparing them shows how much accuracy survives when a model is made small enough for edge hardware.
+Skin lesion analysis plays an important role in the identification and assessment of dermatological conditions. BCC, Melanoma, and Nevus may exhibit visual similarities, making accurate image-based classification challenging. MobileNetV2 uses inverted residual blocks and depthwise separable convolutions to reduce computational complexity \cite{sandler2018}, whereas DINOv2 provides a transformer-based self-supervised representation \cite{oquab2024}. Evaluating these complementary architectures is useful for understanding the accuracy--efficiency trade-off in resource-constrained applications.
 
-We work with a curated three-class subset of ISIC 2019 and pay particular attention to the confusion between Melanoma and Nevus. The experiments compare FP32 models, MobileNetV2 Dynamic-Range and Full INT8 TFLite models, a 50\% unstructured-pruned MobileNetV2, and DINOv2 dynamic INT8 diagnostics. The two architectures are kept as independent branches, and a separate fusion analysis measures what combining them would add.
+This study uses a curated three-class subset of ISIC 2019. The selected classes provide a focused evaluation of BCC, Melanoma, and Nevus, with particular attention to the clinically important confusion between Melanoma and Nevus. The experiments compare FP32 models, MobileNetV2 Dynamic-Range and Full INT8 TFLite models, a 50\% unstructured-pruned MobileNetV2, and DINOv2 dynamic INT8 diagnostics. The two architectures are evaluated as independent branches; a post-hoc probability-fusion audit is reported only to explain why fusion is excluded from the pipeline.
 
-The paper makes the following contributions:
+The main contributions of this work are summarized as follows:
 
 \begin{itemize}
-    \item A three-class classification framework for BCC, Melanoma, and Nevus built on two independently trained backbones.
-    \item 50-epoch training runs for MobileNetV2 and DINOv2, with accuracy and loss logged at every epoch.
-    \item A fusion analysis with a paired McNemar test that measures what combining the two branches adds over MobileNetV2.
+    \item Development of a three-class skin lesion classification framework for BCC, Melanoma, and Nevus.
+    \item Evaluation of MobileNetV2 and DINOv2 using 50-epoch training experiments.
+    \item Analysis of training and validation accuracy and loss using the recorded epoch-wise experimental histories.
+    \item Independent evaluation of the two branches, with a post-hoc audit showing that weighted probability fusion does not provide a reliable improvement over MobileNetV2.
     \item Quantitative comparison of model accuracy, class-level recall, storage size, and latency on a development CPU and a Raspberry Pi 4 across the evaluated model variants.
-    \item A comparison of Full INT8 quantization with 50\% unstructured pruning for MobileNetV2.
-    \item A layer-wise diagnosis of the DINOv2 activation outliers that limit its INT8 accuracy.
-    \item A lesion-overlap audit that keeps validation evidence clearly apart from test evidence.
+    \item Analysis of the trade-off between Full INT8 quantization and 50\% unstructured pruning for MobileNetV2.
+    \item Diagnosis of DINOv2 activation outliers that define the optimization target for quantization-aware training and distillation.
+    \item Explicit auditing of lesion overlap and transparent separation of comparative validation evidence from independent clinical test evidence.
     \item Integration of the MobileNetV2 inference pipeline into a Streamlit-based application, and on-device benchmarking of the FP32 and quantized MobileNetV2 variants on a Raspberry Pi 4, including latency, memory, and sustained thermal behaviour.
 \end{itemize}
 
@@ -88,17 +89,17 @@ The paper makes the following contributions:
 
 \subsection{Convolutional Approaches to Skin Lesion Classification}
 
-Deep convolutional networks have done well on skin lesion images. Esteva et al. reached dermatologist-level accuracy in skin cancer classification \cite{esteva2017}.
+Deep convolutional neural networks have demonstrated strong performance in automated skin lesion analysis. Esteva et al. demonstrated dermatologist-level skin cancer classification using deep neural networks, highlighting the potential of deep learning for dermatological image analysis \cite{esteva2017}.
 
-ResNet and MobileNet learn hierarchical visual features and have become standard image classifiers \cite{he2016,howard2017}. MobileNetV2 adds inverted residuals and linear bottlenecks to cut computation further \cite{sandler2018}, which is why it is a common choice when the model has to be small.
+Convolutional neural networks such as ResNet and MobileNet have subsequently been applied to image classification problems because of their ability to learn hierarchical visual features \cite{he2016,howard2017}. MobileNetV2 improves computational efficiency using inverted residual structures and linear bottlenecks \cite{sandler2018}, making it suitable for applications requiring lightweight models.
 
 \subsection{Transformer-Based Visual Representation Learning}
 
-Vision Transformers model the relationships between image regions with attention instead of convolution \cite{dosovitskiy2021}. Self-supervised training lets them learn transferable features without large labelled datasets. DINO trains with self-distillation \cite{caron2021}, and DINOv2 scales that idea to general-purpose features that work across many downstream tasks \cite{oquab2024}. For medical images, such features are usually adapted by fine-tuning or by training a small task-specific head.
+Vision Transformers provide an alternative approach to image analysis by modelling relationships between image regions using attention mechanisms \cite{dosovitskiy2021}. Self-supervised learning approaches further improve the ability of models to learn transferable visual representations without requiring large quantities of labelled data.DINO introduced self-distillation for learning visual representations \cite{caron2021}, while DINOv2 extended this approach to produce robust and transferable visual features suitable for multiple downstream computer vision tasks \cite{oquab2024}. Such representations can be adapted for medical image classification through fine-tuning and task-specific classification layers.
 
 \subsection{Ensemble Learning}
 
-An ensemble combines the predictions of several classifiers. Whether it helps depends on how diverse the models are and how differently they err \cite{kittler1998,dietterich2000}. A CNN and a transformer learn features in different ways, so their errors may not coincide. We test whether weighted probability-level fusion of MobileNetV2 and DINOv2 improves on the stronger single model.
+Ensemble learning combines predictions generated by multiple classifiers to improve overall performance. The potential benefit of an ensemble depends on the diversity of the individual models and the differences in their prediction errors \cite{kittler1998,dietterich2000}. Combining convolutional and transformer-based architectures may provide complementary information because the two models learn visual representations using different architectural mechanisms. This work audits whether weighted probability-level fusion of MobileNetV2 and DINOv2 offers a reliable gain over the stronger single model.
 
 % ============================================================
 \section{Proposed Methodology}
@@ -196,7 +197,7 @@ The application currently uses the Dynamic-Range TFLite MobileNetV2 model. A sep
 \subsection{Experimental Setup}
 \label{sec:setup}
 
-Both models were trained for 50 epochs on the three-class subset. The evaluation compared seven variants using accuracy, precision, recall, F1-score, model size, and batch-one host-CPU latency. On-device measurements on a Raspberry Pi 4 are reported separately in Section~\ref{sec:pi}.
+Both MobileNetV2 and DINOv2 were trained for 50 epochs on the selected three-class skin lesion dataset. During training, training accuracy, validation accuracy, training loss, and validation loss were recorded for every epoch. The complete recorded histories were used to generate the performance curves. The consolidated evaluation compared seven variants using accuracy, precision, recall, F1-score, model size, and batch-one host-CPU latency. On-device measurements on a Raspberry Pi 4 are reported separately in Section~\ref{sec:pi}.
 
 \subsection{Individual Model Performance}
 \label{sec:individual}
@@ -245,7 +246,7 @@ Fusion audit ($w_M=0.4$, $w_D=0.6$) & 90.76\% & 91.01\% & 85.18\% \\
 \subsection{Compression and Development-CPU Deployment Analysis}
 \label{sec:compression}
 
-Table~\ref{tab:compression_results} summarizes the principal compression and deployment measurements. Full INT8 TFLite MobileNetV2 reduced storage by 90.27\% relative to the FP32 checkpoint and retained accuracy within 0.24 percentage points. It also achieved 4.51 ms batch-one latency on the benchmark host. In contrast, 50\% unstructured magnitude pruning \cite{han2015} reduced accuracy by 7.47 percentage points and Melanoma recall by 13.61 percentage points without providing a dense CPU speedup. DINOv2 FP32 required 330.34 MiB on disk and showed 235.09--373.35 ms host latency. Native dynamic INT8 reduced DINOv2 storage to 87.38 MiB and latency to 173.54 ms, which gives a baseline of 61.59\% accuracy and 49.67\% Melanoma recall for later quantization-aware work.
+Table~\ref{tab:compression_results} summarizes the principal compression and deployment measurements. Full INT8 TFLite MobileNetV2 reduced storage by 90.27\% relative to the FP32 checkpoint and retained accuracy within 0.24 percentage points. It also achieved 4.51 ms batch-one latency on the benchmark host. In contrast, 50\% unstructured magnitude pruning \cite{han2015} reduced accuracy by 7.47 percentage points and Melanoma recall by 13.61 percentage points without providing a dense CPU speedup. DINOv2 FP32 required 330.34 MiB on disk and showed 235.09--373.35 ms host latency. Native dynamic INT8 reduced DINOv2 storage to 87.38 MiB and latency to 173.54 ms, establishing a compact optimization baseline of 61.59\% accuracy and 49.67\% Melanoma recall for future quantization-aware improvement.
 
 \begin{table}[htbp]
 \centering
@@ -265,7 +266,7 @@ DINOv2 Dynamic INT8 & 61.59\% & 57.54\% & 49.67\% & 87.38 MiB / 173.54 ms \\
 \end{tabular*}
 \end{table}
 
-The DINOv2 INT8 drop has a clear cause. Layer-wise diagnostics identified extreme activation outliers in transformer Blocks 8--11, a known obstacle to post-training transformer quantization \cite{bondarenko2021,dettmers2022}, with magnitudes up to approximately 494.72 compared with upper-percentile values near 1.3--2.7 in the corresponding diagnostic summaries. Handling these outliers, through quantization-aware training, per-channel scaling, better calibration, or distillation to ViT-S, is the main task before DINOv2 can be deployed.
+The DINOv2 INT8 result provides a useful optimization diagnosis. Layer-wise diagnostics identified extreme activation outliers in transformer Blocks 8--11, a known obstacle to post-training transformer quantization \cite{bondarenko2021,dettmers2022}, with magnitudes up to approximately 494.72 compared with upper-percentile values near 1.3--2.7 in the corresponding diagnostic summaries. These observations identify the principal target for quantization-aware training, per-channel scaling, calibration refinement, or ViT-S distillation before deployment.
 
 \subsection{Raspberry Pi 4 On-Device Benchmark}
 \label{sec:pi}
@@ -334,13 +335,13 @@ BCC achieved the highest recall, while Melanoma achieved the lowest. The confusi
 \label{sec:discussion}
 % ============================================================
 
-MobileNetV2 gives the best balance of accuracy and cost among the variants we tested. Its FP32 checkpoint achieved 90.96\% validation accuracy and 87.06\% Melanoma recall, while Full INT8 conversion retained 90.72\% accuracy and 86.73\% Melanoma recall with a substantially smaller model and lower host-CPU latency. On a Raspberry Pi 4 it ran at 71.8 FPS, which confirms Full INT8 MobileNetV2 as a practical edge model.
+The experimental results demonstrate that MobileNetV2 provides the strongest accuracy--efficiency trade-off among the evaluated variants. Its FP32 checkpoint achieved 90.96\% validation accuracy and 87.06\% Melanoma recall, while Full INT8 conversion retained 90.72\% accuracy and 86.73\% Melanoma recall with a substantially smaller model and lower host-CPU latency. On a Raspberry Pi 4 it ran at 71.8 FPS, which confirms Full INT8 MobileNetV2 as a practical edge model.
 
-Fusion helped only a little. The 0.4/0.6 weighting (90.76\%) stayed below MobileNetV2, and equal weighting added 0.40 percentage points, with weights chosen on the same validation predictions. The equal-weight fusion was also 7.79 percentage points less accurate on clean than on overlapping validation images. That gain does not justify running DINOv2 next to MobileNetV2 on an edge device, so the branches stay separate.
+The post-hoc fusion audit tested whether combining the two branches improves accuracy. The 0.4/0.6 configuration (90.76\%) did not exceed MobileNetV2, and the equal-weight configuration exceeded it by only 0.40 percentage points, with weights evaluated on the same validation predictions. The lesion-overlap audit further showed a 7.79 percentage-point gap between overlapping and clean validation images for the equal-weight fusion. Given this small, unverified gain and the added cost of running DINOv2, the pipeline keeps the two branches independent.
 
-Melanoma remains the hardest class, mostly because of its confusion with Nevus. Pruning made this worse: at 50\% sparsity and without a sparse execution engine, Melanoma recall fell by 13.61 percentage points. For DINOv2, the INT8 results point to activation calibration as the main obstacle to compressing the transformer.
+The class-level analysis shows that Melanoma remains the most important error category, particularly because Melanoma images are confused with Nevus. The 50\% pruning experiment further shows that reducing parameter magnitudes without a suitable sparse execution strategy can harm this clinically relevant class. The DINOv2 INT8 experiment complements this result by identifying activation calibration as the main optimization bottleneck for transformer compression.
 
-The Streamlit application still runs the Dynamic-Range TFLite model rather than the Full INT8 one. Apart from the McNemar test of the fusion audit, no confidence intervals, skin-tone fairness evaluation, or lesion-disjoint retrained test result are available in the present study. The dataset also contains only three of the eight ISIC 2019 categories, includes 1,886 images without lesion IDs, and has no external multi-centre validation. For these reasons, the results should not be read as clinical evidence.
+The framework is integrated into a Streamlit application, but the current application uses Dynamic-Range TFLite rather than the Full INT8 candidate. Apart from the McNemar test of the fusion audit, no confidence intervals, skin-tone fairness evaluation, or lesion-disjoint retrained test result are available in the present study. The dataset also contains only three of the eight ISIC 2019 categories, includes 1,886 images without lesion IDs, and has no external multi-centre validation. These limitations prevent clinical generalization.
 
 % ============================================================
 \section{Grad-CAM Explainability}
@@ -358,9 +359,9 @@ Figure~\ref{fig:gradcam} shows Grad-CAM \cite{selvaraju2017} heatmaps computed o
 \label{sec:conclusion}
 % ============================================================
 
-This work presented a comparative study of MobileNetV2 and DINOv2 for three-class skin lesion classification. On the legacy image-level validation partition, MobileNetV2 FP32 achieved 90.96\% accuracy, while Full INT8 TFLite reduced storage to 2.94 MiB and retained 90.72\% accuracy with 86.73\% Melanoma recall. Fusing the two models added 0.40 percentage points, which was not statistically significant (McNemar $p = 0.174$), so the branches are kept independent. Because the validation partition shares 54.04\% of its lesions with training, these are not independent test results. Full INT8 MobileNetV2 is the current edge baseline, and the DINOv2 experiments show that activation calibration is what its compression needs.
+This work presented a comparative study of MobileNetV2 and DINOv2 for three-class skin lesion classification. On the legacy image-level validation partition, MobileNetV2 FP32 achieved 90.96\% accuracy, while Full INT8 TFLite reduced storage to 2.94 MiB and retained 90.72\% accuracy with 86.73\% Melanoma recall. A post-hoc fusion audit showed no reliable gain over MobileNetV2 alone, so the two branches are kept independent. All results were obtained on a validation partition with 54.04\% lesion overlap and therefore cannot be interpreted as independent test performance. The experiments established Full INT8 MobileNetV2 as the current practical edge baseline and identified the activation-calibration strategy required to improve DINOv2 compression.
 
-In practice, Full INT8 MobileNetV2 is ready for edge testing now, and the DINOv2 INT8 result gives a measured starting point for quantization-aware redesign and distillation. On a Raspberry Pi 4 it reached 13.92 ms per image (71.8 FPS) with 51.7 MiB peak memory, compared with 597.59 ms for FP32 Keras.
+The main practical conclusion is that Full INT8 MobileNetV2 is the most promising candidate for immediate edge evaluation, while the DINOv2 INT8 result provides a measurable starting point for quantization-aware redesign and distillation. On a Raspberry Pi 4 it reached 13.92 ms per image (71.8 FPS) with 51.7 MiB peak memory, compared with 597.59 ms for FP32 Keras. The present results do not establish clinical generalization.
 
 Future work will retrain both branches using the prepared zero-overlap lesion-grouped split, freeze any Melanoma safety threshold on validation data, re-test fusion on the lesion-disjoint split, and perform one final held-out test evaluation. Further work should include paired statistical tests, confidence intervals, power measurements and testing on additional edge devices, attention rollout for DINOv2, skin-tone fairness analysis, calibration, and comparison with external datasets. Extending the study to all eight ISIC 2019 categories, quantization-aware training, ViT-S distillation, out-of-distribution rejection, and imbalance-aware losses may improve the reliability of a future deployment-oriented system.
 
