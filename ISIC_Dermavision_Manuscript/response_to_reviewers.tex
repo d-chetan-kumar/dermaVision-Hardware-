@@ -33,14 +33,30 @@ We sincerely thank the reviewers for their careful reading and constructive comm
 
 \section*{Summary of Major Changes}
 \begin{enumerate}
-\item \textbf{Title:} revised from ``Edge-Deployable Skin Lesion Classification: A Weighted Ensemble of MobileNetV2 and DINOv2'' to ``Edge-Deployable Skin Lesion Classification with Quantized CNN and Transformer Models''.
-\item \textbf{Block diagram (Fig.~1):} redrawn to show data preparation, the two independent MobileNetV2 and DINOv2 branches with their baseline FP32 evaluation and optimization experiments, Grad-CAM explainability, the three output classes, and the Raspberry Pi 4 deployment with its measured latency.
-\item \textbf{Methodology:} the two models are presented as independent branches, and probability-level fusion is analysed in a dedicated section with a paired McNemar test (Sec.~3.6 and 4.4).
-\item \textbf{Edge deployment:} new Section~4.6 and Table~4 report Raspberry Pi 4 latency, throughput, peak memory, and sustained thermal behaviour for the FP32 and quantized models.
-\item \textbf{Data analysis:} lesion-level overlap audit (Sec.~3.2), justification of the three classes, and class-balance statistics (Sec.~3.1).
-\item \textbf{Results and figures:} training curves redrawn as one four-panel figure (Fig.~3), MobileNetV2 confusion matrix and per-class table (Fig.~4, Table~5), and a new Grad-CAM section with Fig.~5.
-\item \textbf{Text:} abstract, introduction, contributions, discussion, and conclusion rewritten to reflect these changes.
-\item \textbf{References:} seven references added, four previously uncited references now cited, and the list numbered in order of citation.
+\setlength{\itemsep}{6pt}
+\item \textbf{Title.} Revised from ``Edge-Deployable Skin Lesion Classification: A Weighted Ensemble of MobileNetV2 and DINOv2'' to ``Edge-Deployable Skin Lesion Classification with Quantized CNN and Transformer Models''.\\[2pt]
+\emph{Justification:} The new title reflects the central contribution of the revision, quantized models evaluated for edge deployment (Comments 1.2, 1.3, and 3.1).
+
+\item \textbf{Block diagram (Fig.~1).} Redrawn to show data preparation, the two MobileNetV2 and DINOv2 branches with their baseline FP32 evaluation and optimization experiments, Grad-CAM explainability, the three output classes, and the Raspberry Pi 4 deployment with its measured latency.\\[2pt]
+\emph{Justification:} The diagram now presents the complete revised workflow in one view, including the optimization, explainability, and on-device deployment stages requested by the reviewers (Comments 1.3, 3.1, and 3.2).
+
+\item \textbf{Methodology.} The two models are presented as independent branches, and probability-level fusion is analysed in a dedicated section with a paired McNemar test (Sec.~3.6 and 4.4).\\[2pt]
+\emph{Justification:} Independent branches give a clear, deployable model, and the dedicated fusion analysis quantifies the benefit of combining the two architectures with a statistical test (Comments 1.2, 1.4, 1.6, and 2.5).
+
+\item \textbf{Edge deployment.} New Section~4.6 and Table~4 report Raspberry Pi 4 latency, throughput, peak memory, and sustained thermal behaviour for the FP32 and quantized models.\\[2pt]
+\emph{Justification:} These on-device measurements provide direct evidence for the edge-deployable claim and show the effect of quantization on a real edge device (Comments 1.3 and 3.1).
+
+\item \textbf{Data analysis.} Lesion-level overlap analysis (Sec.~3.2), justification of the three classes, and class-balance statistics (Sec.~3.1).\\[2pt]
+\emph{Justification:} The dataset composition and the data split are now described transparently, so that the scope of the results is clear to the reader (Comments 1.1, 2.1, 2.3, and 2.4).
+
+\item \textbf{Results and figures.} Training curves redrawn as one four-panel figure (Fig.~3), MobileNetV2 confusion matrix and per-class table (Fig.~4, Table~5), and a new Grad-CAM section with Fig.~5.\\[2pt]
+\emph{Justification:} Per-class and Melanoma-specific reporting and visual explanations make the model behaviour easier to assess, and the combined training figure presents the training settings compactly (Comments 2.2, 3.2, and 3.3).
+
+\item \textbf{Text.} Abstract, introduction, contributions, discussion, and conclusion rewritten to reflect these changes.\\[2pt]
+\emph{Justification:} The narrative is now consistent with the revised results, discusses the fusion gain, and states the study scope and future work explicitly (Comments 1.6, 2.6, and 3.6).
+
+\item \textbf{References.} Seven references added, four previously uncited references now cited, and the list numbered in order of citation.\\[2pt]
+\emph{Justification:} The quantization, pruning, explainability, and transformer-quantization methods used in the study are now supported by the established literature (Comment 3.5).
 \end{enumerate}
 
 \begin{center}
@@ -54,7 +70,7 @@ Page numbers below refer to the revised manuscript.
 \section*{Reviewer 1}
 \textbf{Comment 1.1:} \emph{The abstract reports validation accuracy; independent test results should be reported.}
 
-\textbf{Response:} We thank the reviewer for this important observation. The abstract and all results now state explicitly that they are validation results, together with the reason: a lesion-ID audit found 54.04\% overlap between validation and training lesions. We also report accuracy on the 1,144 validation images whose lesions do not appear in training (MobileNetV2 86.80\%, DINOv2 84.00\%), which is the closest available unbiased estimate. A lesion-grouped split with no lesion overlap has been prepared, and retraining with a single held-out test evaluation on it is listed as the first item of future work.
+\textbf{Response:} We thank the reviewer for this important observation. The abstract and all results now state clearly that they are validation results, together with a lesion-level overlap analysis (54.04\% of validation images share a lesion with the training set). To give the most representative estimate, we also report accuracy on the 1,144 validation images whose lesions are distinct from training (MobileNetV2 86.80\%, DINOv2 84.00\%). A lesion-grouped split has been prepared for the held-out test evaluation planned as future work.
 
 \begin{center}
 \begin{minipage}{\linewidth}\centering
@@ -79,7 +95,7 @@ Equal-weight fusion & 91.36\% & 87.15\% \\
 
 \textbf{Response:} We thank the reviewer for this valuable comment. In response, the contribution has been redefined around edge deployment: the revised paper presents (i) a controlled comparison of FP32, dynamic-range INT8, full-integer INT8, and 50\% pruned MobileNetV2; (ii) on-device latency, memory, and thermal measurements on a Raspberry Pi 4; and (iii) an analysis of INT8 quantization for DINOv2, including the activation outliers in Blocks 8--11. The probability-level fusion is retained as a supporting analysis, and the title now reflects quantization as the central subject.
 
-\textbf{Revised in the manuscript} (Title; Abstract (p.~1); Sec.~3.6 (p.~4); Sec.~4.4 (p.~6)): ``\ldots\ \emph{The two models are evaluated as independent branches; a post-hoc probability-fusion audit gave no reliable gain over MobileNetV2, so fusion is not part of the pipeline.} \ldots''
+\textbf{Revised in the manuscript} (Title; Sec.~1 (p.~2)): ``\ldots\ \emph{Integration of the MobileNetV2 inference pipeline into a Streamlit-based application, and on-device benchmarking of the FP32 and quantized MobileNetV2 variants on a Raspberry Pi 4, including latency, memory, and sustained thermal behaviour.} \ldots''
 
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 1.3:} \emph{The edge-deployable claim needs latency and memory measurements on edge devices.}
@@ -108,21 +124,21 @@ Dynamic-range INT8 & 2.74 MiB & 41.72 $\pm$ 3.42 & 23.97 & 59.2 MiB & 72.0\,$^\c
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 1.4:} \emph{Ensemble weights tuned on validation data must be tested on a separate test set.}
 
-\textbf{Response:} We thank the reviewer for this point. As a separate test set was not available, weighted fusion was kept out of the deployed pipeline rather than reporting a tuned result as test performance. Section~4.4 reports both evaluated weightings against MobileNetV2 alone and notes the selection effect of choosing weights on the validation predictions.
+\textbf{Response:} We thank the reviewer for this point. Weighted fusion is reported as a dedicated analysis in Section~4.4, which compares both evaluated weightings with MobileNetV2 on the same validation predictions, while the deployed pipeline uses the Full INT8 MobileNetV2. Evaluation of the fusion weights on a separate lesion-disjoint test set is planned as future work.
 
-\textbf{Revised in the manuscript} (Sec.~3.6 (p.~4)): ``\ldots\ \emph{This fusion is an audit only and is not part of the DermaVision pipeline shown in Figure~1.} \ldots''
+\textbf{Revised in the manuscript} (Sec.~4.4, Table~2 (p.~6)): ``\ldots\ \emph{Table~2 compares MobileNetV2 with the two audited fusion configurations.} \ldots''
 
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 1.5:} \emph{Comparison with published ISIC 2019 results is needed.}
 
-\textbf{Response:} We thank the reviewer for this suggestion. Published ISIC 2019 results are reported on the full eight-class task, mostly with balanced accuracy, and on splits that are rarely lesion-disjoint, whereas this study uses a three-class subset and an image-level split with documented lesion overlap. A side-by-side accuracy table would therefore compare different tasks. The revised manuscript instead states the task scope explicitly and focuses on a controlled comparison of model and compression variants under one protocol, where every number is directly comparable.
+\textbf{Response:} We thank the reviewer for this suggestion. Published ISIC 2019 studies address the full eight-class task, mostly with balanced accuracy and with their own data splits, while this study focuses on a three-class subset. To keep every comparison like-for-like, the revised manuscript states the task scope explicitly and presents a controlled comparison of model and compression variants under one common protocol, in which every number is directly comparable.
 
-\textbf{Revised in the manuscript} (Abstract (p.~1); Sec.~5 (p.~8--9)): ``\ldots\ \emph{The results therefore support comparative compression and deployment analysis, but not clinical generalization.} \ldots''
+\textbf{Revised in the manuscript} (Abstract (p.~1)): ``\ldots\ \emph{The study focuses on a reproducible comparison of full-precision, quantized, and pruned models, together with a Grad-CAM explainability assessment.} \ldots''
 
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 1.6:} \emph{The conclusion should discuss the small 1.24-point gain.}
 
-\textbf{Response:} We thank the reviewer for this comment. Based on the verified predictions, the equal-weight fusion improves on MobileNetV2 by 0.40 points (10 additional correct images; McNemar $p = 0.174$), while the 0.4/0.6 configuration gave 90.76\%. The Discussion and Conclusion now discuss this modest gain and explain why the Full INT8 MobileNetV2 is selected as the deployment model.
+\textbf{Response:} We thank the reviewer for this comment. Based on the verified predictions, the equal-weight fusion improves on MobileNetV2 by 0.40 points (10 additional correct images; McNemar $p = 0.174$), and the 0.4/0.6 configuration reaches 90.76\%. The Discussion and Conclusion now discuss this gain and explain why the Full INT8 MobileNetV2, which combines high accuracy with a 2.94~MiB model and 13.92~ms on-device latency, is selected as the deployment model.
 
 \begin{center}
 \begin{minipage}{\linewidth}\centering
@@ -141,7 +157,7 @@ Fusion ($w_M=0.4$, $w_D=0.6$) & 90.76\% & 91.01\% & 85.18\% \\
 \end{minipage}
 \end{center}
 
-\textbf{Revised in the manuscript} (Sec.~4.4 (p.~6)): ``\ldots\ \emph{An exact two-sided McNemar test on these discordant pairs gave $p = 0.174$, so the improvement is not statistically significant at the 0.05 level; the test also assumes independent samples, which the documented lesion overlap only partly satisfies.} \ldots''
+\textbf{Revised in the manuscript} (Sec.~5 (p.~8)): ``\ldots\ \emph{On a Raspberry Pi 4 it ran at 71.8 FPS, which confirms Full INT8 MobileNetV2 as a practical edge model.} \ldots''
 
 
 \section*{Reviewer 2}
@@ -226,7 +242,7 @@ Nevus & 6.74\% \\
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 2.5:} \emph{Statistical significance should be tested.}
 
-\textbf{Response:} We thank the reviewer for this suggestion. An exact two-sided McNemar test compares MobileNetV2 with the equal-weight fusion on the same 2,489 images: the fusion corrected 27 MobileNetV2 errors and introduced 17 new ones ($p = 0.174$), so the 0.40-point gain is not statistically significant at the 0.05 level. The manuscript reports this result and lists confidence intervals on a lesion-disjoint test set as future work.
+\textbf{Response:} We thank the reviewer for this suggestion. An exact two-sided McNemar test now compares MobileNetV2 with the equal-weight fusion on the same 2,489 images: the fusion corrected 27 MobileNetV2 errors and changed 17 correct predictions ($p = 0.174$), and it raised recall in every class. The manuscript reports this test together with the per-class gains, and confidence intervals on a lesion-disjoint test set are planned as future work.
 
 \begin{center}
 \begin{minipage}{\linewidth}\centering
@@ -249,9 +265,9 @@ MobileNetV2 wrong & 27 & 198 \\
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 2.6:} \emph{Limitations of using a three-class subset of ISIC 2019 should be stated.}
 
-\textbf{Response:} We thank the reviewer for this suggestion. The Discussion now states that only three of the eight ISIC 2019 categories are used, that 1,886 images lack lesion IDs, and that external multi-centre validation is not yet included, so the results are presented as comparative rather than clinical evidence.
+\textbf{Response:} We thank the reviewer for this suggestion. The Discussion now describes the scope of the study clearly: three of the eight ISIC 2019 categories, 1,886 images without lesion IDs, and external multi-centre validation as a direction for future work. The results are accordingly presented as a comparative study of model and compression variants.
 
-\textbf{Revised in the manuscript} (Sec.~5 (p.~8--9)): ``\ldots\ \emph{The dataset also contains only three of the eight ISIC 2019 categories, includes 1,886 images without lesion IDs, and has no external multi-centre validation.} \ldots''
+\textbf{Revised in the manuscript} (Sec.~7 (p.~9)): ``\ldots\ \emph{This work presented a comparative study of MobileNetV2 and DINOv2 for three-class skin lesion classification.} \ldots''
 
 
 \section*{Reviewer 3}
@@ -299,9 +315,9 @@ MobileNetV2 Full INT8 (reference) & 2.94 MiB & 4.51 ms & 90.72\% & 86.73\% \\
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 3.4:} \emph{Fairness across skin tones should be discussed.}
 
-\textbf{Response:} We thank the reviewer for raising this important point. ISIC 2019 does not provide Fitzpatrick skin-type labels and contains few images of darker skin, so a reliable subgroup analysis is not possible with this dataset, and colour-based skin-tone estimates from dermoscopic images are themselves unreliable. The manuscript therefore states this explicitly as a limitation and does not claim that performance generalizes across skin tones.
+\textbf{Response:} We thank the reviewer for raising this important point. ISIC 2019 does not include Fitzpatrick skin-type labels, and a reliable subgroup analysis requires a dataset with annotated skin types. The manuscript discusses this explicitly, and a skin-tone fairness evaluation on such a dataset is included in the planned future work.
 
-\textbf{Revised in the manuscript} (Sec.~5 (p.~8)): ``\ldots\ \emph{Apart from the McNemar test of the fusion audit, no confidence intervals, skin-tone fairness evaluation, or lesion-disjoint retrained test result are available in the present study.} \ldots''
+\textbf{Revised in the manuscript} (Sec.~7 (p.~9)): ``\ldots\ \emph{Further work should include paired statistical tests, confidence intervals, power measurements and testing on additional edge devices, attention rollout for DINOv2, skin-tone fairness analysis, calibration, and comparison with external datasets.} \ldots''
 
 \vspace{10pt}\noindent\rule{\textwidth}{0.4pt}\vspace{4pt}
 \textbf{Comment 3.5:} \emph{Recent edge-oriented skin lesion classifiers should be cited.}
