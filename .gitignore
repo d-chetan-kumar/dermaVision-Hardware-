@@ -27,6 +27,8 @@ dermavision_kaggle_pack/
 dermavision_kaggle_pack.zip
 scratch/
 scratch_*.png
+PPT's/
+*.pptx
 
 # 4. Python, TensorFlow, Keras & Matplotlib Caches
 __pycache__/

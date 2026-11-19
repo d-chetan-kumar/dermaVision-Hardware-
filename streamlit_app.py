@@ -831,7 +831,7 @@ div[data-testid="stFileUploader"]:has(button[aria-label*="Remove"])::before {
 
 /* Inject detailed helper text below the button */
 div[data-testid="stFileUploader"] section::after {
-content: "Supported formats: JPG, JPEG, PNG  •  Maximum size: 200 MB\A Best results with clear, well-lit dermoscopic images" !important;
+content: "Supported formats: JPG, JPEG, PNG  •  Maximum size: 200 MB\\A Best results with clear, well-lit dermoscopic images" !important;
 white-space: pre-line !important;
 display: block !important;
 font-size: 15px !important;
