@@ -1,0 +1,14 @@
+{
+  "model": "int8",
+  "seconds": 300,
+  "threads": 4,
+  "inferences": 21118,
+  "start_temp_c": 49.6,
+  "max_temp_c": 78.4,
+  "end_temp_c": 77.4,
+  "min_arm_mhz": 1800.404352,
+  "any_throttle_flag": false,
+  "first10pct_mean_ms": 14.108717391282221,
+  "last10pct_mean_ms": 14.16110499857819,
+  "overall_mean_ms": 14.14927552168749
+}

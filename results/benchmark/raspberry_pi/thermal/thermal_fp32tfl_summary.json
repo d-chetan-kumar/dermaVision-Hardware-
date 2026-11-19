@@ -1,0 +1,14 @@
+{
+  "model": "fp32tfl",
+  "seconds": 300,
+  "threads": 4,
+  "inferences": 8224,
+  "start_temp_c": 53.0,
+  "max_temp_c": 74.5,
+  "end_temp_c": 73.0,
+  "min_arm_mhz": 1800.404352,
+  "any_throttle_flag": false,
+  "first10pct_mean_ms": 36.43078167032203,
+  "last10pct_mean_ms": 36.31661595864155,
+  "overall_mean_ms": 36.347778143240404
+}

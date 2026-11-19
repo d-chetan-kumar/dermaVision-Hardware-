@@ -1,0 +1,14 @@
+{
+  "model": "dynamic",
+  "seconds": 300,
+  "threads": 4,
+  "inferences": 7154,
+  "start_temp_c": 53.5,
+  "max_temp_c": 72.0,
+  "end_temp_c": 70.6,
+  "min_arm_mhz": 1800.404352,
+  "any_throttle_flag": false,
+  "first10pct_mean_ms": 41.804191040567346,
+  "last10pct_mean_ms": 41.99108471887809,
+  "overall_mean_ms": 41.785158551858494
+}

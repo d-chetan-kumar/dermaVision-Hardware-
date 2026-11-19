@@ -1,0 +1,15 @@
+{
+  "model": "MobileNetV2 FP32 Keras",
+  "warmup": 50,
+  "runs": 200,
+  "mean_ms": 597.5937476700051,
+  "std_ms": 9.857668268680253,
+  "median_ms": 594.0645324999423,
+  "min_ms": 590.8434489999763,
+  "max_ms": 654.2402469999615,
+  "fps": 1.673377614640316,
+  "peak_rss_mib": 636.92578125,
+  "prediction": "BCC",
+  "confidence": 1.0,
+  "disk_mib": 30.206193923950195
+}
